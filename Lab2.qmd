@@ -150,7 +150,7 @@ data
 ## 3. Which major geographical region sold the most total organic, small Hass avocados in 2017?
 
 ```{python}
-data_2017 = data[(data['year'] == 2017)]
+data_2017 = data[(data['year'] == 2017) & (data['type'] == 'organic')]
 
 region_sales = (
     data_2017
@@ -162,7 +162,7 @@ region_sales = (
 print(region_sales)
 ```
 
-The major geographical region that sold the most total organic, small Hass avacados in 2017 was **South**.
+The major geographical region that sold the most total organic, small Hass avacados in 2017 was **West**.
 
 ## 4. Split the date variable into month, day, and year variables. In which month is the highest average volume of avocado sales?
 
@@ -240,5 +240,50 @@ data_california = data[data['geography'].isin(california_regions)]
 ## 7. In which California regions is the price of organic versus conventional avocados most different? Support your answer with a few summary statistics AND a visualization.
 
 ```{python}
+summary_stats = (
+    data_california.groupby(['geography', 'type'])['average_price']
+    .agg(['mean', 'std', 'count'])
+    .reset_index()
+)
 
+print(summary_stats)
+```
+
+```{python}
+price_diff = summary_stats.pivot(index='geography', columns='type', values='mean')
+price_diff['diff'] = price_diff['organic'] - price_diff['conventional']
+
+print(price_diff.sort_values('diff', ascending=False))
+```
+
+**San Francisco** has the largest difference in price between conventional and organic avocados. This is because the difference in mean price between the two types of avocados in San Francisco is the greatest, compared to the other California regions.  
+
+```{python}
+from plotnine import *
+
+(
+    ggplot(data_california, aes(x="geography", y="average_price", fill="type"))
+    + geom_boxplot()
+    + scale_y_continuous(breaks=[0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4])  
+    + labs(
+        title="Organic vs Conventional Avocado Prices in California Regions",
+        x="California Metro",
+        y="Average Price ($)"
+    )
+    + theme()
+)
+```
+
+## 8. The following plot shows, for all four California regions, the proportion of the average Hass avocado sales that are small, large, or extra large; conventional vs. organic. Recreate the plot; you do not have to replicate the exact finishing touches - e.g., color, theme - but your plot should resemble the content of this plot.
+
+```{python}
+data_long = data_california.melt(
+    id_vars=["geography", "type"],
+    value_vars=["small_hass", "large_hass", "xl_hass"],
+    var_name="size",
+    value_name="volume"
+)
+
+size_map = {"small_hass": "Small", "large_hass": "Large", "xl_hass": "Xlarge"}
+data_long["size"] = data_long["size"].map(size_map)
 ```
