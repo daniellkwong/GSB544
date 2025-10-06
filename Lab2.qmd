@@ -1,0 +1,228 @@
+---
+title: "Lab2 Daniel Kwong"
+format: html
+embed-resources: true
+toc: true
+---
+https://github.com/daniellkwong/GSB544.git 
+
+## 0. Import the data and declare your package dependencies.
+
+```{python}
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+
+data = pd.read_csv("/Users/danielkwong/Documents/GitHub/GSB544/avocado-updated-2020.csv")
+```
+
+## 1. Briefly describe the data set. What information does it contain?
+This dataset is about historical data on avocado prices and sales volume in multiple cities, states, and regions of the USA. This dataset contains various information, such as average price, total volume, avacado size, and sizes of bags.
+
+## 2. Clean the data in any way you see fit.
+
+```{python}
+data['geography'].unique()
+```
+
+```{python}
+region_map = {
+    # Northeast
+    'Albany': 'Northeast', 'Boston': 'Northeast', 'Buffalo/Rochester': 'Northeast',
+    'New York': 'Northeast', 'Philadelphia': 'Northeast', 'Baltimore/Washington': 'Northeast',
+    'Hartford/Springfield': 'Northeast', 'Harrisburg/Scranton': 'Northeast',
+    'Syracuse': 'Northeast', 'Northern New England': 'Northeast',
+    'Northeast': 'Northeast', 
+    
+    # Midwest
+    'Chicago': 'Midwest', 'Detroit': 'Midwest', 'Cincinnati/Dayton': 'Midwest',
+    'Columbus': 'Midwest', 'Indianapolis': 'Midwest', 'St. Louis': 'Midwest',
+    'Grand Rapids': 'Midwest', 'Great Lakes': 'Midwest',
+    'Plains': 'Midwest',
+    
+    # South
+    'Atlanta': 'South', 'Charlotte': 'South', 'Nashville': 'South', 'Louisville': 'South',
+    'Dallas/Ft. Worth': 'South', 'Houston': 'South', 'Miami/Ft. Lauderdale': 'South',
+    'Tampa': 'South', 'Orlando': 'South', 'Jacksonville': 'South',
+    'New Orleans/Mobile': 'South', 'Raleigh/Greensboro': 'South',
+    'Richmond/Norfolk': 'South', 'Roanoke': 'South',
+    'South Carolina': 'South', 'Midsouth': 'South', 'South Central': 'South',
+    'Southeast': 'South', 
+    
+    # West
+    'Los Angeles': 'West', 'San Francisco': 'West', 'San Diego': 'West',
+    'Sacramento': 'West', 'Seattle': 'West', 'Portland': 'West',
+    'Spokane': 'West', 'Las Vegas': 'West', 'Phoenix/Tucson': 'West',
+    'Boise': 'West', 'West Tex/New Mexico': 'West',
+    'California': 'West', 'West': 'West', 
+    
+    # National
+    'Total U.S.': 'National'
+}
+
+data['region'] = data['geography'].map(region_map)
+```
+
+```{python}
+market_size_map = {
+    # Tier 1
+    'New York': 'Tier 1',
+    'Los Angeles': 'Tier 1',
+    'Chicago': 'Tier 1',
+    'Dallas/Ft. Worth': 'Tier 1',
+    'Houston': 'Tier 1',
+    'Miami/Ft. Lauderdale': 'Tier 1',
+    'San Francisco': 'Tier 1',
+    'Philadelphia': 'Tier 1',
+    'Atlanta': 'Tier 1',
+    'Boston': 'Tier 1',
+    'Baltimore/Washington': 'Tier 1',
+    'Phoenix/Tucson': 'Tier 1',
+
+    # Tier 2
+    'Charlotte': 'Tier 2',
+    'Seattle': 'Tier 2',
+    'Denver': 'Tier 2',
+    'Detroit': 'Tier 2',
+    'Orlando': 'Tier 2',
+    'Tampa': 'Tier 2',
+    'St. Louis': 'Tier 2',
+    'Pittsburgh': 'Tier 2',
+    'Portland': 'Tier 2',
+    'Las Vegas': 'Tier 2',
+    'San Diego': 'Tier 2',
+    'Nashville': 'Tier 2',
+    'Raleigh/Greensboro': 'Tier 2',
+    'Richmond/Norfolk': 'Tier 2',
+
+    # Tier 3
+    'Albany': 'Tier 3',
+    'Boise': 'Tier 3',
+    'Buffalo/Rochester': 'Tier 3',
+    'Grand Rapids': 'Tier 3',
+    'Great Lakes': 'Tier 3',
+    'Harrisburg/Scranton': 'Tier 3',
+    'Hartford/Springfield': 'Tier 3',
+    'Indianapolis': 'Tier 3',
+    'Jacksonville': 'Tier 3',
+    'Louisville': 'Tier 3',
+    'New Orleans/Mobile': 'Tier 3',
+    'Northern New England': 'Tier 3',
+    'Roanoke': 'Tier 3',
+    'Sacramento': 'Tier 3',
+    'South Carolina': 'Tier 3',
+    'Spokane': 'Tier 3',
+    'Syracuse': 'Tier 3',
+    'West Tex/New Mexico': 'Tier 3',
+    'Cincinnati/Dayton': 'Tier 3',
+    'Columbus': 'Tier 3',
+    'Midsouth': 'Tier 3',
+    'Plains': 'Tier 3',
+
+    # Aggregates 
+    'California': 'Aggregate',
+    'Northeast': 'Aggregate',
+    'South Central': 'Aggregate',
+    'Southeast': 'Aggregate',
+    'West': 'Aggregate',
+
+    'Total U.S.': 'National'
+}
+
+data['market_size'] = data['geography'].map(market_size_map)
+```
+
+```{python}
+data = data.dropna()
+
+data = data.rename(columns={
+    '4046': 'small_hass',
+    '4225': 'large_hass',
+    '4770': 'xl_hass'
+})
+
+data
+```
+
+## 3. Which major geographical region sold the most total organic, small Hass avocados in 2017?
+
+```{python}
+data_2017 = data[(data['year'] == 2017)]
+
+region_sales = (
+    data_2017
+    .groupby('region')['small_hass']
+    .sum()
+    .sort_values(ascending=False)
+)
+
+print(region_sales)
+```
+
+The major geographical region that sold the most total organic, small Hass avacados in 2017 was **South**.
+
+## 4. Split the date variable into month, day, and year variables. In which month is the highest average volume of avocado sales?
+
+```{python}
+data['date'] = pd.to_datetime(data['date'])
+
+data['year'] = data['date'].dt.year
+data['month'] = data['date'].dt.month
+data['day'] = data['date'].dt.day
+```
+
+```{python}
+month_sales = (
+    data
+    .groupby('month')['total_volume']
+    .mean()
+    .sort_values(ascending=False)
+)
+
+print(month_sales)
+```
+
+**May** had the highest average volume of avocado sales.
+
+## 5. Which metro area geographical regions sold the most total avocados? Plot side-by-side box-plots of the total volume for only the five metro geographical regions with the highest averages for the total_volume variable.
+
+```{python}
+not_metro = ['California', 'Great Lakes', 'Midsouth', 'Northeast', 
+           'Northern New England', 'Plains', 'South Central', 
+           'Southeast', 'West', 'Total U.S.']
+
+metros = data[~data['geography'].isin(not_metro)]
+```
+
+```{python}
+metro_sales = (
+    metros
+    .groupby('geography')['total_volume']
+    .sum()
+    .sort_values(ascending=False)
+)
+
+print(metro_sales.head(5))
+```
+
+**Los Angeles** sold the most total avocados. 
+
+```{python}
+from plotnine import *
+
+top5 = ["Los Angeles", "New York", "Dallas/Ft. Worth", "Houston", "Phoenix/Tucson"]
+data_top5 = data[data['geography'].isin(top5)]
+
+(
+    ggplot(data_top5, aes(x="geography", y="total_volume"))
+    + geom_boxplot()
+    + labs(
+        title="Distribution of Total Avocado Sales Volume (Top 5 Metro Areas)",
+        x="Metro Area",
+        y="Total Volume"
+    )
+    + theme(axis_text_x=element_text(rotation=30, ha="right"))
+)
+```
