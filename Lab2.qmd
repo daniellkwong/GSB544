@@ -321,3 +321,52 @@ from plotnine import *
     + theme(axis_text_x=element_text(rotation=30, ha="right"))
 )
 ```
+
+## Using Outside Data
+
+```{python}
+housing_data = pd.read_csv("/Users/danielkwong/Downloads/City_MedianRentalPrice_1Bedroom.csv")
+
+housing_data = housing_data.drop(columns=["Unnamed: 0"], errors="ignore")
+
+housing_long = housing_data.melt(
+    id_vars=["RegionName", "State", "Metro", "CountyName", "SizeRank"],
+    var_name="date",
+    value_name="rent_price"
+)
+
+housing_long["date"] = pd.to_datetime(housing_long["date"])
+
+ca_regions = ["Los Angeles", "San Diego", "Sacramento", "San Francisco"]
+california_housing = housing_long[housing_long["RegionName"].isin(ca_regions)]
+
+data_california["date"] = pd.to_datetime(data_california["date"])
+
+merged = pd.merge(
+    data_california,
+    california_housing,
+    left_on=["geography", "date"],
+    right_on=["RegionName", "date"],
+    how="inner"
+)
+
+print(merged.head())
+```
+
+```{python}
+from plotnine import *
+
+(
+    ggplot(merged, aes(x="rent_price", y="average_price", color="RegionName"))
+    + geom_point(alpha=0.6)
+    + labs(
+        title="Avocado Prices vs Housing Rental Prices in California Metros",
+        x="Median Rent Price (1-Bedroom Apartment)",
+        y="Average Avocado Price ($)",
+        color="Region"
+    )
+    + theme(axis_text_x=element_text(rotation=30, ha="right"))
+)
+```
+
+Avocado prices fluctuate a lot week-to-week, while rent prices rise steadily over time. This means there isn’t a strong direct relationship between how much people pay for housing and how much they pay for avocados, and that the two are independent of each other. Millennials can't afford houses simply because housing prices are rising, not because of avocado toast. 
