@@ -287,3 +287,37 @@ data_long = data_california.melt(
 size_map = {"small_hass": "Small", "large_hass": "Large", "xl_hass": "Xlarge"}
 data_long["size"] = data_long["size"].map(size_map)
 ```
+
+```{python}
+data_means = (
+    data_long.groupby(["geography", "type", "size"])["volume"]
+    .mean()
+    .reset_index()
+)
+
+data_means["proportion"] = (
+    data_means.groupby(["geography", "type"])["volume"]
+    .transform(lambda x: x / x.sum()) # help from ChatGPT
+)
+
+data_proportion = data_means[["geography", "type", "size", "proportion"]]
+```
+
+```{python}
+from plotnine import *
+
+(
+    ggplot(data_proportion, aes(x="geography", y="proportion", fill="size"))
+    + geom_bar(stat="identity", position="stack")
+    + facet_wrap("~type")  
+    + labs(
+        title="Proportion of Average Hass Avocado Sales by Size",
+        x="Region of California",
+        y="Proportion"
+    )
+    + scale_y_continuous(
+    labels=["0%", "25%", "50%", "75%", "100%"], # help from ChatGPT
+    breaks=[0, 0.25, 0.5, 0.75, 1.0])
+    + theme(axis_text_x=element_text(rotation=30, ha="right"))
+)
+```
