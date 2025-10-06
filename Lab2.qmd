@@ -128,6 +128,7 @@ market_size_map = {
     'Southeast': 'Aggregate',
     'West': 'Aggregate',
 
+    # National
     'Total U.S.': 'National'
 }
 
@@ -218,11 +219,26 @@ data_top5 = data[data['geography'].isin(top5)]
 (
     ggplot(data_top5, aes(x="geography", y="total_volume"))
     + geom_boxplot()
+    + scale_y_continuous(breaks=range(0, 5000001, 500000))
     + labs(
         title="Distribution of Total Avocado Sales Volume (Top 5 Metro Areas)",
         x="Metro Area",
         y="Total Volume"
     )
-    + theme(axis_text_x=element_text(rotation=30, ha="right"))
+    + theme()
 )
+```
+
+## 6. From your cleaned data set, create a data set with only these California regions and answer the following questions about these California regions only.
+
+```{python}
+california_regions = ["Los Angeles", "San Diego", "Sacramento", "San Francisco"]
+
+data_california = data[data['geography'].isin(california_regions)]
+```
+
+## 7. In which California regions is the price of organic versus conventional avocados most different? Support your answer with a few summary statistics AND a visualization.
+
+```{python}
+
 ```
