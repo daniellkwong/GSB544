@@ -3,7 +3,9 @@ title: "Lab 3: Singing a song"
 subtitle: "Daniel Kwong"
 format: html
 toc: true
+toc-expand: true
 ---
+https://github.com/daniellkwong/GSB544.git 
 
 ## Data set
 
