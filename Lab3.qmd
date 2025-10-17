@@ -2,6 +2,7 @@
 title: "Lab 3: Singing a song"
 subtitle: "Daniel Kwong"
 format: html
+embed-resources: true
 toc: true
 toc-expand: true
 ---
