@@ -248,8 +248,10 @@ from plotnine import *
 ```{python}
 meal202_data_dropna = meal202_data.dropna(subset=["nutrition.calories", "nutrition.protein"])
 
-(ggplot(meal202_data_dropna, aes(x="nutrition.calories", y="nutrition.protein", fill="Is_Vegetarian", size=5))
+(ggplot(meal202_data_dropna, aes(x="nutrition.calories", y="nutrition.protein", fill="Is_Vegetarian", size=2))
     + geom_point()  
+    + scale_x_continuous(breaks=range(0, 1700, 200), limits=(0, 1700))
+    + scale_y_continuous(breaks=range(0, 120, 10), limits=(0, 120))
     + labs(
         title="Nutrition Profile of Meals in Weekly Plan 202",
         subtitle="Calories vs Protein",
@@ -258,5 +260,6 @@ meal202_data_dropna = meal202_data.dropna(subset=["nutrition.calories", "nutriti
         fill="Is Vegetarian"
     )
     + theme_minimal()
+    + guides(fill=guide_legend(override_aes={"size": 6}), size="none") #help from ChatGPT
 )
 ```
