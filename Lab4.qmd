@@ -1,0 +1,262 @@
+---
+title: "Lab4 Daniel Kwong"
+format: html
+embed-resources: true
+toc: true
+---
+https://github.com/daniellkwong/GSB544.git 
+
+## 1. Data from unstructured websites
+```{python}
+import pandas as pd
+import requests
+from bs4 import BeautifulSoup
+import re
+```
+
+```{python}
+URL = "https://tastesbetterfromscratch.com/meal-plan-210/"
+HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
+
+response = requests.get(URL, headers=HEADERS)
+soup = BeautifulSoup(response.content, "html.parser")
+```
+
+```{python}
+print(len(soup.find_all("p", class_="has-text-align-left")))
+```
+
+```{python}
+meal_plan = []
+
+for p in soup.find_all("p", class_="has-text-align-left"):
+    strong = p.find("strong")
+    if not strong:
+        continue
+    day = strong.get_text(strip=True).replace(":", "")
+
+    a = p.find("a")
+    if not a:
+        continue
+    name = a.get_text(strip=True)
+    link = a["href"]
+
+    text = p.get_text(" ", strip=True)   
+    match = re.search(r"\$([0-9]+)", text)
+    price = f"${match.group(1)}" if match else None
+
+    meal_plan.append({
+        "Day of the Week": day,
+        "Name of Recipe": name,
+        "Link to Recipe": link,
+        "Price of Recipe": price
+    })
+
+df = pd.DataFrame(meal_plan)
+
+print(df)
+```
+
+## 2. Data from an API
+```{python}
+monday_recipe = df.loc[df["Day of the Week"] == "Monday", "Name of Recipe"].iloc[0]
+
+url = "https://tasty.p.rapidapi.com/recipes/list"
+
+querystring = {
+    "from": "0",
+    "size": "10",  
+    "q": monday_recipe  
+}
+
+headers = {
+    "X-RapidAPI-Key": "6ef3260e4emsh5ae76da5b7013f2p1b4950jsn638a3e15ec8a",
+    "X-RapidAPI-Host": "tasty.p.rapidapi.com"
+}
+
+response = requests.get(url, headers=headers, params=querystring)
+
+tasty_df = pd.json_normalize(response.json(), "results")
+
+cols = ["name", "description", "recipes", "video_url"]  
+biscuit_recipes = tasty_df[cols]
+print(biscuit_recipes.head)
+```
+
+```{python}
+tasty_df.columns
+```
+
+## 3. Automate it
+```{python}
+def get_mealplan_data(plan_number):
+    URL = f"https://tastesbetterfromscratch.com/meal-plan-{plan_number}/"
+    HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
+
+    response = requests.get(URL, headers=HEADERS)
+    soup = BeautifulSoup(response.content, "html.parser")
+
+    meal_plan = []
+    for p in soup.find_all("p", class_="has-text-align-left"):
+        strong = p.find("strong")
+        if not strong:
+            continue
+        day = strong.get_text(strip=True).replace(":", "")
+
+        a = p.find("a")
+        if not a:
+            continue
+        name = a.get_text(strip=True)
+        link = a["href"]
+
+        text = p.get_text(" ", strip=True)
+        match = re.search(r"\$([0-9]+)", text)
+        price = f"${match.group(1)}" if match else None
+        
+        meal_plan.append({
+            "Day of the Week": day,
+            "Name of Recipe": name,
+            "Link to Recipe": link,
+            "Price of Recipe": price
+        })
+
+    df = pd.DataFrame(meal_plan)
+
+    url = "https://tasty.p.rapidapi.com/recipes/list"
+    headers = {
+        "X-RapidAPI-Key": "6ef3260e4emsh5ae76da5b7013f2p1b4950jsn638a3e15ec8a",
+        "X-RapidAPI-Host": "tasty.p.rapidapi.com"
+    }
+
+    results = []
+    for recipe in df["Name of Recipe"]:
+        q = {"from": "0", "size": "10", "q": recipe}
+        r = requests.get(url, headers=headers, params=q)
+
+        if "results" not in r.json():
+            continue
+
+        t = pd.json_normalize(r.json()["results"])
+
+        cols = ["name", "description", "recipes", "video_url"]
+        t = t[[c for c in cols if c in t.columns]]
+
+        t["Search"] = recipe
+        results.append(t)
+
+    if results:
+        api_df = pd.concat(results, ignore_index=True)
+        final = df.merge(api_df, left_on="Name of Recipe", right_on="Search", how="left")
+        return final
+    else:
+        return df
+```
+
+```{python}
+get_mealplan_data(202)
+
+print(get_mealplan_data(202))
+```
+
+## 4. Add a column with fuzzy matching
+```{python}
+meat_pattern = r"\b(?:beef|chicken|pork|lamb|fish|salmon)\b"
+df["Is_Vegetarian"] = ~df["Name of Recipe"].str.contains(meat_pattern, flags=re.IGNORECASE, regex=True)
+```
+
+```{python}
+def get_mealplan_data(plan_number):
+    URL = f"https://tastesbetterfromscratch.com/meal-plan-{plan_number}/"
+    HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
+
+    response = requests.get(URL, headers=HEADERS)
+    soup = BeautifulSoup(response.content, "html.parser")
+
+    meal_plan = []
+    for p in soup.find_all("p", class_="has-text-align-left"):
+        strong = p.find("strong")
+        if not strong:
+            continue
+        day = strong.get_text(strip=True).replace(":", "")
+
+        a = p.find("a")
+        if not a:
+            continue
+        name = a.get_text(strip=True)
+        link = a["href"]
+
+        text = p.get_text(" ", strip=True)
+        match = re.search(r"\$([0-9]+)", text)
+        price = f"${match.group(1)}" if match else None #help from ChatGPT
+        
+        meal_plan.append({
+            "Day of the Week": day,
+            "Name of Recipe": name,
+            "Link to Recipe": link,
+            "Price of Recipe": price
+        })
+
+    df = pd.DataFrame(meal_plan)
+
+    url = "https://tasty.p.rapidapi.com/recipes/list"
+    headers = {
+        "X-RapidAPI-Key": "6ef3260e4emsh5ae76da5b7013f2p1b4950jsn638a3e15ec8a",
+        "X-RapidAPI-Host": "tasty.p.rapidapi.com"
+    }
+
+    results = []
+    for recipe in df["Name of Recipe"]:
+        q = {"from": "0", "size": "10", "q": recipe}
+        r = requests.get(url, headers=headers, params=q)
+
+        if "results" not in r.json():
+            continue
+
+        t = pd.json_normalize(r.json()["results"])
+
+        cols = ["name", "description", "nutrition.calories", "nutrition.protein", "recipes", "video_url"]
+        t = t[[c for c in cols if c in t.columns]] #help from ChatGPT
+
+        t["Search"] = recipe
+        results.append(t)
+
+    if results:
+        api_df = pd.concat(results, ignore_index=True)
+        final = df.merge(api_df, left_on="Name of Recipe", right_on="Search", how="left")
+    else:
+        final = df
+
+    meat_pattern = r"\b(?:beef|chicken|pork|lamb|fish|salmon)\b"
+    final["Is_Vegetarian"] = ~final["Name of Recipe"].str.contains(
+        meat_pattern, flags=re.IGNORECASE, regex=True
+    )
+
+    return final
+```
+
+```{python}
+meal202_data = get_mealplan_data(202)
+
+print(get_mealplan_data(202))
+```
+
+## 5. Analyze
+```{python}
+from plotnine import *
+```
+
+```{python}
+meal202_data_dropna = meal202_data.dropna(subset=["nutrition.calories", "nutrition.protein"])
+
+(ggplot(meal202_data_dropna, aes(x="nutrition.calories", y="nutrition.protein", fill="Is_Vegetarian", size=5))
+    + geom_point()  
+    + labs(
+        title="Nutrition Profile of Meals in Weekly Plan 202",
+        subtitle="Calories vs Protein",
+        x="Calories",
+        y="Protein (grams)",
+        fill="Is Vegetarian"
+    )
+    + theme_minimal()
+)
+```
