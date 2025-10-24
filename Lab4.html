@@ -2210,26 +2210,26 @@ vertical-align: -.125em;
 <p>https://github.com/daniellkwong/GSB544.git</p>
 <section id="data-from-unstructured-websites" class="level2">
 <h2 class="anchored" data-anchor-id="data-from-unstructured-websites">1. Data from unstructured websites</h2>
-<div id="680e2c37" class="cell" data-execution_count="1">
+<div id="4cae6fd0" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> bs4 <span class="im">import</span> BeautifulSoup</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="2c28f219" class="cell" data-execution_count="2">
+<div id="c2f80377" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>URL <span class="op">=</span> <span class="st">&quot;https://tastesbetterfromscratch.com/meal-plan-210/&quot;</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>HEADERS <span class="op">=</span> {<span class="st">&quot;User-Agent&quot;</span>: <span class="st">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64)&quot;</span>}</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> requests.get(URL, headers<span class="op">=</span>HEADERS)</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>soup <span class="op">=</span> BeautifulSoup(response.content, <span class="st">&quot;html.parser&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="a81cc399" class="cell" data-execution_count="3">
+<div id="4aa18e54" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(soup.find_all(<span class="st">&quot;p&quot;</span>, class_<span class="op">=</span><span class="st">&quot;has-text-align-left&quot;</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>5</code></pre>
 </div>
 </div>
-<div id="c2cbf8dc" class="cell" data-execution_count="4">
+<div id="d26190b9" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>meal_plan <span class="op">=</span> []</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> p <span class="kw">in</span> soup.find_all(<span class="st">&quot;p&quot;</span>, class_<span class="op">=</span><span class="st">&quot;has-text-align-left&quot;</span>):</span>
@@ -2277,7 +2277,7 @@ vertical-align: -.125em;
 </section>
 <section id="data-from-an-api" class="level2">
 <h2 class="anchored" data-anchor-id="data-from-an-api">2. Data from an API</h2>
-<div id="e984a1ca" class="cell" data-execution_count="5">
+<div id="450ad607" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>monday_recipe <span class="op">=</span> df.loc[df[<span class="st">&quot;Day of the Week&quot;</span>] <span class="op">==</span> <span class="st">&quot;Monday&quot;</span>, <span class="st">&quot;Name of Recipe&quot;</span>].iloc[<span class="dv">0</span>]</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">&quot;https://tasty.p.rapidapi.com/recipes/list&quot;</span></span>
@@ -2338,9 +2338,9 @@ vertical-align: -.125em;
 6  https://vid.tasty.co/output/209549/hls24_16263...  &gt;</code></pre>
 </div>
 </div>
-<div id="c74e439e" class="cell" data-execution_count="6">
+<div id="65e5db1b" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>tasty_df.columns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="19">
+<div class="cell-output cell-output-display" data-execution_count="32">
 <pre><code>Index([&#39;approved_at&#39;, &#39;aspect_ratio&#39;, &#39;beauty_url&#39;, &#39;brand&#39;, &#39;brand_id&#39;,
        &#39;buzz_id&#39;, &#39;canonical_id&#39;, &#39;compilations&#39;, &#39;cook_time_minutes&#39;,
        &#39;country&#39;, &#39;created_at&#39;, &#39;credits&#39;, &#39;description&#39;, &#39;draft_status&#39;,
@@ -2369,7 +2369,7 @@ vertical-align: -.125em;
 </section>
 <section id="automate-it" class="level2">
 <h2 class="anchored" data-anchor-id="automate-it">3. Automate it</h2>
-<div id="58bd04d4" class="cell" data-execution_count="7">
+<div id="122bfc79" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_mealplan_data(plan_number):</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    URL <span class="op">=</span> <span class="ss">f&quot;https://tastesbetterfromscratch.com/meal-plan-</span><span class="sc">{</span>plan_number<span class="sc">}</span><span class="ss">/&quot;</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    HEADERS <span class="op">=</span> {<span class="st">&quot;User-Agent&quot;</span>: <span class="st">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64)&quot;</span>}</span>
@@ -2432,7 +2432,7 @@ vertical-align: -.125em;
 <span id="cb11-60"><a href="#cb11-60" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
 <span id="cb11-61"><a href="#cb11-61" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="850ec260" class="cell" data-execution_count="8">
+<div id="1f6e9103" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>get_mealplan_data(<span class="dv">202</span>)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(get_mealplan_data(<span class="dv">202</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2678,86 +2678,89 @@ vertical-align: -.125em;
 37  [{&#39;_id&#39;: 3482, &#39;_index&#39;: &#39;recipes-202411251722...  </code></pre>
 </div>
 </div>
+<div id="c3db0db1" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>df1 <span class="op">=</span> get_mealplan_data(<span class="dv">202</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 <section id="add-a-column-with-fuzzy-matching" class="level2">
 <h2 class="anchored" data-anchor-id="add-a-column-with-fuzzy-matching">4. Add a column with fuzzy matching</h2>
-<div id="37762541" class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>meat_pattern <span class="op">=</span> <span class="vs">r&quot;</span><span class="dv">\b</span>(?:<span class="vs">beef</span><span class="cf">|</span><span class="vs">chicken</span><span class="cf">|</span><span class="vs">pork</span><span class="cf">|</span><span class="vs">lamb</span><span class="cf">|</span><span class="vs">fish</span><span class="cf">|</span><span class="vs">salmon</span>)<span class="dv">\b</span><span class="vs">&quot;</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&quot;Is_Vegetarian&quot;</span>] <span class="op">=</span> <span class="op">~</span>df[<span class="st">&quot;Name of Recipe&quot;</span>].<span class="bu">str</span>.contains(meat_pattern, flags<span class="op">=</span>re.IGNORECASE, regex<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="5631ab0a" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>meat_pattern <span class="op">=</span> <span class="vs">r&quot;</span><span class="dv">\b</span>(?:<span class="vs">beef</span><span class="cf">|</span><span class="vs">chicken</span><span class="cf">|</span><span class="vs">pork</span><span class="cf">|</span><span class="vs">lamb</span><span class="cf">|</span><span class="vs">fish</span><span class="cf">|</span><span class="vs">salmon</span>)<span class="dv">\b</span><span class="vs">&quot;</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&quot;Is_Vegetarian&quot;</span>] <span class="op">=</span> <span class="op">~</span>df[<span class="st">&quot;Name of Recipe&quot;</span>].<span class="bu">str</span>.contains(meat_pattern, flags<span class="op">=</span>re.IGNORECASE, regex<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="948dc265" class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_mealplan_data(plan_number):</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    URL <span class="op">=</span> <span class="ss">f&quot;https://tastesbetterfromscratch.com/meal-plan-</span><span class="sc">{</span>plan_number<span class="sc">}</span><span class="ss">/&quot;</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    HEADERS <span class="op">=</span> {<span class="st">&quot;User-Agent&quot;</span>: <span class="st">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64)&quot;</span>}</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    response <span class="op">=</span> requests.get(URL, headers<span class="op">=</span>HEADERS)</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    soup <span class="op">=</span> BeautifulSoup(response.content, <span class="st">&quot;html.parser&quot;</span>)</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    meal_plan <span class="op">=</span> []</span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> p <span class="kw">in</span> soup.find_all(<span class="st">&quot;p&quot;</span>, class_<span class="op">=</span><span class="st">&quot;has-text-align-left&quot;</span>):</span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>        strong <span class="op">=</span> p.find(<span class="st">&quot;strong&quot;</span>)</span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> strong:</span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>        day <span class="op">=</span> strong.get_text(strip<span class="op">=</span><span class="va">True</span>).replace(<span class="st">&quot;:&quot;</span>, <span class="st">&quot;&quot;</span>)</span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>        a <span class="op">=</span> p.find(<span class="st">&quot;a&quot;</span>)</span>
-<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> a:</span>
-<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
-<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>        name <span class="op">=</span> a.get_text(strip<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>        link <span class="op">=</span> a[<span class="st">&quot;href&quot;</span>]</span>
-<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>        text <span class="op">=</span> p.get_text(<span class="st">&quot; &quot;</span>, strip<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>        match <span class="op">=</span> re.search(<span class="vs">r&quot;</span><span class="ch">\$</span><span class="kw">(</span><span class="pp">[0-9]</span><span class="op">+</span><span class="kw">)</span><span class="vs">&quot;</span>, text)</span>
-<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>        price <span class="op">=</span> <span class="ss">f&quot;$</span><span class="sc">{</span>match<span class="sc">.</span>group(<span class="dv">1</span>)<span class="sc">}</span><span class="ss">&quot;</span> <span class="cf">if</span> match <span class="cf">else</span> <span class="va">None</span> <span class="co">#help from ChatGPT</span></span>
-<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>        meal_plan.append({</span>
-<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;Day of the Week&quot;</span>: day,</span>
-<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;Name of Recipe&quot;</span>: name,</span>
-<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;Link to Recipe&quot;</span>: link,</span>
-<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;Price of Recipe&quot;</span>: price</span>
-<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a>        })</span>
-<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.DataFrame(meal_plan)</span>
-<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a>    url <span class="op">=</span> <span class="st">&quot;https://tasty.p.rapidapi.com/recipes/list&quot;</span></span>
-<span id="cb15-35"><a href="#cb15-35" aria-hidden="true" tabindex="-1"></a>    headers <span class="op">=</span> {</span>
-<span id="cb15-36"><a href="#cb15-36" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;X-RapidAPI-Key&quot;</span>: <span class="st">&quot;6ef3260e4emsh5ae76da5b7013f2p1b4950jsn638a3e15ec8a&quot;</span>,</span>
-<span id="cb15-37"><a href="#cb15-37" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;X-RapidAPI-Host&quot;</span>: <span class="st">&quot;tasty.p.rapidapi.com&quot;</span></span>
-<span id="cb15-38"><a href="#cb15-38" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb15-39"><a href="#cb15-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-40"><a href="#cb15-40" aria-hidden="true" tabindex="-1"></a>    results <span class="op">=</span> []</span>
-<span id="cb15-41"><a href="#cb15-41" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> recipe <span class="kw">in</span> df[<span class="st">&quot;Name of Recipe&quot;</span>]:</span>
-<span id="cb15-42"><a href="#cb15-42" aria-hidden="true" tabindex="-1"></a>        q <span class="op">=</span> {<span class="st">&quot;from&quot;</span>: <span class="st">&quot;0&quot;</span>, <span class="st">&quot;size&quot;</span>: <span class="st">&quot;10&quot;</span>, <span class="st">&quot;q&quot;</span>: recipe}</span>
-<span id="cb15-43"><a href="#cb15-43" aria-hidden="true" tabindex="-1"></a>        r <span class="op">=</span> requests.get(url, headers<span class="op">=</span>headers, params<span class="op">=</span>q)</span>
-<span id="cb15-44"><a href="#cb15-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-45"><a href="#cb15-45" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="st">&quot;results&quot;</span> <span class="kw">not</span> <span class="kw">in</span> r.json():</span>
-<span id="cb15-46"><a href="#cb15-46" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
-<span id="cb15-47"><a href="#cb15-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-48"><a href="#cb15-48" aria-hidden="true" tabindex="-1"></a>        t <span class="op">=</span> pd.json_normalize(r.json()[<span class="st">&quot;results&quot;</span>])</span>
-<span id="cb15-49"><a href="#cb15-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-50"><a href="#cb15-50" aria-hidden="true" tabindex="-1"></a>        cols <span class="op">=</span> [<span class="st">&quot;name&quot;</span>, <span class="st">&quot;description&quot;</span>, <span class="st">&quot;nutrition.calories&quot;</span>, <span class="st">&quot;nutrition.protein&quot;</span>, <span class="st">&quot;recipes&quot;</span>, <span class="st">&quot;video_url&quot;</span>]</span>
-<span id="cb15-51"><a href="#cb15-51" aria-hidden="true" tabindex="-1"></a>        t <span class="op">=</span> t[[c <span class="cf">for</span> c <span class="kw">in</span> cols <span class="cf">if</span> c <span class="kw">in</span> t.columns]] <span class="co">#help from ChatGPT</span></span>
-<span id="cb15-52"><a href="#cb15-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-53"><a href="#cb15-53" aria-hidden="true" tabindex="-1"></a>        t[<span class="st">&quot;Search&quot;</span>] <span class="op">=</span> recipe</span>
-<span id="cb15-54"><a href="#cb15-54" aria-hidden="true" tabindex="-1"></a>        results.append(t)</span>
-<span id="cb15-55"><a href="#cb15-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-56"><a href="#cb15-56" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> results:</span>
-<span id="cb15-57"><a href="#cb15-57" aria-hidden="true" tabindex="-1"></a>        api_df <span class="op">=</span> pd.concat(results, ignore_index<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb15-58"><a href="#cb15-58" aria-hidden="true" tabindex="-1"></a>        final <span class="op">=</span> df.merge(api_df, left_on<span class="op">=</span><span class="st">&quot;Name of Recipe&quot;</span>, right_on<span class="op">=</span><span class="st">&quot;Search&quot;</span>, how<span class="op">=</span><span class="st">&quot;left&quot;</span>)</span>
-<span id="cb15-59"><a href="#cb15-59" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb15-60"><a href="#cb15-60" aria-hidden="true" tabindex="-1"></a>        final <span class="op">=</span> df</span>
-<span id="cb15-61"><a href="#cb15-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-62"><a href="#cb15-62" aria-hidden="true" tabindex="-1"></a>    meat_pattern <span class="op">=</span> <span class="vs">r&quot;</span><span class="dv">\b</span>(?:<span class="vs">beef</span><span class="cf">|</span><span class="vs">chicken</span><span class="cf">|</span><span class="vs">pork</span><span class="cf">|</span><span class="vs">lamb</span><span class="cf">|</span><span class="vs">fish</span><span class="cf">|</span><span class="vs">salmon</span>)<span class="dv">\b</span><span class="vs">&quot;</span></span>
-<span id="cb15-63"><a href="#cb15-63" aria-hidden="true" tabindex="-1"></a>    final[<span class="st">&quot;Is_Vegetarian&quot;</span>] <span class="op">=</span> <span class="op">~</span>final[<span class="st">&quot;Name of Recipe&quot;</span>].<span class="bu">str</span>.contains(</span>
-<span id="cb15-64"><a href="#cb15-64" aria-hidden="true" tabindex="-1"></a>        meat_pattern, flags<span class="op">=</span>re.IGNORECASE, regex<span class="op">=</span><span class="va">True</span></span>
-<span id="cb15-65"><a href="#cb15-65" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb15-66"><a href="#cb15-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-67"><a href="#cb15-67" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> final</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="13f44c42" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_mealplan_data(plan_number):</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    URL <span class="op">=</span> <span class="ss">f&quot;https://tastesbetterfromscratch.com/meal-plan-</span><span class="sc">{</span>plan_number<span class="sc">}</span><span class="ss">/&quot;</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    HEADERS <span class="op">=</span> {<span class="st">&quot;User-Agent&quot;</span>: <span class="st">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64)&quot;</span>}</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    response <span class="op">=</span> requests.get(URL, headers<span class="op">=</span>HEADERS)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    soup <span class="op">=</span> BeautifulSoup(response.content, <span class="st">&quot;html.parser&quot;</span>)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    meal_plan <span class="op">=</span> []</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> p <span class="kw">in</span> soup.find_all(<span class="st">&quot;p&quot;</span>, class_<span class="op">=</span><span class="st">&quot;has-text-align-left&quot;</span>):</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>        strong <span class="op">=</span> p.find(<span class="st">&quot;strong&quot;</span>)</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> strong:</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>        day <span class="op">=</span> strong.get_text(strip<span class="op">=</span><span class="va">True</span>).replace(<span class="st">&quot;:&quot;</span>, <span class="st">&quot;&quot;</span>)</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>        a <span class="op">=</span> p.find(<span class="st">&quot;a&quot;</span>)</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> a:</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>        name <span class="op">=</span> a.get_text(strip<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>        link <span class="op">=</span> a[<span class="st">&quot;href&quot;</span>]</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>        text <span class="op">=</span> p.get_text(<span class="st">&quot; &quot;</span>, strip<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>        match <span class="op">=</span> re.search(<span class="vs">r&quot;</span><span class="ch">\$</span><span class="kw">(</span><span class="pp">[0-9]</span><span class="op">+</span><span class="kw">)</span><span class="vs">&quot;</span>, text)</span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>        price <span class="op">=</span> <span class="ss">f&quot;$</span><span class="sc">{</span>match<span class="sc">.</span>group(<span class="dv">1</span>)<span class="sc">}</span><span class="ss">&quot;</span> <span class="cf">if</span> match <span class="cf">else</span> <span class="va">None</span> <span class="co">#help from ChatGPT</span></span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>        meal_plan.append({</span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;Day of the Week&quot;</span>: day,</span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;Name of Recipe&quot;</span>: name,</span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;Link to Recipe&quot;</span>: link,</span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;Price of Recipe&quot;</span>: price</span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a>        })</span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.DataFrame(meal_plan)</span>
+<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a>    url <span class="op">=</span> <span class="st">&quot;https://tasty.p.rapidapi.com/recipes/list&quot;</span></span>
+<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a>    headers <span class="op">=</span> {</span>
+<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;X-RapidAPI-Key&quot;</span>: <span class="st">&quot;6ef3260e4emsh5ae76da5b7013f2p1b4950jsn638a3e15ec8a&quot;</span>,</span>
+<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;X-RapidAPI-Host&quot;</span>: <span class="st">&quot;tasty.p.rapidapi.com&quot;</span></span>
+<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a>    results <span class="op">=</span> []</span>
+<span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> recipe <span class="kw">in</span> df[<span class="st">&quot;Name of Recipe&quot;</span>]:</span>
+<span id="cb16-42"><a href="#cb16-42" aria-hidden="true" tabindex="-1"></a>        q <span class="op">=</span> {<span class="st">&quot;from&quot;</span>: <span class="st">&quot;0&quot;</span>, <span class="st">&quot;size&quot;</span>: <span class="st">&quot;10&quot;</span>, <span class="st">&quot;q&quot;</span>: recipe}</span>
+<span id="cb16-43"><a href="#cb16-43" aria-hidden="true" tabindex="-1"></a>        r <span class="op">=</span> requests.get(url, headers<span class="op">=</span>headers, params<span class="op">=</span>q)</span>
+<span id="cb16-44"><a href="#cb16-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-45"><a href="#cb16-45" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="st">&quot;results&quot;</span> <span class="kw">not</span> <span class="kw">in</span> r.json():</span>
+<span id="cb16-46"><a href="#cb16-46" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
+<span id="cb16-47"><a href="#cb16-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-48"><a href="#cb16-48" aria-hidden="true" tabindex="-1"></a>        t <span class="op">=</span> pd.json_normalize(r.json()[<span class="st">&quot;results&quot;</span>])</span>
+<span id="cb16-49"><a href="#cb16-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-50"><a href="#cb16-50" aria-hidden="true" tabindex="-1"></a>        cols <span class="op">=</span> [<span class="st">&quot;name&quot;</span>, <span class="st">&quot;description&quot;</span>, <span class="st">&quot;nutrition.calories&quot;</span>, <span class="st">&quot;nutrition.protein&quot;</span>, <span class="st">&quot;recipes&quot;</span>, <span class="st">&quot;video_url&quot;</span>]</span>
+<span id="cb16-51"><a href="#cb16-51" aria-hidden="true" tabindex="-1"></a>        t <span class="op">=</span> t[[c <span class="cf">for</span> c <span class="kw">in</span> cols <span class="cf">if</span> c <span class="kw">in</span> t.columns]] <span class="co">#help from ChatGPT</span></span>
+<span id="cb16-52"><a href="#cb16-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-53"><a href="#cb16-53" aria-hidden="true" tabindex="-1"></a>        t[<span class="st">&quot;Search&quot;</span>] <span class="op">=</span> recipe</span>
+<span id="cb16-54"><a href="#cb16-54" aria-hidden="true" tabindex="-1"></a>        results.append(t)</span>
+<span id="cb16-55"><a href="#cb16-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-56"><a href="#cb16-56" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> results:</span>
+<span id="cb16-57"><a href="#cb16-57" aria-hidden="true" tabindex="-1"></a>        api_df <span class="op">=</span> pd.concat(results, ignore_index<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb16-58"><a href="#cb16-58" aria-hidden="true" tabindex="-1"></a>        final <span class="op">=</span> df.merge(api_df, left_on<span class="op">=</span><span class="st">&quot;Name of Recipe&quot;</span>, right_on<span class="op">=</span><span class="st">&quot;Search&quot;</span>, how<span class="op">=</span><span class="st">&quot;left&quot;</span>)</span>
+<span id="cb16-59"><a href="#cb16-59" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb16-60"><a href="#cb16-60" aria-hidden="true" tabindex="-1"></a>        final <span class="op">=</span> df</span>
+<span id="cb16-61"><a href="#cb16-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-62"><a href="#cb16-62" aria-hidden="true" tabindex="-1"></a>    meat_pattern <span class="op">=</span> <span class="vs">r&quot;</span><span class="dv">\b</span>(?:<span class="vs">beef</span><span class="cf">|</span><span class="vs">chicken</span><span class="cf">|</span><span class="vs">pork</span><span class="cf">|</span><span class="vs">lamb</span><span class="cf">|</span><span class="vs">fish</span><span class="cf">|</span><span class="vs">salmon</span>)<span class="dv">\b</span><span class="vs">&quot;</span></span>
+<span id="cb16-63"><a href="#cb16-63" aria-hidden="true" tabindex="-1"></a>    final[<span class="st">&quot;Is_Vegetarian&quot;</span>] <span class="op">=</span> <span class="op">~</span>final[<span class="st">&quot;Name of Recipe&quot;</span>].<span class="bu">str</span>.contains(</span>
+<span id="cb16-64"><a href="#cb16-64" aria-hidden="true" tabindex="-1"></a>        meat_pattern, flags<span class="op">=</span>re.IGNORECASE, regex<span class="op">=</span><span class="va">True</span></span>
+<span id="cb16-65"><a href="#cb16-65" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb16-66"><a href="#cb16-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-67"><a href="#cb16-67" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> final</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="071665b7" class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>meal202_data <span class="op">=</span> get_mealplan_data(<span class="dv">202</span>)</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(get_mealplan_data(<span class="dv">202</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="190d4b3c" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>meal202_data <span class="op">=</span> get_mealplan_data(<span class="dv">202</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(get_mealplan_data(<span class="dv">202</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   Day of the Week              Name of Recipe  \
 0           Monday               Chicken Divan   
@@ -3003,26 +3006,26 @@ vertical-align: -.125em;
 </section>
 <section id="analyze" class="level2">
 <h2 class="anchored" data-anchor-id="analyze">5. Analyze</h2>
-<div id="96820f33" class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> plotnine <span class="im">import</span> <span class="op">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="4c75aaef" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> plotnine <span class="im">import</span> <span class="op">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="382f16f1" class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>meal202_data_dropna <span class="op">=</span> meal202_data.dropna(subset<span class="op">=</span>[<span class="st">&quot;nutrition.calories&quot;</span>, <span class="st">&quot;nutrition.protein&quot;</span>])</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>(ggplot(meal202_data_dropna, aes(x<span class="op">=</span><span class="st">&quot;nutrition.calories&quot;</span>, y<span class="op">=</span><span class="st">&quot;nutrition.protein&quot;</span>, fill<span class="op">=</span><span class="st">&quot;Is_Vegetarian&quot;</span>, size<span class="op">=</span><span class="dv">2</span>))</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> geom_point()  </span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> scale_x_continuous(breaks<span class="op">=</span><span class="bu">range</span>(<span class="dv">0</span>, <span class="dv">1700</span>, <span class="dv">200</span>), limits<span class="op">=</span>(<span class="dv">0</span>, <span class="dv">1700</span>))</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> scale_y_continuous(breaks<span class="op">=</span><span class="bu">range</span>(<span class="dv">0</span>, <span class="dv">120</span>, <span class="dv">10</span>), limits<span class="op">=</span>(<span class="dv">0</span>, <span class="dv">120</span>))</span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> labs(</span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>        title<span class="op">=</span><span class="st">&quot;Nutrition Profile of Meals in Weekly Plan 202&quot;</span>,</span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>        subtitle<span class="op">=</span><span class="st">&quot;Calories vs Protein&quot;</span>,</span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>        x<span class="op">=</span><span class="st">&quot;Calories&quot;</span>,</span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>        y<span class="op">=</span><span class="st">&quot;Protein (grams)&quot;</span>,</span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>        fill<span class="op">=</span><span class="st">&quot;Is Vegetarian&quot;</span></span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> theme_minimal()</span>
-<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> guides(fill<span class="op">=</span>guide_legend(override_aes<span class="op">=</span>{<span class="st">&quot;size&quot;</span>: <span class="dv">6</span>}), size<span class="op">=</span><span class="st">&quot;none&quot;</span>) <span class="co">#help from ChatGPT</span></span>
-<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="2d4f53a3" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>meal202_data_dropna <span class="op">=</span> meal202_data.dropna(subset<span class="op">=</span>[<span class="st">&quot;nutrition.calories&quot;</span>, <span class="st">&quot;nutrition.protein&quot;</span>])</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>(ggplot(meal202_data_dropna, aes(x<span class="op">=</span><span class="st">&quot;nutrition.calories&quot;</span>, y<span class="op">=</span><span class="st">&quot;nutrition.protein&quot;</span>, fill<span class="op">=</span><span class="st">&quot;Is_Vegetarian&quot;</span>, size<span class="op">=</span><span class="dv">2</span>))</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> geom_point()  </span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> scale_x_continuous(breaks<span class="op">=</span><span class="bu">range</span>(<span class="dv">0</span>, <span class="dv">1700</span>, <span class="dv">200</span>), limits<span class="op">=</span>(<span class="dv">0</span>, <span class="dv">1700</span>))</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> scale_y_continuous(breaks<span class="op">=</span><span class="bu">range</span>(<span class="dv">0</span>, <span class="dv">120</span>, <span class="dv">10</span>), limits<span class="op">=</span>(<span class="dv">0</span>, <span class="dv">120</span>))</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> labs(</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>        title<span class="op">=</span><span class="st">&quot;Nutrition Profile of Meals in Weekly Plan 202&quot;</span>,</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>        subtitle<span class="op">=</span><span class="st">&quot;Calories vs Protein&quot;</span>,</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>        x<span class="op">=</span><span class="st">&quot;Calories&quot;</span>,</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>        y<span class="op">=</span><span class="st">&quot;Protein (grams)&quot;</span>,</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>        fill<span class="op">=</span><span class="st">&quot;Is Vegetarian&quot;</span></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> theme_minimal()</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> guides(fill<span class="op">=</span>guide_legend(override_aes<span class="op">=</span>{<span class="st">&quot;size&quot;</span>: <span class="dv">6</span>}), size<span class="op">=</span><span class="st">&quot;none&quot;</span>) <span class="co">#help from ChatGPT</span></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">

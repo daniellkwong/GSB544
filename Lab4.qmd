@@ -158,6 +158,10 @@ get_mealplan_data(202)
 print(get_mealplan_data(202))
 ```
 
+```{python}
+df1 = get_mealplan_data(202)
+```
+
 ## 4. Add a column with fuzzy matching
 ```{python}
 meat_pattern = r"\b(?:beef|chicken|pork|lamb|fish|salmon)\b"
