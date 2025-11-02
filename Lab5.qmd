@@ -1,0 +1,406 @@
+---
+title: "Lab5 Daniel Kwong"
+format: html
+embed-resources: true
+toc: true
+---
+https://github.com/daniellkwong/GSB544.git 
+
+
+## Part One: Data Exploration
+```{python}
+import pandas as pd
+
+myData = pd.read_csv("https://www.dropbox.com/s/bocjjyo1ehr5auz/insurance_costs_1.csv?dl=1")
+
+myData.head()
+```
+
+```{python}
+myDataDummies = pd.get_dummies(myData, columns = ["region", "sex"], drop_first=True)
+cols = ["region_northwest", "region_southeast", "region_southwest", "sex_male"]
+myDataDummies[cols] = myDataDummies[cols].astype(int)
+myDataDummies["smoker"] = myDataDummies["smoker"].map({"yes": 1, "no": 0})
+
+myDataDummies = myDataDummies.dropna()
+
+myDataDummies.head()
+```
+
+```{python}
+print(f"The unique values of the region column are {myData["region"].unique()}")
+print(f"The mean age is {myData["age"].mean()}")
+print(f"The mean BMI is {myData["bmi"].mean()}")
+print(f"The mean medical cost is {myData["charges"].mean()} dollars")
+```
+
+```{python}
+from plotnine import *
+
+(ggplot(myDataDummies, aes(x="age", y="charges"))
+ + geom_point(alpha=0.6)
+ + labs(title="Charges vs. Age",
+        x="Age",
+        y="Charges")
+ + scale_x_continuous(
+       limits=(myDataDummies["age"].min(), myDataDummies["age"].max()),
+       breaks=range(int(myDataDummies["age"].min()),
+                    int(myDataDummies["age"].max()) + 1, 5))
+ + scale_y_continuous(
+       limits=(myDataDummies["charges"].min(), myDataDummies["charges"].max()),
+       breaks=range(0, int(myDataDummies["charges"].max()) + 1, 5000)))
+```
+
+The scatterplot shows that insurance charges tend to increase with age. Older individuals generally have higher charges, while younger people have lower costs. This suggests that age is an important factor in determining insurance expenses.
+
+```{python}
+(ggplot(myDataDummies, aes(x="bmi", y="charges"))
+ + geom_point(alpha=0.6)
+ + geom_smooth(method="lm", color="black")
+ + labs(title="Charges vs. BMI",
+        x="BMI",
+        y="Charges")
+ + scale_x_continuous(
+       limits=(myDataDummies["bmi"].min(), myDataDummies["bmi"].max()),
+       breaks=range(int(myDataDummies["bmi"].min()),
+                    int(myDataDummies["bmi"].max()) + 1, 2))
+ + scale_y_continuous(
+       limits=(myDataDummies["charges"].min(), myDataDummies["charges"].max()),
+       breaks=range(0, int(myDataDummies["charges"].max()) + 1, 5000)))
+```
+
+The scatterplot shows a positive relationship between BMI and insurance charges. People with higher BMI tend to have higher charges, although there is a lot of variance. This suggests that BMI may be related to insurance costs, but other factors could play a role too.
+
+```{python}
+(ggplot(myData, aes(x="smoker", y="charges", fill="smoker"))
+ + geom_boxplot()
+ + labs(title="Charges by Smoker Status",
+        x="Smoker",
+        y="Charges")
+ + scale_y_continuous(
+       limits=(myDataDummies["charges"].min(), myDataDummies["charges"].max()),
+       breaks=range(0, int(myDataDummies["charges"].max()) + 1, 5000)))
+```
+
+The boxplot shows that smokers have much higher insurance charges than non-smokers. Their costs also vary more, while non-smokers usually have lower and more consistent charges. This suggests smoking greatly increases insurance costs.
+
+## Part Two: Simple Linear Models
+```{python}
+from sklearn.linear_model import LinearRegression
+
+X1 = myDataDummies[["age"]]
+y1 = myDataDummies["charges"]
+
+model1 = LinearRegression()
+model1.fit(X1, y1)
+
+print("Intercept:", model1.intercept_)
+print("Slope:", model1.coef_)
+print("R-squared:", model1.score(X1, y1))
+```
+
+The model shows that insurance charges increase by about 228.80 for each additional year of age. The intercept of 3,611.76 represents the estimated charge when age is zero. The R squared value of 0.0994 means that the model explains about 9.94% of the variation in insurance charges. This shows that age has some effect on the charges, but other factors are also important in predicting charges.
+
+```{python}
+X2 = myDataDummies[["age", "sex_male"]]
+y2 = myDataDummies["charges"]
+
+model2 = LinearRegression()
+model2.fit(X2, y2)
+
+print("Intercept:", model2.intercept_)
+print("Slope:", model2.coef_)
+print("R-squared:", model2.score(X2, y2))
+```
+
+The model shows that insurance charges increase by about 228.43 for each additional year of age, and being male adds about 649.83 to the predicted charges. The intercept of 3,315.33 represents the estimated charge when age and the male variable are both zero. The R squared value of 0.1001 means the model explains about 10.01% of the variation in insurance charges. This shows that age and sex have some effect on the charges, but other factors are still important in predicting charges.
+
+```{python}
+X3 = myDataDummies[["age", "smoker"]]
+y3 = myDataDummies["charges"]
+
+model3 = LinearRegression()
+model3.fit(X3, y3)
+
+print("Intercept:", model3.intercept_)
+print("Slope:", model3.coef_)
+print("R-squared:", model3.score(X3, y3))
+```
+
+The model shows that insurance charges increase by about 253.15 for each additional year of age. Being a smoker adds about 24,048.87 to the predicted charges compared to non-smokers. The intercept of –2,166.85 represents the estimated charge when age and the smoker variable are both zero. The R squared value of 0.7604 means the model explains about 76.04% of the variation in insurance charges. This shows that age and smoking status together provide a strong model for predicting variation in insurance charges.
+
+```{python}
+from sklearn.metrics import mean_squared_error
+
+y2_pred = model2.predict(X2)
+
+mse2 = mean_squared_error(y2, y2_pred)
+r2_2 = model2.score(X2, y2)
+
+print("Intercept:", model2.intercept_)
+print("Slope:", model2.coef_)
+print("R-squared:", r2_2)
+print("MSE:", mse2)
+
+y3_pred = model3.predict(X3)
+
+mse3 = mean_squared_error(y3, y3_pred)
+r2_3 = model3.score(X3, y3)
+
+print("Intercept:", model3.intercept_)
+print("Slope:", model3.coef_)
+print("R-squared:", r2_3)
+print("MSE:", mse3)
+```
+
+The Q3 model fits the data much better than the Q2 model. It has a higher R-squared value (0.76 vs. 0.10) and a lower MSE (3,371,983 vs. 12,663,939). This means the Q3 model explains more of the variation in insurance charges and predicts them more accurately. 
+
+## Part Three: Multiple Linear Models
+```{python}
+y1_pred = model1.predict(X1)
+
+mse1 = mean_squared_error(y1, y1_pred)
+r2_1 = model1.score(X1, y1)
+
+print("Intercept:", model1.intercept_)
+print("Slope:", model1.coef_)
+print("R-squared:", r2_1)
+print("MSE:", mse1)
+
+X4 = myDataDummies[["age", "bmi"]]
+y4 = myDataDummies["charges"]
+
+model4 = LinearRegression()
+model4.fit(X4, y4)
+
+y4_pred = model4.predict(X4)
+
+mse4 = mean_squared_error(y4, y4_pred)
+r2_4 = model4.score(X4, y4)
+
+print("Intercept:", model4.intercept_)
+print("Slope:", model4.coef_)
+print("R-squared:", r2_4)
+print("MSE:", mse4)
+```
+
+The model with age and BMI has an intercept of –4627.53, with slopes of 216.30 for age and 283.20 for BMI. Its R squared is 0.12032, and the MSE is 123,792,439.58. Compared to the age only model (R squared 0.09938, MSE 126,739,267.91), it fits slightly better and predicts a little more accurately.
+
+```{python}
+print("Intercept:", model1.intercept_)
+print("Slope:", model1.coef_)
+print("R-squared:", r2_1)
+print("MSE:", mse1)
+
+myDataDummies["age_sq"] = myDataDummies["age"] ** 2
+
+X5 = myDataDummies[["age", "age_sq"]]
+y5 = myDataDummies["charges"]
+
+model5 = LinearRegression()
+model5.fit(X5, y5)
+
+y5_pred = model5.predict(X5)
+
+mse5 = mean_squared_error(y5, y5_pred)
+r2_5 = model5.score(X5, y5)
+
+print("Intercept:", model5.intercept_)
+print("Slope:", model5.coef_)
+print("R-squared:", r2_5)
+print("MSE:", mse5)
+```
+
+The model with age and age squared has an R squared of 0.09959 and an MSE of 126,710,293.81. These values are almost the same as the age-only model (R squared 0.09938, MSE 126,739,267.91). This means adding age squared does not improve the model.
+
+```{python}
+print("Intercept:", model1.intercept_)
+print("Slope:", model1.coef_)
+print("R-squared:", r2_1)
+print("MSE:", mse1)
+
+myDataDummies["age_cube"] = myDataDummies["age"] ** 3
+myDataDummies["age_4"] = myDataDummies["age"] ** 4
+
+X_poly4 = myDataDummies[["age", "age_sq", "age_cube", "age_4"]]
+y_poly4 = myDataDummies["charges"]
+
+model_poly4 = LinearRegression()
+model_poly4.fit(X_poly4, y_poly4)
+
+y_poly4_pred = model_poly4.predict(X_poly4)
+mse_poly4 = mean_squared_error(y_poly4, y_poly4_pred)
+r2_poly4 = model_poly4.score(X_poly4, y_poly4)
+
+print("Intercept:", model_poly4.intercept_)
+print("Coefficients:", model_poly4.coef_)
+print("R-squared:", r2_poly4)
+print("MSE:", mse_poly4)
+```
+
+The polynomial model of degree 4 has an R squared of 0.10783 and an MSE of 126,710,293.80. Compared to the age only model (R-squared 0.09938, MSE 126,739,267.91), the two models fit practically the same.
+
+```{python}
+print("Intercept:", model1.intercept_)
+print("Slope:", model1.coef_)
+print("R-squared:", r2_1)
+print("MSE:", mse1)
+
+myDataDummies["age_5"] = myDataDummies["age"] ** 5
+myDataDummies["age_6"] = myDataDummies["age"] ** 6
+myDataDummies["age_7"] = myDataDummies["age"] ** 7
+myDataDummies["age_8"] = myDataDummies["age"] ** 8
+myDataDummies["age_9"] = myDataDummies["age"] ** 9
+myDataDummies["age_10"] = myDataDummies["age"] ** 10
+myDataDummies["age_11"] = myDataDummies["age"] ** 11
+myDataDummies["age_12"] = myDataDummies["age"] ** 12
+
+X12 = myDataDummies[[
+    "age", "age_sq", "age_cube", "age_4", "age_5", "age_6",
+    "age_7", "age_8", "age_9", "age_10", "age_11", "age_12"
+]]
+y12 = myDataDummies["charges"]
+
+model12 = LinearRegression()
+model12.fit(X12, y12)
+
+y12_pred = model12.predict(X12)
+mse12 = mean_squared_error(y12, y12_pred)
+r2_12 = model12.score(X12, y12)
+
+print("Intercept:", model12.intercept_)
+print("Coefficients:", model12.coef_)
+print("R-squared:", r2_12)
+print("MSE:", mse12)
+```
+
+The polynomial model of degree 12 has an R squared of 0.10909 and an MSE of 125,373,053.69. Compared to the age-only model (R squared 0.09938, MSE 126,739,267.91), the polynomial model fits only slightly better and predicts a little more accurately. 
+
+According to MSE and R squared, the model with age and BMI as predictor variables the best so far. That model has an R squared of 0.12032, and a MSE of 123,792,439.58. This is the highest R squared and lowest MSE so far. However, I do not think that this is the best possible model, since the R squared is still very small, and the MSE is still very large. 
+
+```{python}
+import numpy as np
+
+age_range = np.linspace(myDataDummies["age"].min(), myDataDummies["age"].max(), 300)
+pred_data = pd.DataFrame({"age": age_range})
+pred_data["age_sq"] = pred_data["age"] ** 2
+pred_data["age_cube"] = pred_data["age"] ** 3
+pred_data["age_4"] = pred_data["age"] ** 4
+pred_data["age_5"] = pred_data["age"] ** 5
+pred_data["age_6"] = pred_data["age"] ** 6
+pred_data["age_7"] = pred_data["age"] ** 7
+pred_data["age_8"] = pred_data["age"] ** 8
+pred_data["age_9"] = pred_data["age"] ** 9
+pred_data["age_10"] = pred_data["age"] ** 10
+pred_data["age_11"] = pred_data["age"] ** 11
+pred_data["age_12"] = pred_data["age"] ** 12
+
+pred_data["predicted_charges"] = model12.predict(pred_data[[
+    "age", "age_sq", "age_cube", "age_4", "age_5", "age_6",
+    "age_7", "age_8", "age_9", "age_10", "age_11", "age_12"
+]])
+
+(ggplot(myDataDummies, aes(x="age", y="charges"))
+ + geom_point(alpha=0.6)
+ + geom_line(pred_data, aes(x="age", y="predicted_charges"), color="red", size=1)
+ + labs(title="age^12 Charges vs Age",
+        x="Age",
+        y="Charges"))
+```
+
+## Part Four: New data
+```{python}
+myData2 = pd.read_csv("https://www.dropbox.com/s/sky86agc4s8c6qe/insurance_costs_2.csv?dl=1")
+
+myData2.head()
+```
+
+```{python}
+myDataDummies2 = pd.get_dummies(myData2, columns = ["region", "sex"], drop_first=True)
+cols = ["region_northwest", "region_southeast", "region_southwest", "sex_male"]
+myDataDummies2[cols] = myDataDummies2[cols].astype(int)
+myDataDummies2["smoker"] = myDataDummies2["smoker"].map({"yes": 1, "no": 0})
+
+myDataDummies2 = myDataDummies2.dropna()
+
+myDataDummies2.head()
+```
+
+```{python}
+y = myDataDummies2["charges"]
+
+X1 = myDataDummies2[["age"]]
+model1 = LinearRegression().fit(X1, y)
+mse1 = mean_squared_error(y, model1.predict(X1))
+
+X2 = myDataDummies2[["age", "bmi"]]
+model2 = LinearRegression().fit(X2, y)
+mse2 = mean_squared_error(y, model2.predict(X2))
+
+X3 = myDataDummies2[["age", "bmi", "smoker"]]
+model3 = LinearRegression().fit(X3, y)
+mse3 = mean_squared_error(y, model3.predict(X3))
+
+myDataDummies2["age_smoker"] = myDataDummies2["age"] * myDataDummies2["smoker"]
+myDataDummies2["bmi_smoker"] = myDataDummies2["bmi"] * myDataDummies2["smoker"]
+
+X4 = myDataDummies2[["age", "bmi", "age_smoker", "bmi_smoker"]]
+model4 = LinearRegression().fit(X4, y)
+mse4 = mean_squared_error(y, model4.predict(X4))
+
+X5 = myDataDummies2[["age", "bmi", "smoker", "age_smoker", "bmi_smoker"]]
+model5 = LinearRegression().fit(X5, y)
+mse5 = mean_squared_error(y, model5.predict(X5))
+
+print(f"(age): MSE = {mse1}")
+print(f"(age + bmi): MSE = {mse2}")
+print(f"(age + bmi + smoker): MSE = {mse3}")
+print(f"((age + bmi):smoker): MSE = {mse4}")
+print(f"((age + bmi)*smoker): MSE = {mse5}")
+
+print(f"((age + bmi)*smoker) have be best MSE of {mse5}")
+```
+
+```{python}
+myDataDummies2["predicted"] = model5.predict(X5)
+myDataDummies2["residuals"] = myDataDummies2["charges"] - myDataDummies2["predicted"]
+
+(ggplot(myDataDummies2, aes(x="predicted", y="residuals"))
+ + geom_point(alpha=0.6)
+ + geom_hline(yintercept=0, color="red")
+ + labs(title="Residual Plot for Final Model (age, bmi, smoker with interactions)",
+        x="Predicted Charges",
+        y="Residuals"))
+```
+
+## Part Five: Full Exploration
+```{python}
+from sklearn.model_selection import train_test_split
+
+train, test = train_test_split(myDataDummies2, test_size=0.2, random_state=42)
+
+y_train = train["charges"]
+y_test = test["charges"]
+
+train["age_bmi"] = train["age"] * train["bmi"]
+test["age_bmi"] = test["age"] * test["bmi"]
+
+X_train_best = train[["age", "bmi", "smoker", "age_bmi", "bmi_smoker"]]
+X_test_best = test[["age", "bmi", "smoker", "age_bmi", "bmi_smoker"]]
+
+model_best = LinearRegression().fit(X_train_best, y_train)
+mse_best = mean_squared_error(y_test, model_best.predict(X_test_best))
+
+print(mse_best)
+```
+
+```{python}
+test["predicted"] = model_best.predict(X_test_best)
+test["residuals"] = y_test - test["predicted"]
+
+(ggplot(test, aes(x="predicted", y="residuals"))
+ + geom_point(alpha=0.6)
+ + geom_hline(yintercept=0, color="red")
+ + labs(title="Residual Plot",
+        x="Predicted Charges", y="Residuals"))
+```
