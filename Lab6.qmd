@@ -333,6 +333,7 @@ from plotnine import *
 
 (ggplot(plotData, aes(x="predicted", y="residuals"))
  + geom_point(alpha=0.6)
+ + geom_hline(yintercept=0, color="red")
  + labs(x="Predicted Salary", y="Residuals"))
 ```
 
