@@ -1,0 +1,339 @@
+---
+title: "Lab6 Daniel Kwong"
+format: html
+embed-resources: true
+toc: true
+---
+https://github.com/daniellkwong/GSB544.git
+
+## Dataset: Baseball Players
+```{python}
+import pandas as pd
+
+myData = pd.read_csv("Hitters.csv")
+
+myData = myData.dropna()
+myData = pd.get_dummies(myData, columns=["League", "Division", "NewLeague"], drop_first=True)
+```
+
+## Part I: Different Model Specs
+# A. Regression without regularization
+```{python}
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.linear_model import LinearRegression
+import warnings
+warnings.filterwarnings("ignore")
+```
+
+```{python}
+X = myData.drop(columns=["Salary"])
+y = myData["Salary"]
+
+columnTransformer = ColumnTransformer(
+    transformers=[],             
+    remainder="passthrough"       
+)
+
+modelOls = Pipeline([
+    ("preprocessing", columnTransformer),
+    ("ols", LinearRegression())
+])
+
+modelOls.fit(X, y)
+```
+
+```{python}
+coefs = modelOls.named_steps["ols"].coef_
+coefTable = pd.Series(coefs, index=X.columns)
+print(coefTable)
+```
+
+For the Hits variable, holding all other variables constant, each additional hit in 1986 is associated with an estimated increase of about 7,500.76 in salary. This is one of the strongest positive performance-related effects in the model, showing that players who produce more hits tend to earn a higher salary.
+
+For the Walks variable, holding all other variables constant, each additional walk in 1986 is associated with an estimated increase of about 6,231.29 in salary. This is another one of the strongest positive performance-related effects in the model.
+
+For the HmRun variable, holding all other variables constant, each additional home run hit in 1986 corresponds to an estimated increase of about 4,330.88 in salary. While hitting home runs is important to the model, it has a slightly smaller impact than hits and walks.
+
+```{python}
+from sklearn.model_selection import cross_val_score
+
+mseScores = -cross_val_score(modelOls, X, y, cv=5, scoring="neg_mean_squared_error") 
+
+print("Avg CV MSE:", mseScores.mean())
+```
+
+# B. Ridge regression
+```{python}
+from sklearn.preprocessing import StandardScaler
+
+def makePenalizedPipeline(model):
+    dummyCols = [col for col in X.columns if col.startswith(("League", "Division", "NewLeague"))]
+    numericCols = [col for col in X.columns if col not in dummyCols]
+
+    columnTransformer = ColumnTransformer(
+        transformers=[("scaleNumeric", StandardScaler(), numericCols)],
+        remainder="passthrough"
+    )
+    
+    pipeline = Pipeline([
+        ("preprocessing", columnTransformer),
+        ("model", model)
+    ])
+    
+    return pipeline, X, y
+```
+
+```{python}
+from sklearn.linear_model import Ridge
+
+modelRidge, X, y = makePenalizedPipeline(Ridge())
+modelRidge.fit(X, y)
+```
+
+```{python}
+alphaList = [0.01, 0.1, 1, 10, 100, 1000]
+mseList = []
+
+for a in alphaList:
+    modelRidge, X, y = makePenalizedPipeline(Ridge(alpha=a))
+    mse = -cross_val_score(modelRidge, X, y, cv=5, scoring="neg_mean_squared_error").mean()
+    mseList.append((a, mse))
+
+bestAlpha, bestMse = min(mseList, key=lambda x: x[1])
+
+print("Best alpha:", bestAlpha)
+print("Best CV MSE:", bestMse)
+```
+
+```{python}
+modelRidgeFinal, X, y = makePenalizedPipeline(Ridge(alpha=1))
+modelRidgeFinal.fit(X, y)
+
+ridgeCoefs = modelRidgeFinal.named_steps["model"].coef_
+coefTable = pd.Series(ridgeCoefs, index=X.columns)
+
+print(coefTable)
+```
+
+Holding all other variables constant, higher numbers of At Bats in 1986 are associated with lower salary according to this ridge regression model. This negative coefficient means that after penalization, players who had more At Bats tend to have lower salary. 
+
+CRuns has one of the largest positive coefficients. This means that players who have scored more runs over their career tend to earn higher salaries, holding all other variables constant.
+
+CAtBat has a large negative coefficient. This means that players with very high career At Bats totals tend to earn lower salaries in this model after controlling for other variables.
+
+```{python}
+mseScores = -cross_val_score(modelRidgeFinal, X, y, cv=5, scoring="neg_mean_squared_error") 
+
+print("Avg CV MSE:", mseScores.mean())
+```
+
+# C. Lasso Regression
+```{python}
+from sklearn.linear_model import Lasso
+
+modelLasso, X, y = makePenalizedPipeline(Lasso())
+modelLasso.fit(X, y)
+```
+
+```{python}
+def tuneAlpha(model):
+    alphaList = [0.01, 0.1, 1, 10, 100, 1000]
+    mseList = []
+    
+    for a in alphaList:
+        modelTemp, X, y = makePenalizedPipeline(model(alpha=a))
+        mse = -cross_val_score(modelTemp, X, y, cv=5, scoring="neg_mean_squared_error").mean()
+        mseList.append((a, mse))
+        
+    bestAlpha, bestMse = min(mseList, key=lambda x: x[1])
+    
+    return bestAlpha, bestMse
+```
+
+```{python}
+tuneAlpha(Lasso)
+```
+
+```{python}
+def fitFinalModel(model, alpha):
+    modelFinal, X, y = makePenalizedPipeline(model(alpha=alpha))
+    modelFinal.fit(X, y)
+    
+    coefs = modelFinal.named_steps["model"].coef_
+    coefTable = pd.Series(coefs, index=X.columns)
+    
+    return modelFinal, coefTable
+```
+
+```{python}
+fitFinalModel(Lasso, 1)
+```
+
+CRuns has the largest positive coefficient. This means players who have scored more runs over their entire career tend to earn higher salaries. 
+
+AtBat has a large negative coefficient. This means that having many At Bats in the 1986 season is associated with lower salary after holding all other variables constant.
+
+CWalks has a strong negative coefficient. This means that players with high career walk totals tend to earn lower salaries when other stats are held constant. 
+
+```{python}
+def cvMse(model, alpha):
+    modelTemp, X, y = makePenalizedPipeline(model(alpha=alpha))
+    
+    mse = -cross_val_score(modelTemp, X, y, cv=5, scoring="neg_mean_squared_error").mean()
+    
+    return mse
+```
+
+```{python}
+cvMse(Lasso, 1)
+```
+
+# D. Elastic Net
+```{python}
+from sklearn.linear_model import ElasticNet
+
+modelLasso, X, y = makePenalizedPipeline(ElasticNet())
+modelLasso.fit(X, y)
+```
+
+```{python}
+tuneAlpha(ElasticNet)
+```
+
+```{python}
+ratioList = [0.1, 0.5, 0.9]
+ratioMseList = []
+
+for r in ratioList:
+    modelTemp, X, y = makePenalizedPipeline(ElasticNet(alpha=0.01, l1_ratio=r))
+    mse = -cross_val_score(modelTemp, X, y, cv=5, scoring="neg_mean_squared_error").mean()
+    ratioMseList.append((r, mse))
+
+bestRatio, bestRatioMse = min(ratioMseList, key=lambda x: x[1])
+print("Best l1_ratio:", bestRatio)
+print("Best CV MSE", bestRatioMse)
+
+```
+
+```{python}
+modelElasticFinal, X, y = makePenalizedPipeline(
+    ElasticNet(alpha=0.01, l1_ratio=0.1)
+)
+
+modelElasticFinal.fit(X, y)
+
+elasticCoefs = modelElasticFinal.named_steps["model"].coef_
+coefTableElastic = pd.Series(elasticCoefs, index=X.columns)
+
+print(coefTableElastic)
+```
+
+AtBat has a large negative coefficient. Players with many At Bats in 1986 tend to earn lower salaries after holding all other variables constant. 
+
+CRuns has a large positive coefficient. Players who have scored more runs over their career generally earn higher salaries, while holding all other variables constant. 
+
+CWalks has a strong negative coefficient. Players with high career walk totals are associated with lower salaries when holding other variables constant. 
+
+```{python}
+modelElasticTemp, X, y = makePenalizedPipeline(
+    ElasticNet(alpha=bestAlpha, l1_ratio=bestRatio)
+)
+
+elasticMse = -cross_val_score(modelElasticTemp, X, y, cv=5, scoring="neg_mean_squared_error").mean()
+
+print(elasticMse)
+```
+
+## Part II. Variable Selection
+Across all four models, the most important numeric variable is CRuns, because it consistently has one of the largest coefficient magnitudes. The five most important numeric variables are CRuns, Hits, AtBat, CWalks, and CAtBat. These variables show large positive or negative coefficients across the penalized models, indicating strong influence on salary. Division_W is the most important cetgorical variable, because it has a large negative coefficient in all standardized models, showing a consistent and stronger effect compared to the other categorical variables.
+
+```{python}
+def cvMse1(model, X, y, alpha=None, ratio=None):
+    if model == LinearRegression:
+        pipeline = Pipeline([("model", LinearRegression())])
+    else:
+        if ratio is None:
+            pipeline = Pipeline([("model", model(alpha=alpha))])
+        else:
+            pipeline = Pipeline([("model", model(alpha=alpha, l1_ratio=ratio))])
+
+    mse = -cross_val_score(pipeline, X, y, cv=5, scoring="neg_mean_squared_error").mean()
+
+    return mse #help from ChatGPT
+
+oneVar = ["CRuns"]
+fiveVars = ["CRuns", "Hits", "AtBat", "CWalks", "CAtBat"]
+catVar = "Division_W"
+fiveVarsCat = fiveVars + [catVar] + [f"{v}:{catVar}" for v in fiveVars] #help from ChatGPT
+
+for v in fiveVars:
+    myData[f"{v}:{catVar}"] = myData[v] * myData[catVar] #help from ChatGPT
+
+def runAllModels(featureList):
+    X = myData[featureList]
+    y = myData["Salary"]
+
+    results = {}
+
+    results["OLS"] = cvMse1(LinearRegression, X, y)
+
+    bestAlphaRidge, _ = tuneAlpha(Ridge)
+    results["Ridge"] = cvMse1(Ridge, X, y, alpha=bestAlphaRidge)
+
+    bestAlphaLasso, _ = tuneAlpha(Lasso)
+    results["Lasso"] = cvMse1(Lasso, X, y, alpha=bestAlphaLasso)
+
+    ratioList = [0.1, 0.5, 0.9]
+    bestMseElastic = float("inf") #help from ChatGPT
+
+    for r in ratioList:
+        mse = cvMse1(ElasticNet, X, y, alpha=bestAlphaLasso, ratio=r)
+        if mse < bestMseElastic:
+            bestMseElastic = mse
+
+    results["ElasticNet"] = bestMseElastic
+
+    return results
+
+resultsOne = runAllModels(oneVar)
+resultsFive = runAllModels(fiveVars)
+resultsFiveCat = runAllModels(fiveVarsCat)
+
+print("One best numeric variable:", resultsOne)
+print("Five best numeric variables:", resultsFive)
+print("Five best numeric + interactions:", resultsFiveCat)
+```
+
+The best performing setup was Ridge regression using the five best numeric variables, with an MSE of 127,647.26, which was lower than every other model–feature combination.
+
+## Part III. Discussion
+# A. Ridge
+When comparing the OLS and Ridge models, the coefficients look very different. The OLS model uses the original scale of the variables, so its coefficients are relatively small. In contrast, Ridge uses standardized predictors, so its coefficients show standard deviation instead of units. Because of this difference in scale, the Ridge coefficients appear much larger, even though Ridge is technically shrinking the coefficients relative to each other. Finally, the Ridge MSE was lower than the OLS MSE, because penalizing reduces overfitting.
+
+# B. LASSO
+The LASSO model from Part I did not give the same Lambda or the same MSE as the three LASSO models in Part II. This makes sense because each model in Part II used a different set of predictors, and LASSO chooses its Lambda based on the specific predictors in the model. Changing the feature set changes how much shrinkage is needed, so the optimal Lambda changes. The MSEs were also different because models with more useful predictors fit better and produce lower MSEs.
+
+# C. Elastic Net
+Elastic Net gives the lowest MSE because it combines both Ridge and LASSO. Elastic Net shrinks correlated predictors like Ridge while also removing unimportant variables like LASSO. This makes it more flexible and better suited to data with many correlated features, so it naturally has the lowest MSE.
+
+## Part IV. Final Model
+```{python}
+modelRidgeFinal, X, y = makePenalizedPipeline(Ridge(alpha=1))
+modelRidgeFinal.fit(X, y)
+
+yPred = modelRidgeFinal.predict(X)
+
+plotData = myData.copy()
+plotData["actual"] = y
+plotData["predicted"] = yPred
+plotData["residuals"] = plotData["actual"] - plotData["predicted"]
+
+from plotnine import *
+
+(ggplot(plotData, aes(x="predicted", y="residuals"))
+ + geom_point(alpha=0.6)
+ + labs(x="Predicted Salary", y="Residuals"))
+```
+
+My final model with the lowest MSE is a Ridge regression using the five best numeric variables. The residuals stay mostly centered around zero, with larger errors for very high predicted salaries. Overall, the model is stable and performs well.
