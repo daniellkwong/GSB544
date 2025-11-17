@@ -1,0 +1,201 @@
+---
+title: "Lab7 Daniel Kwong"
+format: html
+embed-resources: true
+toc: true
+---
+https://github.com/daniellkwong/GSB544.git
+
+## The Data
+```{python}
+import pandas as pd
+ha = pd.read_csv("https://www.dropbox.com/s/aohbr6yb9ifmc8w/heart_attack.csv?dl=1")
+
+ha.head()
+```
+
+## Part 1: Fitting Models
+```{python}
+import numpy as np
+from sklearn.model_selection import *
+from sklearn.preprocessing import *
+from sklearn.pipeline import *
+from sklearn.metrics import *
+from sklearn.neighbors import *
+from sklearn.linear_model import *
+from sklearn.tree import *
+
+X = ha.drop(columns=["output"])
+y = ha["output"]
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42, stratify=y
+)
+
+def evaluate_model(model, name):
+    cv_auc = cross_val_score(model, X_train, y_train, scoring="roc_auc", cv=5).mean()
+    model.fit(X_train, y_train)
+    preds = model.predict(X_test)
+    cm = confusion_matrix(y_test, preds)
+    probs = model.predict_proba(X_test)[:, 1]
+    test_auc = roc_auc_score(y_test, probs)
+
+    print(name)
+    print(f"Cross-validated ROC AUC: {cv_auc}")
+    print(f"Test ROC AUC: {test_auc}")
+    print(cm)
+
+    return probs
+```
+
+# Q1 KNN
+```{python}
+k_values = [1, 3, 5, 7, 9, 11, 15]
+results = []
+
+for k in k_values:
+    temp_model = Pipeline([
+        ("scaler", StandardScaler()),
+        ("knn", KNeighborsClassifier(n_neighbors=k))
+    ])
+    
+    auc = cross_val_score(temp_model, X_train, y_train,
+                          cv=5, scoring="roc_auc").mean()
+    results.append((k, auc))
+
+results
+```
+
+```{python}
+best_k = max(results, key=lambda x: x[1])[0]
+best_k
+```
+
+```{python}
+knn_model = Pipeline([
+    ("scaler", StandardScaler()),
+    ("knn", KNeighborsClassifier(n_neighbors=best_k))
+])
+
+knn_probs = evaluate_model(knn_model, "KNN")
+```
+
+Smaller values of k tended to make the model more flexible but also more sensitive to noise, while larger values smoothed out predictions. I evaluated several options using cross-validated ROC AUC and selected k=15 since that performed the best, before generating the final confusion matrix and ROC curve.
+
+# Q2 Logistic Regression
+```{python}
+C_values = [0.001, 0.01, 0.1, 1, 10, 100]
+log_results = []
+
+for c in C_values:
+    temp_log = Pipeline([
+        ("scaler", StandardScaler()),
+        ("logreg", LogisticRegression(C=c, max_iter=5000))
+    ])
+    
+    auc = cross_val_score(temp_log, X_train, y_train,
+                          cv=5, scoring="roc_auc").mean()
+    log_results.append((c, auc))
+
+log_results
+```
+
+```{python}
+best_C = max(log_results, key=lambda x: x[1])[0]
+best_C
+```
+
+```{python}
+log_model = Pipeline([
+    ("scaler", StandardScaler()),
+    ("logreg", LogisticRegression(C=best_C, max_iter=500))
+])
+
+log_probs = evaluate_model(log_model, "Logistic Regression")
+```
+
+I tested multiple values of the penalty parameter and ensured that the model was able to converge properly. After comparing the cross-validated ROC AUC scores across these variations, I selected c=0.01 to use for the final evaluation and interpretation of coefficients.
+
+# Q3 Decision Tree
+```{python}
+depth_values = [2, 3, 4, 5, 6, 8, 10]
+tree_results = []
+
+for d in depth_values:
+    temp_tree = Pipeline([
+        ("tree", DecisionTreeClassifier(max_depth=d, random_state=42))
+    ])
+    
+    auc = cross_val_score(temp_tree, X_train, y_train,
+                          cv=5, scoring="roc_auc").mean()
+    tree_results.append((d, auc))
+
+tree_results
+```
+
+```{python}
+best_depth = max(tree_results, key=lambda x: x[1])[0]
+best_depth
+```
+
+```{python}
+tree_model = Pipeline([
+    ("tree", DecisionTreeClassifier(max_depth=best_depth, random_state=42))
+])
+
+tree_probs = evaluate_model(tree_model, "Decision Tree")
+```
+
+Shallow trees tended to underfit, while deeper trees captured more complexity but risked overfitting. I compared multiple versions using cross-validated ROC AUC and chose a depth of 4 for the final analysis, including its feature importance ranking and ROC curve.
+
+# Q4: Interpretation
+```{python}
+coef_table = pd.DataFrame({
+    "feature": X.columns,
+    "coef": log_model.named_steps["logreg"].coef_[0]
+}).sort_values("coef", key=np.abs, ascending=False)
+
+imp_table = pd.DataFrame({
+    "feature": X.columns,
+    "importance": tree_model.named_steps["tree"].feature_importances_
+}).sort_values("importance", ascending=False)
+
+print("Logistic Regression Coefficients:")
+print(coef_table)
+
+print("Decision Tree Importances:")
+print(imp_table)
+```
+
+In the Logistic Regression model, the two strongest predictors of heart attack risk were thalach and cp. Both had positive coefficients, meaning higher heart rate and certain types of chest pain made the model more likely to predict someone as high risk. Some predictors, like sex and age, had small negative coefficients, meaning they slightly lowered the predicted risk. The remaining variables—restecg, trtbps, and chol—had very small effects, so they did not influence the model much.
+
+In the Decision Tree model, cp was the most important variable, meaning the tree used it the most when making splits. Thalach and age were also important and helped the tree separate high-risk and low-risk patients. Other variables like sex, trtbps, and chol had  smaller effects. Restecg had an importance of zero, meaning the tree did not use it at all.
+
+# Q5: ROC Curve
+```{python}
+from plotnine import *
+
+knn_fpr, knn_tpr, _ = roc_curve(y_test, knn_probs)
+log_fpr, log_tpr, _ = roc_curve(y_test, log_probs)
+tree_fpr, tree_tpr, _ = roc_curve(y_test, tree_probs)
+
+roc_df = pd.DataFrame({
+    "fpr": np.concatenate([knn_fpr, log_fpr, tree_fpr]),
+    "tpr": np.concatenate([knn_tpr, log_tpr, tree_tpr]),
+    "model": (["KNN"] * len(knn_fpr))
+             + (["Logistic Regression"] * len(log_fpr))
+             + (["Decision Tree"] * len(tree_fpr))
+})
+
+(
+    ggplot(roc_df, aes(x="fpr", y="tpr", color="model"))
+    + geom_line(size=1.2)
+    + geom_abline(color="gray")
+    + labs(
+        title="ROC Curves",
+        x="False Positive Rate",
+        y="True Positive Rate"
+    )
+    + theme_minimal()
+)
+```
