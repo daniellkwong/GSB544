@@ -152,13 +152,13 @@ Shallow trees tended to underfit, while deeper trees captured more complexity bu
 ```{python}
 coef_table = pd.DataFrame({
     "feature": X.columns,
-    "coef": log_model.named_steps["logreg"].coef_[0]
-}).sort_values("coef", key=np.abs, ascending=False)
+    "coef": log_model.named_steps["logreg"].coef_[0] 
+}).sort_values("coef", key=np.abs, ascending=False) #help from ChatGPT
 
 imp_table = pd.DataFrame({
     "feature": X.columns,
     "importance": tree_model.named_steps["tree"].feature_importances_
-}).sort_values("importance", ascending=False)
+}).sort_values("importance", ascending=False) #help from ChatGPT
 
 print("Logistic Regression Coefficients:")
 print(coef_table)
@@ -185,7 +185,7 @@ roc_df = pd.DataFrame({
     "model": (["KNN"] * len(knn_fpr))
              + (["Logistic Regression"] * len(log_fpr))
              + (["Decision Tree"] * len(tree_fpr))
-})
+}) #help from ChatGPT
 
 (
     ggplot(roc_df, aes(x="fpr", y="tpr", color="model"))
@@ -199,3 +199,89 @@ roc_df = pd.DataFrame({
     + theme_minimal()
 )
 ```
+
+## Part 2: Metrics
+```{python}
+specificity_scorer = make_scorer(recall_score, pos_label=0)
+recall_scorer = make_scorer(recall_score, pos_label=1)
+precision_scorer = make_scorer(precision_score, pos_label=1)
+
+def compute_metrics(model, name):
+    recall_cv = cross_val_score(model, X_train, y_train, cv=5, scoring=recall_scorer).mean()
+
+    precision_cv = cross_val_score(model, X_train, y_train, cv=5, scoring=precision_scorer).mean()
+
+    specificity_cv = cross_val_score(model, X_train, y_train, cv=5, scoring=specificity_scorer).mean()
+
+    print(name)
+    print(f"Specificity: {specificity_cv}")
+    print(f"Recall: {recall_cv}")
+    print(f"Precision: {precision_cv}")
+
+compute_metrics(knn_model, "KNN")
+compute_metrics(log_model, "Logistic Regression")
+compute_metrics(tree_model, "Decision Tree")
+```
+
+## Part Three: Discussion
+# Q1
+The hospital wants to avoid cases where a high-risk patient is incorrectly predicted as low-risk. The most important metric is Recall. Among the three models, Logistic Regression has the highest recall (0.8967), meaning it correctly identifies about 90% of patients who are actually at risk.
+
+# Q2
+The hospital wants to avoid false positives. Precision is the best metric, since it measures how many predicted high-risk patients actually are high-risk. The model with the highest precision is KNN (0.7743). Since KNN has the strongest precision, it is the best recommendation for saving hospital bed space. With this model, around 77% of the patients it flags as high-risk actually need monitoring.
+
+# Q3
+The hospital interested in understanding which patient features are related to heart attack risk. The best model for this is Logistic Regression, which produces clear and meaningful coefficients that show the direction and strength of each variable’s relationship with risk. The model’s ROC AUC from earlier results shows it performs well overall, so the hospital can expect good predictions while also learning which factors are most important.
+
+# Q4
+The hospital wants to compare how well new doctors diagnose patients relative to the model. The goal is to use a balanced overall performance metric such as ROC AUC or accuracy as a benchmark for evaluating trainees. Looking at the ROC curves, Logistic Regression’s curve stays highest overall and stays closest to the top-left corner, which means it has the best AUC. Because of this, Logistic Regression is the best model to use as the benchmark for evaluating how well the new doctors diagnose heart attack risk.
+
+## Part Four: Validation
+```{python}
+ha_validation = pd.read_csv("https://www.dropbox.com/s/jkwqdiyx6o6oad0/heart_attack_validation.csv?dl=1")
+```
+
+```{python}
+X_val = ha_validation.drop(columns=["output"])
+y_val = ha_validation["output"]
+
+def validate_model(model, name):
+    preds = model.predict(X_val)
+    probas = model.predict_proba(X_val)[:, 1]
+    
+    cm = confusion_matrix(y_val, preds)
+    auc = roc_auc_score(y_val, probas)
+    precision = precision_score(y_val, preds)
+    recall = recall_score(y_val, preds)
+    
+    print(name)
+    print(cm)
+    print(f"ROC AUC: {auc}")
+    print(f"Precision: {precision}")
+    print(f"Recall: {recall}")
+```
+
+```{python}
+validate_model(knn_model, "KNN")
+validate_model(log_model, "Logistic Regression")
+validate_model(tree_model, "Decision Tree")
+```
+
+The validation results were close to the cross-validated estimates from earlier in the lab. KNN and Logistic Regression both had validation ROC AUC values that were slightly higher than their cross-validated scores, which shows that they generalized well to new data. Their precision and recall values also followed the same pattern as before. The Decision Tree also had the lowest ROC AUC, which matches its weaker cross-validated performance. Overall, the validation results showed that the models that performed best during cross-validation also performed best on the validation set.
+
+## Part Five: Cohen’s Kappa
+```{python}
+def compute_kappa(model, name):
+    preds = model.predict(X_val)
+    kappa = cohen_kappa_score(y_val, preds)
+    
+    print(f"{name} Kappa: {kappa}")
+```
+
+```{python}
+compute_kappa(knn_model, "KNN")
+compute_kappa(log_model, "Logistic Regression")
+compute_kappa(tree_model, "Decision Tree")
+```
+
+Cohen’s Kappa is useful when one class is much more common than the other. It tells us how much the model is doing better than random chance. In these situations, Kappa provides a better measure of model performance than accuracy alone. Using Kappa, the Decision Tree scores highest (0.6), followed by Logistic Regression (0.586) and KNN (0.525). This ranking is slightly different from the ROC AUC results, but the differences are small and do not change our overall conclusions. Logistic Regression and KNN still perform well overall, and the Decision Tree still shows weaker general performance despite its slightly higher Kappa. So Kappa offers another useful perspective, but it does not meaningfully alter our earlier findings.

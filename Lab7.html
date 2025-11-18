@@ -2189,7 +2189,19 @@ vertical-align: -.125em;
   <li><a href="#q2-logistic-regression" id="toc-q2-logistic-regression" class="nav-link" data-scroll-target="#q2-logistic-regression">Q2 Logistic Regression</a></li>
   <li><a href="#q3-decision-tree" id="toc-q3-decision-tree" class="nav-link" data-scroll-target="#q3-decision-tree">Q3 Decision Tree</a></li>
   <li><a href="#q4-interpretation" id="toc-q4-interpretation" class="nav-link" data-scroll-target="#q4-interpretation">Q4: Interpretation</a></li>
-  <li><a href="#q5-roc-curve" id="toc-q5-roc-curve" class="nav-link" data-scroll-target="#q5-roc-curve">Q5: ROC Curve</a></li>
+  <li><a href="#q5-roc-curve" id="toc-q5-roc-curve" class="nav-link" data-scroll-target="#q5-roc-curve">Q5: ROC Curve</a>
+  <ul class="collapse">
+  <li><a href="#part-2-metrics" id="toc-part-2-metrics" class="nav-link" data-scroll-target="#part-2-metrics">Part 2: Metrics</a></li>
+  <li><a href="#part-three-discussion" id="toc-part-three-discussion" class="nav-link" data-scroll-target="#part-three-discussion">Part Three: Discussion</a></li>
+  </ul></li>
+  <li><a href="#q1" id="toc-q1" class="nav-link" data-scroll-target="#q1">Q1</a></li>
+  <li><a href="#q2" id="toc-q2" class="nav-link" data-scroll-target="#q2">Q2</a></li>
+  <li><a href="#q3" id="toc-q3" class="nav-link" data-scroll-target="#q3">Q3</a></li>
+  <li><a href="#q4" id="toc-q4" class="nav-link" data-scroll-target="#q4">Q4</a>
+  <ul class="collapse">
+  <li><a href="#part-four-validation" id="toc-part-four-validation" class="nav-link" data-scroll-target="#part-four-validation">Part Four: Validation</a></li>
+  <li><a href="#part-five-cohens-kappa" id="toc-part-five-cohens-kappa" class="nav-link" data-scroll-target="#part-five-cohens-kappa">Part Five: Cohen’s Kappa</a></li>
+  </ul></li>
   </ul>
 </nav>
 </div>
@@ -2217,7 +2229,7 @@ vertical-align: -.125em;
 <p>https://github.com/daniellkwong/GSB544.git</p>
 <section id="the-data" class="level2">
 <h2 class="anchored" data-anchor-id="the-data">The Data</h2>
-<div id="f2bd8915" class="cell" data-execution_count="1">
+<div id="733edaab" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>ha <span class="op">=</span> pd.read_csv(<span class="st">&quot;https://www.dropbox.com/s/aohbr6yb9ifmc8w/heart_attack.csv?dl=1&quot;</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -2305,7 +2317,7 @@ vertical-align: -.125em;
 </section>
 <section id="part-1-fitting-models" class="level2">
 <h2 class="anchored" data-anchor-id="part-1-fitting-models">Part 1: Fitting Models</h2>
-<div id="8d201a28" class="cell" data-execution_count="2">
+<div id="8aa37f7d" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> <span class="op">*</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> <span class="op">*</span></span>
@@ -2340,7 +2352,7 @@ vertical-align: -.125em;
 </section>
 <section id="q1-knn" class="level1">
 <h1>Q1 KNN</h1>
-<div id="d441c6a9" class="cell" data-execution_count="3">
+<div id="7009c500" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>k_values <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">9</span>, <span class="dv">11</span>, <span class="dv">15</span>]</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> []</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -2365,14 +2377,14 @@ vertical-align: -.125em;
  (15, np.float64(0.8652523291925466))]</code></pre>
 </div>
 </div>
-<div id="b3df7582" class="cell" data-execution_count="4">
+<div id="4b891cdb" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>best_k <span class="op">=</span> <span class="bu">max</span>(results, key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">1</span>])[<span class="dv">0</span>]</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>best_k</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="4">
 <pre><code>15</code></pre>
 </div>
 </div>
-<div id="8cb0031d" class="cell" data-execution_count="5">
+<div id="b28c1abe" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>knn_model <span class="op">=</span> Pipeline([</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    (<span class="st">&quot;scaler&quot;</span>, StandardScaler()),</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    (<span class="st">&quot;knn&quot;</span>, KNeighborsClassifier(n_neighbors<span class="op">=</span>best_k))</span>
@@ -2391,7 +2403,7 @@ Test ROC AUC: 0.6956233421750663
 </section>
 <section id="q2-logistic-regression" class="level1">
 <h1>Q2 Logistic Regression</h1>
-<div id="d27530e4" class="cell" data-execution_count="6">
+<div id="5fcb4b1c" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>C_values <span class="op">=</span> [<span class="fl">0.001</span>, <span class="fl">0.01</span>, <span class="fl">0.1</span>, <span class="dv">1</span>, <span class="dv">10</span>, <span class="dv">100</span>]</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>log_results <span class="op">=</span> []</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -2415,14 +2427,14 @@ Test ROC AUC: 0.6956233421750663
  (100, np.float64(0.8613302277432713))]</code></pre>
 </div>
 </div>
-<div id="a6b684a5" class="cell" data-execution_count="7">
+<div id="af8432cf" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>best_C <span class="op">=</span> <span class="bu">max</span>(log_results, key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">1</span>])[<span class="dv">0</span>]</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>best_C</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="7">
 <pre><code>0.01</code></pre>
 </div>
 </div>
-<div id="850b83d8" class="cell" data-execution_count="8">
+<div id="b01c3203" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>log_model <span class="op">=</span> Pipeline([</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    (<span class="st">&quot;scaler&quot;</span>, StandardScaler()),</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    (<span class="st">&quot;logreg&quot;</span>, LogisticRegression(C<span class="op">=</span>best_C, max_iter<span class="op">=</span><span class="dv">500</span>))</span>
@@ -2441,7 +2453,7 @@ Test ROC AUC: 0.7957559681697612
 </section>
 <section id="q3-decision-tree" class="level1">
 <h1>Q3 Decision Tree</h1>
-<div id="450371a7" class="cell" data-execution_count="9">
+<div id="768ed7c7" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>depth_values <span class="op">=</span> [<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">8</span>, <span class="dv">10</span>]</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>tree_results <span class="op">=</span> []</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -2465,14 +2477,14 @@ Test ROC AUC: 0.7957559681697612
  (10, np.float64(0.7350051759834368))]</code></pre>
 </div>
 </div>
-<div id="e91ca5ef" class="cell" data-execution_count="10">
+<div id="eb1a4d43" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>best_depth <span class="op">=</span> <span class="bu">max</span>(tree_results, key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">1</span>])[<span class="dv">0</span>]</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>best_depth</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="10">
 <pre><code>4</code></pre>
 </div>
 </div>
-<div id="9dd4c485" class="cell" data-execution_count="11">
+<div id="4bc01152" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>tree_model <span class="op">=</span> Pipeline([</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    (<span class="st">&quot;tree&quot;</span>, DecisionTreeClassifier(max_depth<span class="op">=</span>best_depth, random_state<span class="op">=</span><span class="dv">42</span>))</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>])</span>
@@ -2490,16 +2502,16 @@ Test ROC AUC: 0.7141909814323608
 </section>
 <section id="q4-interpretation" class="level1">
 <h1>Q4: Interpretation</h1>
-<div id="e85a67f8" class="cell" data-execution_count="12">
+<div id="e937f5af" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>coef_table <span class="op">=</span> pd.DataFrame({</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;feature&quot;</span>: X.columns,</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;coef&quot;</span>: log_model.named_steps[<span class="st">&quot;logreg&quot;</span>].coef_[<span class="dv">0</span>]</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>}).sort_values(<span class="st">&quot;coef&quot;</span>, key<span class="op">=</span>np.<span class="bu">abs</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;coef&quot;</span>: log_model.named_steps[<span class="st">&quot;logreg&quot;</span>].coef_[<span class="dv">0</span>] </span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>}).sort_values(<span class="st">&quot;coef&quot;</span>, key<span class="op">=</span>np.<span class="bu">abs</span>, ascending<span class="op">=</span><span class="va">False</span>) <span class="co">#help from ChatGPT</span></span>
 <span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>imp_table <span class="op">=</span> pd.DataFrame({</span>
 <span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;feature&quot;</span>: X.columns,</span>
 <span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;importance&quot;</span>: tree_model.named_steps[<span class="st">&quot;tree&quot;</span>].feature_importances_</span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>}).sort_values(<span class="st">&quot;importance&quot;</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>}).sort_values(<span class="st">&quot;importance&quot;</span>, ascending<span class="op">=</span><span class="va">False</span>) <span class="co">#help from ChatGPT</span></span>
 <span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Logistic Regression Coefficients:&quot;</span>)</span>
 <span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(coef_table)</span>
@@ -2532,7 +2544,7 @@ Decision Tree Importances:
 </section>
 <section id="q5-roc-curve" class="level1">
 <h1>Q5: ROC Curve</h1>
-<div id="03dee58b" class="cell" data-execution_count="13">
+<div id="4e52a98b" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> plotnine <span class="im">import</span> <span class="op">*</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>knn_fpr, knn_tpr, _ <span class="op">=</span> roc_curve(y_test, knn_probs)</span>
@@ -2545,7 +2557,7 @@ Decision Tree Importances:
 <span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;model&quot;</span>: ([<span class="st">&quot;KNN&quot;</span>] <span class="op">*</span> <span class="bu">len</span>(knn_fpr))</span>
 <span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>             <span class="op">+</span> ([<span class="st">&quot;Logistic Regression&quot;</span>] <span class="op">*</span> <span class="bu">len</span>(log_fpr))</span>
 <span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>             <span class="op">+</span> ([<span class="st">&quot;Decision Tree&quot;</span>] <span class="op">*</span> <span class="bu">len</span>(tree_fpr))</span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>}) <span class="co">#help from ChatGPT</span></span>
 <span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>(</span>
 <span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>    ggplot(roc_df, aes(x<span class="op">=</span><span class="st">&quot;fpr&quot;</span>, y<span class="op">=</span><span class="st">&quot;tpr&quot;</span>, color<span class="op">=</span><span class="st">&quot;model&quot;</span>))</span>
@@ -2566,6 +2578,135 @@ Decision Tree Importances:
 </div>
 </div>
 </div>
+<section id="part-2-metrics" class="level2">
+<h2 class="anchored" data-anchor-id="part-2-metrics">Part 2: Metrics</h2>
+<div id="56ad0ab9" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>specificity_scorer <span class="op">=</span> make_scorer(recall_score, pos_label<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>recall_scorer <span class="op">=</span> make_scorer(recall_score, pos_label<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>precision_scorer <span class="op">=</span> make_scorer(precision_score, pos_label<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compute_metrics(model, name):</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    recall_cv <span class="op">=</span> cross_val_score(model, X_train, y_train, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span>recall_scorer).mean()</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    precision_cv <span class="op">=</span> cross_val_score(model, X_train, y_train, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span>precision_scorer).mean()</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>    specificity_cv <span class="op">=</span> cross_val_score(model, X_train, y_train, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span>specificity_scorer).mean()</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(name)</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&quot;Specificity: </span><span class="sc">{</span>specificity_cv<span class="sc">}</span><span class="ss">&quot;</span>)</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&quot;Recall: </span><span class="sc">{</span>recall_cv<span class="sc">}</span><span class="ss">&quot;</span>)</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&quot;Precision: </span><span class="sc">{</span>precision_cv<span class="sc">}</span><span class="ss">&quot;</span>)</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>compute_metrics(knn_model, <span class="st">&quot;KNN&quot;</span>)</span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>compute_metrics(log_model, <span class="st">&quot;Logistic Regression&quot;</span>)</span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>compute_metrics(tree_model, <span class="st">&quot;Decision Tree&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>KNN
+Specificity: 0.7019047619047619
+Recall: 0.8713768115942029
+Precision: 0.774269592476489
+Logistic Regression
+Specificity: 0.6033333333333333
+Recall: 0.8967391304347826
+Precision: 0.7281609195402299
+Decision Tree
+Specificity: 0.7128571428571429
+Recall: 0.7782608695652173
+Precision: 0.7705128205128206</code></pre>
+</div>
+</div>
+</section>
+<section id="part-three-discussion" class="level2">
+<h2 class="anchored" data-anchor-id="part-three-discussion">Part Three: Discussion</h2>
+</section>
+</section>
+<section id="q1" class="level1">
+<h1>Q1</h1>
+<p>The hospital wants to avoid cases where a high-risk patient is incorrectly predicted as low-risk. The most important metric is Recall. Among the three models, Logistic Regression has the highest recall (0.8967), meaning it correctly identifies about 90% of patients who are actually at risk.</p>
+</section>
+<section id="q2" class="level1">
+<h1>Q2</h1>
+<p>The hospital wants to avoid false positives. Precision is the best metric, since it measures how many predicted high-risk patients actually are high-risk. The model with the highest precision is KNN (0.7743). Since KNN has the strongest precision, it is the best recommendation for saving hospital bed space. With this model, around 77% of the patients it flags as high-risk actually need monitoring.</p>
+</section>
+<section id="q3" class="level1">
+<h1>Q3</h1>
+<p>The hospital interested in understanding which patient features are related to heart attack risk. The best model for this is Logistic Regression, which produces clear and meaningful coefficients that show the direction and strength of each variable’s relationship with risk. The model’s ROC AUC from earlier results shows it performs well overall, so the hospital can expect good predictions while also learning which factors are most important.</p>
+</section>
+<section id="q4" class="level1">
+<h1>Q4</h1>
+<p>The hospital wants to compare how well new doctors diagnose patients relative to the model. The goal is to use a balanced overall performance metric such as ROC AUC or accuracy as a benchmark for evaluating trainees. Looking at the ROC curves, Logistic Regression’s curve stays highest overall and stays closest to the top-left corner, which means it has the best AUC. Because of this, Logistic Regression is the best model to use as the benchmark for evaluating how well the new doctors diagnose heart attack risk.</p>
+<section id="part-four-validation" class="level2">
+<h2 class="anchored" data-anchor-id="part-four-validation">Part Four: Validation</h2>
+<div id="acb67f68" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>ha_validation <span class="op">=</span> pd.read_csv(<span class="st">&quot;https://www.dropbox.com/s/jkwqdiyx6o6oad0/heart_attack_validation.csv?dl=1&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="0f78b07b" class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>X_val <span class="op">=</span> ha_validation.drop(columns<span class="op">=</span>[<span class="st">&quot;output&quot;</span>])</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>y_val <span class="op">=</span> ha_validation[<span class="st">&quot;output&quot;</span>]</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> validate_model(model, name):</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    preds <span class="op">=</span> model.predict(X_val)</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    probas <span class="op">=</span> model.predict_proba(X_val)[:, <span class="dv">1</span>]</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>    cm <span class="op">=</span> confusion_matrix(y_val, preds)</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>    auc <span class="op">=</span> roc_auc_score(y_val, probas)</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>    precision <span class="op">=</span> precision_score(y_val, preds)</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>    recall <span class="op">=</span> recall_score(y_val, preds)</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(name)</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(cm)</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&quot;ROC AUC: </span><span class="sc">{</span>auc<span class="sc">}</span><span class="ss">&quot;</span>)</span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&quot;Precision: </span><span class="sc">{</span>precision<span class="sc">}</span><span class="ss">&quot;</span>)</span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&quot;Recall: </span><span class="sc">{</span>recall<span class="sc">}</span><span class="ss">&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="75a6d54a" class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>validate_model(knn_model, <span class="st">&quot;KNN&quot;</span>)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>validate_model(log_model, <span class="st">&quot;Logistic Regression&quot;</span>)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>validate_model(tree_model, <span class="st">&quot;Decision Tree&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>KNN
+[[ 9  2]
+ [ 5 14]]
+ROC AUC: 0.9425837320574162
+Precision: 0.875
+Recall: 0.7368421052631579
+Logistic Regression
+[[ 9  2]
+ [ 4 15]]
+ROC AUC: 0.9234449760765551
+Precision: 0.8823529411764706
+Recall: 0.7894736842105263
+Decision Tree
+[[10  1]
+ [ 5 14]]
+ROC AUC: 0.799043062200957
+Precision: 0.9333333333333333
+Recall: 0.7368421052631579</code></pre>
+</div>
+</div>
+<p>The validation results were close to the cross-validated estimates from earlier in the lab. KNN and Logistic Regression both had validation ROC AUC values that were slightly higher than their cross-validated scores, which shows that they generalized well to new data. Their precision and recall values also followed the same pattern as before. The Decision Tree also had the lowest ROC AUC, which matches its weaker cross-validated performance. Overall, the validation results showed that the models that performed best during cross-validation also performed best on the validation set.</p>
+</section>
+<section id="part-five-cohens-kappa" class="level2">
+<h2 class="anchored" data-anchor-id="part-five-cohens-kappa">Part Five: Cohen’s Kappa</h2>
+<div id="8b947c43" class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compute_kappa(model, name):</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    preds <span class="op">=</span> model.predict(X_val)</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    kappa <span class="op">=</span> cohen_kappa_score(y_val, preds)</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&quot;</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss"> Kappa: </span><span class="sc">{</span>kappa<span class="sc">}</span><span class="ss">&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="2a57a518" class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>compute_kappa(knn_model, <span class="st">&quot;KNN&quot;</span>)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>compute_kappa(log_model, <span class="st">&quot;Logistic Regression&quot;</span>)</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>compute_kappa(tree_model, <span class="st">&quot;Decision Tree&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>KNN Kappa: 0.5248868778280543
+Logistic Regression Kappa: 0.5852534562211982
+Decision Tree Kappa: 0.6</code></pre>
+</div>
+</div>
+<p>Cohen’s Kappa is useful when one class is much more common than the other. It tells us how much the model is doing better than random chance. In these situations, Kappa provides a better measure of model performance than accuracy alone. Using Kappa, the Decision Tree scores highest (0.6), followed by Logistic Regression (0.586) and KNN (0.525). This ranking is slightly different from the ROC AUC results, but the differences are small and do not change our overall conclusions. Logistic Regression and KNN still perform well overall, and the Decision Tree still shows weaker general performance despite its slightly higher Kappa. So Kappa offers another useful perspective, but it does not meaningfully alter our earlier findings.</p>
+</section>
 </section>
 
 </main>
