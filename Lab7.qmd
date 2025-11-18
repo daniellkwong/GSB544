@@ -14,7 +14,7 @@ ha = pd.read_csv("https://www.dropbox.com/s/aohbr6yb9ifmc8w/heart_attack.csv?dl=
 ha.head()
 ```
 
-## Part 1: Fitting Models
+## Part One: Fitting Models
 ```{python}
 import numpy as np
 from sklearn.model_selection import *
@@ -148,7 +148,7 @@ tree_probs = evaluate_model(tree_model, "Decision Tree")
 
 Shallow trees tended to underfit, while deeper trees captured more complexity but risked overfitting. I compared multiple versions using cross-validated ROC AUC and chose a depth of 4 for the final analysis, including its feature importance ranking and ROC curve.
 
-# Q4: Interpretation
+# Q4 Interpretation
 ```{python}
 coef_table = pd.DataFrame({
     "feature": X.columns,
@@ -171,7 +171,7 @@ In the Logistic Regression model, the two strongest predictors of heart attack r
 
 In the Decision Tree model, cp was the most important variable, meaning the tree used it the most when making splits. Thalach and age were also important and helped the tree separate high-risk and low-risk patients. Other variables like sex, trtbps, and chol had  smaller effects. Restecg had an importance of zero, meaning the tree did not use it at all.
 
-# Q5: ROC Curve
+# Q5 ROC Curve
 ```{python}
 from plotnine import *
 
@@ -200,7 +200,7 @@ roc_df = pd.DataFrame({
 )
 ```
 
-## Part 2: Metrics
+## Part Two: Metrics
 ```{python}
 specificity_scorer = make_scorer(recall_score, pos_label=0)
 recall_scorer = make_scorer(recall_score, pos_label=1)
