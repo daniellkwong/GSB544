@@ -1,0 +1,404 @@
+---
+title: "Lab8 Daniel Kwong"
+format: html
+embed-resources: true
+toc: true
+---
+https://github.com/daniellkwong/GSB544.git
+
+```{python}
+import pandas as pd
+
+myData = pd.read_csv("cannabis_full.csv")
+
+myData.head()
+```
+
+```{python}
+myData2 = myData[myData["Type"].isin(["sativa", "indica"])]
+myData3 = myData2.drop(columns=["Strain", "Effects", "Flavor"])
+myDataFinal = myData3.dropna()
+
+myDataFinal.head()
+```
+
+## Part One: Binary Classification
+# Q1: LDA 
+I chose to use Accuracy as my metric for selecting the best LDA model, since it treats every class equally and tells us how the model performs overall. Other metrics are designed to judge how well a model identifies one particular category, which is not what we want in this scenario. 
+
+```{python}
+from sklearn.model_selection import *
+from sklearn.preprocessing import *
+from sklearn.pipeline import *
+from sklearn.discriminant_analysis import *
+from sklearn.metrics import *
+
+import warnings
+warnings.filterwarnings("ignore") 
+
+X = myDataFinal.drop(columns=["Type"])
+y = myDataFinal["Type"]
+
+XTrain, XTest, yTrain, yTest = train_test_split(X, y, test_size=0.2, random_state=420, stratify=y)
+
+pipe = Pipeline([
+    ("scale", StandardScaler()),
+    ("model", LinearDiscriminantAnalysis())
+])
+
+param_grid = [
+    {"model__solver": ["svd"], "model__shrinkage": [None]},
+    {"model__solver": ["lsqr"], "model__shrinkage": [None, "auto"]},
+    {"model__solver": ["eigen"], "model__shrinkage": [None, "auto"]}
+]
+
+cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=420)
+
+grid = GridSearchCV(pipe, param_grid, cv=cv, scoring="accuracy", refit=True)
+
+grid.fit(XTrain, yTrain)
+
+print("Best Params:", grid.best_params_)
+print("Best CV Accuracy:", grid.best_score_)
+
+bestModel = grid.best_estimator_
+
+finalLDA = grid.best_estimator_
+finalLDA.fit(XTrain, yTrain)
+
+yPred = finalLDA.predict(XTest)
+cm = confusion_matrix(yTest, yPred)
+print(cm)
+```
+
+# Q2: QDA
+I chose to use the F1 Score as my metric for evaluating QDA, because it balances precision and recall. QDA can sometimes misclassify one class more than the other due to its flexible boundaries, so accuracy alone can be misleading. The F1 Score avoids this by focusing on how well the model correctly captures each class without being thrown off by uneven error rates.
+
+```{python}
+qdaModel = Pipeline([
+    ("scale", StandardScaler()),
+    ("model", QuadraticDiscriminantAnalysis())
+])
+
+param_grid_qda = {
+    "model__reg_param": [0.0, 0.001, 0.01, 0.1, 0.3, 0.5]
+}
+
+qdaGrid = GridSearchCV(qdaModel, param_grid_qda, cv=cv, scoring="f1_macro", refit=True)
+
+qdaGrid.fit(XTrain, yTrain)
+
+print("Best Params:", qdaGrid.best_params_)
+print("Best CV F1:", qdaGrid.best_score_)
+
+qdaFinal = qdaGrid.best_estimator_
+qdaFinal.fit(XTrain, yTrain)
+
+qdaPred = qdaFinal.predict(XTest)
+cm = confusion_matrix(yTest, qdaPred)
+print(cm)
+```
+
+# Q3: SVC
+I chose to use ROC-AUC as my metric for evaluating SVC models, since it measures how well the model separates the two classes across all possible classifications. This is important for SVC because its decision function does not naturally optimize for accuracy at a single cutoff. 
+
+```{python}
+from sklearn.svm import *
+
+svcModel = Pipeline([
+    ("scale", StandardScaler()),
+    ("model", SVC(probability=True))
+])
+
+svcParams = {
+    "model__C": [0.1, 1, 10],
+    "model__kernel": ["linear", "rbf"],
+    "model__gamma": ["scale", "auto"]
+}
+
+svcGrid = GridSearchCV(svcModel, svcParams, cv=cv, scoring="roc_auc", refit=True)
+
+svcGrid.fit(XTrain, yTrain)
+
+print("Best Params:", svcGrid.best_params_)
+print("Best CV ROC-AUC:", svcGrid.best_score_)
+
+svcBest = svcGrid.best_estimator_
+svcBest.fit(XTrain, yTrain)
+
+svcPred = svcBest.predict(XTest)
+
+cm = confusion_matrix(yTest, svcPred)
+print(cm)
+```
+
+# Q4: SVM
+I chose to use ROC-AUC as my metric for evaluating SVM models for the same reasons I chose it as the metric for SVC. 
+
+```{python}
+svmModel = Pipeline([
+    ("scale", StandardScaler()),
+    ("model", SVC(probability=True))
+])
+
+svmParams = {
+    "model__C": [0.1, 1, 10],
+    "model__gamma": ["scale", "auto"],
+    "model__kernel": ["rbf"]
+}
+
+svmGrid = GridSearchCV(svmModel, svmParams, cv=cv, scoring="roc_auc", refit=True)
+
+svmGrid.fit(XTrain, yTrain)
+
+print("Best Params:", svmGrid.best_params_)
+print("Best CV ROC-AUC:", svmGrid.best_score_)
+
+bestSvm = svmGrid.best_estimator_
+
+testPreds = bestSvm.predict(XTest)
+
+cm = confusion_matrix(yTest, testPreds)
+print(cm)
+```
+
+## Part Two: Natural Multiclass
+```{python}
+myData4 = myData.drop(columns=["Strain", "Effects", "Flavor"])
+myDataFinal2 = myData4.dropna()
+
+myDataFinal2.head()
+```
+
+# Q1
+```{python}
+from sklearn.tree import *
+import matplotlib.pyplot as plt
+
+X2 = myDataFinal2.drop(columns=["Type"])
+y2 = myDataFinal2["Type"]
+
+X2Train, X2Test, y2Train, y2Test = train_test_split(X2, y2, test_size=0.2, random_state=420, stratify=y2)
+
+treeParams = {"max_depth": [3, 5, 7, 10]}
+treeModel = DecisionTreeClassifier(random_state=420)
+
+treeGrid = GridSearchCV(treeModel, treeParams, cv=cv, scoring="accuracy")
+treeGrid.fit(X2Train, y2Train)
+
+print("Best Params:", treeGrid.best_params_)
+print("Best CV Accuracy:", treeGrid.best_score_)
+
+bestTree = treeGrid.best_estimator_
+bestTree.fit(X2Train, y2Train)
+
+plt.figure(figsize=(25,10))
+plot_tree(bestTree, feature_names=X2.columns, class_names=bestTree.classes_, filled=True, rounded=True, fontsize=8)
+plt.show()
+
+treePred = bestTree.predict(X2Test)
+print(confusion_matrix(y2Test, treePred))
+```
+
+The tree shows that the model mainly separates strains using just a few effects and flavors. The first split is on Sleepy, dividing 1,844 samples and already leaning Hybrid. Later splits use Energetic, Citrus, Relaxed, and Tropical to separate Indica and Sativa.  Overall, the tree captures broad trends—Hybrids tend to lack strong single effects, Indicas cluster around calming flavors, and Sativas appear in branches with uplifting traits. Accuracy remains not too high, around 0.63 CV accuracy, which means there may be  overlapping characteristics across strain types.
+
+# Q2
+I chose Accuracy as my metric for selecting the best LDA model, because LDA treats all classes equally and aims to separate them as cleanly as possible. Accuracy reflects how well the model performs overall across both classes, without favoring one category over the other. Other metrics focus on detecting one specific class, which isn’t what we want in this scenario.
+
+```{python}
+X2 = myDataFinal2.drop(columns=["Type"])
+y2 = myDataFinal2["Type"]
+
+X2Train, X2Test, y2Train, y2Test = train_test_split(X2, y2, test_size=0.2, random_state=420, stratify=y2)
+
+ldaModel = Pipeline([
+    ("scale", StandardScaler()),
+    ("model", LinearDiscriminantAnalysis())
+])
+
+ldaParams = [
+    {"model__solver": ["svd"], "model__shrinkage": [None]},
+    {"model__solver": ["lsqr"], "model__shrinkage": [None, "auto"]},
+    {"model__solver": ["eigen"], "model__shrinkage": [None, "auto"]}
+]
+
+ldaGrid = GridSearchCV(ldaModel, ldaParams, cv=cv, scoring="accuracy", refit=True)
+
+ldaGrid.fit(X2Train, y2Train)
+
+print("Best Params:", ldaGrid.best_params_)
+print("Best CV Accuracy:", ldaGrid.best_score_)
+
+ldaBest = ldaGrid.best_estimator_
+ldaBest.fit(X2Train, y2Train)
+
+ldaPred = ldaBest.predict(X2Test)
+print(confusion_matrix(y2Test, ldaPred))
+```
+
+I chose Accuracy as my metric for selecting the best QDA model because all three classes are equally important, so we want a metric that treats each class the same and reflects the model’s overall performance rather than focusing on any single category.
+
+```{python}
+qdaModel = Pipeline([
+    ("scale", StandardScaler()),
+    ("model", QuadraticDiscriminantAnalysis())
+])
+
+param_grid_qda = {
+    "model__reg_param": [0.0, 0.001, 0.01, 0.1, 0.3, 0.5]
+}
+
+qdaGrid = GridSearchCV(qdaModel, param_grid_qda, cv=cv, scoring="accuracy", refit=True)
+
+qdaGrid.fit(X2Train, y2Train)
+
+print("Best Params:", qdaGrid.best_params_)
+print("Best CV Accuracy:", qdaGrid.best_score_)
+
+qdaFinal = qdaGrid.best_estimator_
+qdaFinal.fit(X2Train, y2Train)
+
+qdaPred = qdaFinal.predict(X2Test)
+print(confusion_matrix(y2Test, qdaPred))
+```
+
+I chose to use Accuracy as the metric for selecting the best KNN model because the classes in this dataset are reasonably balanced, and Accuracy tells us how well the model performs overall without prioritizing one type of cannabis strain over another.
+
+```{python}
+from sklearn.neighbors import *
+
+knnModel = Pipeline([
+    ("scale", StandardScaler()),
+    ("model", KNeighborsClassifier())
+])
+
+knnParams = {
+    "model__n_neighbors": [3, 5, 7, 9, 11],
+    "model__weights": ["uniform", "distance"]
+}
+
+knnGrid = GridSearchCV(knnModel, knnParams, cv=cv, scoring="accuracy", refit=True)
+
+knnGrid.fit(XTrain, yTrain)
+
+print("Best Params:", knnGrid.best_params_)
+print("Best CV Accuracy:", knnGrid.best_score_)
+
+knnFinal = knnGrid.best_estimator_
+knnFinal.fit(XTrain, yTrain)
+
+knnPred = knnFinal.predict(XTest)
+print(confusion_matrix(yTest, knnPred))
+```
+
+# Q3
+My metrics were worse in Part Two for LDA and QDA because the problem became harder after adding the Hybrid type. With three classes instead of two, the model must separate more categories that have overlapping characteristics. This added complexity naturally lowers accuracy. KNN, however, performed better in Part Two, because KNN handles flexible non-linear boundaries well when class structure becomes more mixed.
+
+The confusion matrices show that models often confuse Hybrid with Sativa or Indica, because Hybrid strains share effects and flavors with both categories. This overlap makes them harder to classify, so the models frequently mislabel Hybrids in either direction. Sativa and Indica remain easier to separate since their profiles tend to be more distinct.
+
+## Part Three: Multiclass from Binary
+# Q1
+```{python}
+from sklearn.linear_model import LogisticRegression
+
+def run_ovr(label, model):
+    yTrain_binary = (y2Train == label).astype(int)
+    yTest_binary = (y2Test == label).astype(int)
+
+    model.fit(X2Train, yTrain_binary)
+
+    preds = model.predict(X2Test)
+
+    acc = accuracy_score(yTest_binary, preds)
+    cm = confusion_matrix(yTest_binary, preds)
+
+    print(f"{label} vs Not {label}")
+    print("Accuracy:", acc)
+    print(cm)
+
+svcModel = Pipeline([
+    ("scale", StandardScaler()),
+    ("model", SVC(kernel="linear", probability=True))
+])
+
+print("SVC OvR")
+for lbl in ["indica", "sativa", "hybrid"]:
+    run_ovr(lbl, svcModel)
+
+logModel = Pipeline([
+    ("scale", StandardScaler()),
+    ("model", LogisticRegression(max_iter=500))
+])
+
+print("\nLogistic Regression OvR")
+for lbl in ["indica", "sativa", "hybrid"]:
+    run_ovr(lbl, logModel)
+```
+
+# Q2
+The best-performing model was Logistic Regression for “Sativa vs. Not Sativa”, with an accuracy of 0.83297, meaning it separated Sativa strains from the others more reliably than any of the other OvR models.
+
+The worst-performing model was SVC for “Hybrid vs. Not Hybrid”, with an accuracy of 0.60738, showing that Hybrid strains were the hardest category to distinguish.
+
+This makes intuitive sense because Sativa strains tend to have the most distinct flavor and effect patterns, making them easier to classify, while Hybrid strains naturally blend characteristics of both Indica and Sativa, making them much harder for any model to separate cleanly.
+
+# Q3
+```{python}
+def run_ovo(model, group1, group2):
+    mask = y2.isin([group1, group2])
+    X_ovo = X2[mask]
+    y_ovo = y2[mask]
+
+    XTrain_ovo, XTest_ovo, yTrain_ovo, yTest_ovo = train_test_split(X_ovo, y_ovo, test_size=0.2, random_state=420, stratify=y_ovo)
+
+    cv_acc = cross_val_score(model, XTrain_ovo, yTrain_ovo, cv=cv, scoring="accuracy").mean()
+
+    model.fit(XTrain_ovo, yTrain_ovo)
+
+    preds = model.predict(XTest_ovo)
+    cm = confusion_matrix(yTest_ovo, preds)
+
+    return cv_acc, cm
+
+print("SVC OvO")
+
+svc_ovo_model = Pipeline([
+    ("scale", StandardScaler()),
+    ("model", SVC(kernel="linear"))
+])
+
+pairs = [
+    ("indica", "sativa"),
+    ("indica", "hybrid"),
+    ("hybrid", "sativa")
+]
+
+for a, b in pairs:
+    acc, cm = run_ovo(svc_ovo_model, a, b)
+    print(f"\n{a} vs {b}")
+    print("Accuracy:", acc)
+    print(cm)
+
+print("\nLogistic Regression OvO")
+
+log_ovo_model = Pipeline([
+    ("scale", StandardScaler()),
+    ("model", LogisticRegression(max_iter=500))
+])
+
+for a, b in pairs:
+    acc, cm = run_ovo(log_ovo_model, a, b)
+    print(f"\n{a} vs {b}")
+    print("Accuracy:", acc)
+    print(cm)
+```
+
+# Q4
+Across all six OvO models, SVC (Indica vs. Sativa) performed the best, with the highest accuracy, around 0.834. This makes sense because Indica and Sativa tend to be the most distinct categories in terms of both effects and flavors, so the model can separate them more cleanly.
+
+The worst-performing model was SVC (Hybrid vs. Sativa) with accuracy around 0.745. This is also intuitive because Hybrid strains often share characteristics with both Indica and Sativa, making them harder to classify distinctly—especially when compared against just one of the parent categories.
+
+# Q5
+After inputing the full dataset with three classes, LogisticRegression would automatically use a OvR approach. This means the model would fit one logistic regression classifier per class, each distinguishing “that class vs. the other two.”
+
+After inputing the full dataset with three classes, SVC would automatically use a OvO approach. This means it builds a separate classifier for every pair of classes and then combines the results through voting.
