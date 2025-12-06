@@ -379,3 +379,5 @@ submission = pd.DataFrame({
 submission.to_csv("submission_regression.csv", index=False)
 print(submission.head())
 ```
+
+This submission gave me an RMSE of **0.15686** on the test csv file.
