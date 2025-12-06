@@ -1,0 +1,381 @@
+---
+title: "Take Home Final Daniel Kwong"
+format: html
+embed-resources: true
+toc: true
+---
+https://github.com/daniellkwong/GSB544.git
+
+## Kaggle Competition - Classification
+```{python}
+#Import files
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import *
+from sklearn.compose import *
+from sklearn.preprocessing import *
+from sklearn.pipeline import *
+from sklearn.linear_model import *
+from sklearn.tree import *
+from sklearn.neighbors import *
+from sklearn.svm import *
+from sklearn.metrics import *
+
+import warnings
+warnings.filterwarnings("ignore")
+
+train = pd.read_csv("gsb-544-fall-2025-classification/CAH-201803-train.csv")
+test  = pd.read_csv("gsb-544-fall-2025-classification/CAH-201803-test.csv")
+
+print(train.shape, test.shape)
+train.head()
+```
+
+```{python}
+#Identify target, ID, and features
+target_col = "political_affiliation"
+id_col     = "id_num"
+
+X = train.drop(columns=[id_col, target_col])
+y = train[target_col]
+
+numeric_features = ["Q2", "Q15", "Q16", "Q17"]  
+categorical_features = [c for c in X.columns if c not in numeric_features]
+```
+
+```{python}
+#Pipeline
+preprocess = ColumnTransformer(
+    transformers=[
+        ("num", StandardScaler(), numeric_features),
+        ("cat", OneHotEncoder(handle_unknown="ignore"), categorical_features),
+    ]
+)
+```
+
+```{python}
+#Tune Logistic Regression
+log_pipe = Pipeline(steps=[
+    ("preprocess", preprocess),
+    ("model", LogisticRegression(
+        multi_class="multinomial",
+        solver="lbfgs",
+        max_iter=5000
+    ))
+])
+
+log_param_grid = {
+    "model__C": [0.001, 0.01, 0.1, 1, 10, 100]
+}
+
+log_grid = GridSearchCV(estimator=log_pipe, param_grid=log_param_grid, scoring="accuracy", cv=5, n_jobs=-1)
+
+log_grid.fit(X, y)
+
+print("Best Params:", log_grid.best_params_)
+print("Best CV Accuracy:", log_grid.best_score_)
+```
+
+```{python}
+#Tune Decision Tree
+dt_pipe = Pipeline(steps=[
+    ("preprocess", preprocess),
+    ("model", DecisionTreeClassifier(random_state=42))
+])
+
+dt_param_grid = {
+    "model__max_depth": [3, 5, 7, 10, None],
+    "model__min_samples_split": [2, 5, 10, 20],
+    "model__min_samples_leaf": [1, 2, 4, 6],
+    "model__criterion": ["gini", "entropy"]
+}
+
+dt_grid = GridSearchCV(estimator=dt_pipe, param_grid=dt_param_grid, scoring="accuracy", cv=5, n_jobs=-1)
+
+dt_grid.fit(X, y)
+
+print("Best Params:", dt_grid.best_params_)
+print("Best CV Accuracy:", dt_grid.best_score_)
+```
+
+```{python}
+#Tune KNN
+knn_pipe = Pipeline(steps=[
+    ("preprocess", preprocess),
+    ("model", KNeighborsClassifier())
+])
+
+knn_param_grid = {
+    "model__n_neighbors": [3, 5, 7, 9, 11, 15],
+    "model__weights": ["uniform", "distance"]
+}
+
+knn_grid = GridSearchCV(estimator=knn_pipe, param_grid=knn_param_grid, scoring="accuracy", cv=5, n_jobs=-1)
+
+knn_grid.fit(X, y)
+
+print("Best Params:", knn_grid.best_params_)
+print("Best CV Accuracy:", knn_grid.best_score_)
+```
+
+```{python}
+#Tune SVC
+svc_pipe = Pipeline(steps=[
+    ("preprocess", preprocess),
+    ("model", SVC())
+])
+
+svc_param_grid = {
+    "model__C": [0.1, 1, 10],
+    "model__kernel": ["linear", "rbf"],
+    "model__gamma": ["scale", "auto"]
+}
+
+svc_grid = GridSearchCV(estimator=svc_pipe, param_grid=svc_param_grid, scoring="accuracy", cv=5, n_jobs=-1)
+
+svc_grid.fit(X, y)
+
+print("Best Params:", svc_grid.best_params_)
+print("Best CV Accuracy:", svc_grid.best_score_)
+```
+
+```{python}
+#Compare models
+results = {
+    "Logistic": log_grid.best_score_,
+    "DecisionTree": dt_grid.best_score_,
+    "KNN": knn_grid.best_score_,
+    "SVC": svc_grid.best_score_,
+}
+
+for k, v in results.items():
+    print(k, ":", v)
+
+best_model_name = max(results, key=results.get)
+print("\nbest:", best_model_name)
+
+if best_model_name == "Logistic":
+    best_model = log_grid.best_estimator_
+elif best_model_name == "DecisionTree":
+    best_model = dt_grid.best_estimator_
+elif best_model_name == "KNN":
+    best_model = knn_grid.best_estimator_
+else:
+    best_model = svc_grid.best_estimator_
+```
+
+```{python}
+#Fit model on training data
+best_model.fit(X, y)
+
+y_pred_train = best_model.predict(X)
+print("\nAccuracy:", accuracy_score(y, y_pred_train))
+print(confusion_matrix(y, y_pred_train))
+print(classification_report(y, y_pred_train))
+```
+
+```{python}
+#Save to csv
+X_test = test.drop(columns=[id_col])
+
+test_pred = best_model.predict(X_test)
+
+submission = pd.DataFrame({
+    "id_num": test[id_col],
+    "political_affiliation_predicted": test_pred
+})
+
+submission.to_csv("submission.csv", index=False)
+submission.head()
+```
+
+This submission gave me an accuracy of **0.59036** on the test csv file.
+
+## Kaggle Competition - Regression
+```{python}
+#Import files
+from sklearn.impute import *
+from sklearn.ensemble import *
+
+train = pd.read_csv("gsb-544-fall-2025-regression/train_new.csv")
+test  = pd.read_csv("gsb-544-fall-2025-regression/test_new.csv")
+
+id_col = "PID"
+target_col = "SalePrice"
+
+X = train.drop(columns=[id_col, target_col])
+y = train[target_col]
+```
+
+```{python}
+#Log RMSE scorer
+
+def rmse_log(y_true, y_pred):
+    return np.sqrt(np.mean((np.log1p(y_true) - np.log1p(y_pred))**2)) #help from ChatGPT
+
+log_rmse_scorer = make_scorer(rmse_log, greater_is_better=False)
+```
+
+```{python}
+#Preprocess and impute NaN cells
+numeric_features = X.select_dtypes(include=[np.number]).columns.tolist()
+categorical_features = X.select_dtypes(exclude=[np.number]).columns.tolist()
+```
+
+```{python}
+#Make pipelines
+numeric_transformer = Pipeline(steps=[
+    ("impute", SimpleImputer(strategy="median")),
+    ("scale", StandardScaler())
+])
+
+categorical_transformer = Pipeline(steps=[
+    ("impute", SimpleImputer(strategy="most_frequent")),
+    ("onehot", OneHotEncoder(handle_unknown="ignore"))
+])
+
+preprocess = ColumnTransformer(
+    transformers=[
+        ("num", numeric_transformer, numeric_features),
+        ("cat", categorical_transformer, categorical_features)
+    ]
+)
+```
+
+```{python}
+#Create models and tuning grids
+lr_pipe = Pipeline([
+    ("preprocess", preprocess),
+    ("model", LinearRegression())
+])
+
+ridge_pipe = Pipeline([
+    ("preprocess", preprocess),
+    ("model", Ridge())
+])
+
+ridge_grid = {
+    "model__alpha": [0.1, 1, 5, 10, 20, 50]
+}
+
+lasso_pipe = Pipeline([
+    ("preprocess", preprocess),
+    ("model", Lasso(max_iter=5000))
+])
+
+lasso_grid = {
+    "model__alpha": [0.0001, 0.001, 0.01, 0.1, 1, 10]
+}
+
+enet_pipe = Pipeline([
+    ("preprocess", preprocess),
+    ("model", ElasticNet(max_iter=5000))
+])
+
+enet_grid = {
+    "model__alpha": [0.0001, 0.001, 0.01, 0.1, 1],
+    "model__l1_ratio": [0.1, 0.3, 0.5, 0.7, 0.9]
+}
+
+dt_pipe = Pipeline([
+    ("preprocess", preprocess),
+    ("model", DecisionTreeRegressor(random_state=42))
+])
+
+dt_grid = {
+    "model__max_depth": [5, 10, 20, None],
+    "model__min_samples_leaf": [1, 2, 5]
+}
+
+rf_pipe = Pipeline([
+    ("preprocess", preprocess),
+    ("model", RandomForestRegressor(random_state=42))
+])
+
+rf_grid = {
+    "model__n_estimators": [200, 400],
+    "model__max_depth": [10, 20, None],
+    "model__min_samples_leaf": [1, 2, 5]
+}
+
+knn_pipe = Pipeline([
+    ("preprocess", preprocess),
+    ("model", KNeighborsRegressor())
+])
+
+knn_grid = {
+    "model__n_neighbors": [3, 5, 7, 9, 11],
+    "model__weights": ["uniform", "distance"]
+}
+```
+
+```{python}
+#Train models witrh grid search
+lr_pipe.fit(X, y)
+ridge = GridSearchCV(ridge_pipe, ridge_grid, scoring=log_rmse_scorer, cv=5, n_jobs=-1)
+lasso = GridSearchCV(lasso_pipe, lasso_grid, scoring=log_rmse_scorer, cv=5, n_jobs=-1)
+enet = GridSearchCV(enet_pipe, enet_grid, scoring=log_rmse_scorer, cv=5, n_jobs=-1)
+dt = GridSearchCV(dt_pipe, dt_grid, scoring=log_rmse_scorer, cv=5, n_jobs=-1)
+rf = GridSearchCV(rf_pipe, rf_grid, scoring=log_rmse_scorer, cv=5, n_jobs=-1)
+knn = GridSearchCV(knn_pipe, knn_grid, scoring=log_rmse_scorer, cv=5, n_jobs=-1)
+
+ridge.fit(X, y)
+lasso.fit(X, y)
+enet.fit(X, y)
+dt.fit(X, y)
+rf.fit(X, y)
+knn.fit(X, y)
+```
+
+```{python}
+#Compare models
+results = {
+    "LinearRegression": -rmse_log(y, lr_pipe.predict(X)),  
+    "Ridge": ridge.best_score_,
+    "Lasso": lasso.best_score_,
+    "ElasticNet": enet.best_score_,
+    "DecisionTree": dt.best_score_,
+    "RandomForest": rf.best_score_,
+    "KNN": knn.best_score_
+}
+
+for model, score in results.items():
+    print(model, ":", score)
+
+best_model_name = max(results, key=results.get)
+print("\nBest model:", best_model_name)
+
+if best_model_name == "Ridge":
+    best_model = ridge.best_estimator_
+elif best_model_name == "Lasso":
+    best_model = lasso.best_estimator_
+elif best_model_name == "ElasticNet":
+    best_model = enet.best_estimator_
+elif best_model_name == "DecisionTree":
+    best_model = dt.best_estimator_
+elif best_model_name == "RandomForest":
+    best_model = rf.best_estimator_
+elif best_model_name == "KNN":
+    best_model = knn.best_estimator_
+else:
+    best_model = lr_pipe
+```
+
+```{python}
+#Fit model on training data
+best_model.fit(X, y)
+```
+
+```{python}
+#Save to csv
+X_test = test.drop(columns=[id_col])
+test_pred = best_model.predict(X_test)
+
+submission = pd.DataFrame({
+    "PID": test[id_col],
+    "SalePrice": test_pred
+})
+
+submission.to_csv("submission_regression.csv", index=False)
+print(submission.head())
+```
