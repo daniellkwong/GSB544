@@ -2212,7 +2212,7 @@ vertical-align: -.125em;
 <p>https://github.com/daniellkwong/GSB544.git</p>
 <section id="kaggle-competition---classification" class="level2">
 <h2 class="anchored" data-anchor-id="kaggle-competition---classification">Kaggle Competition - Classification</h2>
-<div id="b273a67f" class="cell" data-execution_count="1">
+<div id="0071dccc" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Import files</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -2237,7 +2237,7 @@ vertical-align: -.125em;
 <div class="cell-output cell-output-stdout">
 <pre><code>(169, 19) (166, 18)</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="20">
+<div class="cell-output cell-output-display" data-execution_count="39">
 <div>
 
 
@@ -2383,7 +2383,7 @@ vertical-align: -.125em;
 </div>
 </div>
 </div>
-<div id="88afe007" class="cell" data-execution_count="2">
+<div id="f2f34da9" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Identify target, ID, and features</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>target_col <span class="op">=</span> <span class="st">&quot;political_affiliation&quot;</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>id_col     <span class="op">=</span> <span class="st">&quot;id_num&quot;</span></span>
@@ -2394,7 +2394,7 @@ vertical-align: -.125em;
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>numeric_features <span class="op">=</span> [<span class="st">&quot;Q2&quot;</span>, <span class="st">&quot;Q15&quot;</span>, <span class="st">&quot;Q16&quot;</span>, <span class="st">&quot;Q17&quot;</span>]  </span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>categorical_features <span class="op">=</span> [c <span class="cf">for</span> c <span class="kw">in</span> X.columns <span class="cf">if</span> c <span class="kw">not</span> <span class="kw">in</span> numeric_features]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="f1aa5620" class="cell" data-execution_count="3">
+<div id="4c56b276" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Pipeline</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>preprocess <span class="op">=</span> ColumnTransformer(</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    transformers<span class="op">=</span>[</span>
@@ -2403,7 +2403,7 @@ vertical-align: -.125em;
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    ]</span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="49e58544" class="cell" data-execution_count="4">
+<div id="79e12e99" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Tune Logistic Regression</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>log_pipe <span class="op">=</span> Pipeline(steps<span class="op">=</span>[</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    (<span class="st">&quot;preprocess&quot;</span>, preprocess),</span>
@@ -2491,7 +2491,7 @@ Best CV Accuracy: 0.6333333333333333</code></pre>
   warnings.warn(</code></pre>
 </div>
 </div>
-<div id="40b6694e" class="cell" data-execution_count="5">
+<div id="c890c52f" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Tune Decision Tree</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>dt_pipe <span class="op">=</span> Pipeline(steps<span class="op">=</span>[</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    (<span class="st">&quot;preprocess&quot;</span>, preprocess),</span>
@@ -2516,7 +2516,7 @@ Best CV Accuracy: 0.6333333333333333</code></pre>
 Best CV Accuracy: 0.5976827094474153</code></pre>
 </div>
 </div>
-<div id="9422f2ca" class="cell" data-execution_count="6">
+<div id="1b73e8b3" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Tune KNN</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>knn_pipe <span class="op">=</span> Pipeline(steps<span class="op">=</span>[</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    (<span class="st">&quot;preprocess&quot;</span>, preprocess),</span>
@@ -2539,7 +2539,7 @@ Best CV Accuracy: 0.5976827094474153</code></pre>
 Best CV Accuracy: 0.5445632798573976</code></pre>
 </div>
 </div>
-<div id="004c8bd1" class="cell" data-execution_count="7">
+<div id="bd473b46" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Tune SVC</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>svc_pipe <span class="op">=</span> Pipeline(steps<span class="op">=</span>[</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    (<span class="st">&quot;preprocess&quot;</span>, preprocess),</span>
@@ -2563,7 +2563,7 @@ Best CV Accuracy: 0.5445632798573976</code></pre>
 Best CV Accuracy: 0.6212121212121212</code></pre>
 </div>
 </div>
-<div id="9e0ca3cb" class="cell" data-execution_count="8">
+<div id="b1aeae93" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Compare models</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> {</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Logistic&quot;</span>: log_grid.best_score_,</span>
@@ -2595,7 +2595,7 @@ SVC : 0.6212121212121212
 best: Logistic</code></pre>
 </div>
 </div>
-<div id="01667db6" class="cell" data-execution_count="9">
+<div id="7b266ed8" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Fit model on training data</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>best_model.fit(X, y)</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -2621,7 +2621,7 @@ weighted avg       0.74      0.73      0.73       169
 </code></pre>
 </div>
 </div>
-<div id="29bb419c" class="cell" data-execution_count="10">
+<div id="fd46330e" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Save to csv</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>X_test <span class="op">=</span> test.drop(columns<span class="op">=</span>[id_col])</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -2634,7 +2634,7 @@ weighted avg       0.74      0.73      0.73       169
 <span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>submission.to_csv(<span class="st">&quot;submission.csv&quot;</span>, index<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>submission.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="29">
+<div class="cell-output cell-output-display" data-execution_count="48">
 <div>
 
 
@@ -2682,7 +2682,7 @@ weighted avg       0.74      0.73      0.73       169
 </section>
 <section id="kaggle-competition---regression" class="level2">
 <h2 class="anchored" data-anchor-id="kaggle-competition---regression">Kaggle Competition - Regression</h2>
-<div id="2d10d27a" class="cell" data-execution_count="11">
+<div id="6041bb70" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Import files</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.impute <span class="im">import</span> <span class="op">*</span></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> <span class="op">*</span></span>
@@ -2696,7 +2696,7 @@ weighted avg       0.74      0.73      0.73       169
 <span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> train.drop(columns<span class="op">=</span>[id_col, target_col])</span>
 <span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> train[target_col]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="d1bfcaaf" class="cell" data-execution_count="12">
+<div id="e56b63d3" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Log RMSE scorer</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rmse_log(y_true, y_pred):</span>
@@ -2704,12 +2704,12 @@ weighted avg       0.74      0.73      0.73       169
 <span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>log_rmse_scorer <span class="op">=</span> make_scorer(rmse_log, greater_is_better<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="e1fca879" class="cell" data-execution_count="13">
+<div id="4c8b7b7b" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Preprocess and impute NaN cells</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>numeric_features <span class="op">=</span> X.select_dtypes(include<span class="op">=</span>[np.number]).columns.tolist()</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>categorical_features <span class="op">=</span> X.select_dtypes(exclude<span class="op">=</span>[np.number]).columns.tolist()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="0d205bc6" class="cell" data-execution_count="14">
+<div id="85b0a123" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Make pipelines</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>numeric_transformer <span class="op">=</span> Pipeline(steps<span class="op">=</span>[</span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    (<span class="st">&quot;impute&quot;</span>, SimpleImputer(strategy<span class="op">=</span><span class="st">&quot;median&quot;</span>)),</span>
@@ -2728,7 +2728,7 @@ weighted avg       0.74      0.73      0.73       169
 <span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>    ]</span>
 <span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="8e25aa30" class="cell" data-execution_count="15">
+<div id="0a7785e3" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Create models and tuning grids</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>lr_pipe <span class="op">=</span> Pipeline([</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    (<span class="st">&quot;preprocess&quot;</span>, preprocess),</span>
@@ -2794,7 +2794,7 @@ weighted avg       0.74      0.73      0.73       169
 <span id="cb23-63"><a href="#cb23-63" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;model__weights&quot;</span>: [<span class="st">&quot;uniform&quot;</span>, <span class="st">&quot;distance&quot;</span>]</span>
 <span id="cb23-64"><a href="#cb23-64" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="201c30fe" class="cell" data-execution_count="16">
+<div id="eacc74eb" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Train models witrh grid search</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>lr_pipe.fit(X, y)</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>ridge <span class="op">=</span> GridSearchCV(ridge_pipe, ridge_grid, scoring<span class="op">=</span>log_rmse_scorer, cv<span class="op">=</span><span class="dv">5</span>, n_jobs<span class="op">=-</span><span class="dv">1</span>)</span>
@@ -2819,97 +2819,97 @@ weighted avg       0.74      0.73      0.73       169
   model = cd_fast.sparse_enet_coordinate_descent(
 /opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 324827346742.95154, tolerance: 1088086317.131103
   model = cd_fast.sparse_enet_coordinate_descent(
-/opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 195668785149.19934, tolerance: 1186681525.1784039
-  model = cd_fast.sparse_enet_coordinate_descent(
-/var/folders/cj/lhwdq9n91y75r89vyst_8lhr0000gn/T/ipykernel_19887/1805537895.py:4: RuntimeWarning: invalid value encountered in log1p
-/opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 20064243740.2312, tolerance: 1186053689.3613808
+/opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 322804210959.5531, tolerance: 1180819963.3220844
   model = cd_fast.sparse_enet_coordinate_descent(
 /opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 20063829114.85034, tolerance: 1186053689.3613808
   model = cd_fast.sparse_enet_coordinate_descent(
-/opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 322804210959.5531, tolerance: 1180819963.3220844
+/opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 54549262840.73242, tolerance: 1144668215.652352
   model = cd_fast.sparse_enet_coordinate_descent(
 /opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 322805799896.1183, tolerance: 1180819963.3220844
   model = cd_fast.sparse_enet_coordinate_descent(
-/opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 54549262840.73242, tolerance: 1144668215.652352
+/opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 20064243740.2312, tolerance: 1186053689.3613808
   model = cd_fast.sparse_enet_coordinate_descent(
-/opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 20068062399.45703, tolerance: 1186053689.3613808
+/opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 195668785149.19934, tolerance: 1186681525.1784039
+  model = cd_fast.sparse_enet_coordinate_descent(
+/var/folders/cj/lhwdq9n91y75r89vyst_8lhr0000gn/T/ipykernel_19887/1805537895.py:4: RuntimeWarning: invalid value encountered in log1p
+/opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 54549925193.81714, tolerance: 1144668215.652352
   model = cd_fast.sparse_enet_coordinate_descent(
 /opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 324840690691.8452, tolerance: 1088086317.131103
   model = cd_fast.sparse_enet_coordinate_descent(
-/opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 54549925193.81714, tolerance: 1144668215.652352
-  model = cd_fast.sparse_enet_coordinate_descent(
-/opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 195681342713.66833, tolerance: 1186681525.1784039
-  model = cd_fast.sparse_enet_coordinate_descent(
-/opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 322821221168.5631, tolerance: 1180819963.3220844
-  model = cd_fast.sparse_enet_coordinate_descent(
-/var/folders/cj/lhwdq9n91y75r89vyst_8lhr0000gn/T/ipykernel_19887/1805537895.py:4: RuntimeWarning: invalid value encountered in log1p
-/opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 195669974812.6737, tolerance: 1186681525.1784039
-  model = cd_fast.sparse_enet_coordinate_descent(
 /opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 17258839405.832275, tolerance: 1088086317.131103
   model = cd_fast.sparse_enet_coordinate_descent(
-/var/folders/cj/lhwdq9n91y75r89vyst_8lhr0000gn/T/ipykernel_19887/1805537895.py:4: RuntimeWarning: invalid value encountered in log1p
+/opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 20068062399.45703, tolerance: 1186053689.3613808
+  model = cd_fast.sparse_enet_coordinate_descent(
+/opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 195669974812.6737, tolerance: 1186681525.1784039
+  model = cd_fast.sparse_enet_coordinate_descent(
 /opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 54556262382.536865, tolerance: 1144668215.652352
+  model = cd_fast.sparse_enet_coordinate_descent(
+/var/folders/cj/lhwdq9n91y75r89vyst_8lhr0000gn/T/ipykernel_19887/1805537895.py:4: RuntimeWarning: invalid value encountered in log1p
+/opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 195681342713.66833, tolerance: 1186681525.1784039
+  model = cd_fast.sparse_enet_coordinate_descent(
+/var/folders/cj/lhwdq9n91y75r89vyst_8lhr0000gn/T/ipykernel_19887/1805537895.py:4: RuntimeWarning: invalid value encountered in log1p
+/opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 322821221168.5631, tolerance: 1180819963.3220844
   model = cd_fast.sparse_enet_coordinate_descent(
 /var/folders/cj/lhwdq9n91y75r89vyst_8lhr0000gn/T/ipykernel_19887/1805537895.py:4: RuntimeWarning: invalid value encountered in log1p
 /opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 5909432242.384033, tolerance: 1186681525.1784039
   model = cd_fast.sparse_enet_coordinate_descent(
 /var/folders/cj/lhwdq9n91y75r89vyst_8lhr0000gn/T/ipykernel_19887/1805537895.py:4: RuntimeWarning: invalid value encountered in log1p
-/opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 20098535356.008057, tolerance: 1186053689.3613808
-  model = cd_fast.sparse_enet_coordinate_descent(
 /opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 3790255925.903076, tolerance: 1180819963.3220844
   model = cd_fast.sparse_enet_coordinate_descent(
 /opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 54610092508.927, tolerance: 1144668215.652352
   model = cd_fast.sparse_enet_coordinate_descent(
+/opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 20098535356.008057, tolerance: 1186053689.3613808
+  model = cd_fast.sparse_enet_coordinate_descent(
+/opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 210230346931.3136, tolerance: 1144668215.652352
+  model = cd_fast.sparse_enet_coordinate_descent(
 /opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 9528715974.277588, tolerance: 1186053689.3613808
   model = cd_fast.sparse_enet_coordinate_descent(
-/opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 191355936449.9431, tolerance: 1186053689.3613808
+/opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 229122132325.7932, tolerance: 1180819963.3220844
   model = cd_fast.sparse_enet_coordinate_descent(
-/opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 187857524324.2157, tolerance: 1088086317.131103
+/opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 10754039038.896973, tolerance: 1088086317.131103
   model = cd_fast.sparse_enet_coordinate_descent(
 /opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 26730440703.036865, tolerance: 1186681525.1784039
   model = cd_fast.sparse_enet_coordinate_descent(
 /var/folders/cj/lhwdq9n91y75r89vyst_8lhr0000gn/T/ipykernel_19887/1805537895.py:4: RuntimeWarning: invalid value encountered in log1p
+/opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 191355936449.9431, tolerance: 1186053689.3613808
+  model = cd_fast.sparse_enet_coordinate_descent(
 /opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 481871367558.7684, tolerance: 1180819963.3220844
   model = cd_fast.sparse_enet_coordinate_descent(
-/opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 10754039038.896973, tolerance: 1088086317.131103
-  model = cd_fast.sparse_enet_coordinate_descent(
-/opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 229122132325.7932, tolerance: 1180819963.3220844
-  model = cd_fast.sparse_enet_coordinate_descent(
-/opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 210230346931.3136, tolerance: 1144668215.652352
-  model = cd_fast.sparse_enet_coordinate_descent(
-/opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 706852070057.0233, tolerance: 1180819963.3220844
+/opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 187857524324.2157, tolerance: 1088086317.131103
   model = cd_fast.sparse_enet_coordinate_descent(
 /opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 199937846289.6079, tolerance: 1186681525.1784039
   model = cd_fast.sparse_enet_coordinate_descent(
 /var/folders/cj/lhwdq9n91y75r89vyst_8lhr0000gn/T/ipykernel_19887/1805537895.py:4: RuntimeWarning: invalid value encountered in log1p
-/opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 487673546581.1099, tolerance: 1144668215.652352
-  model = cd_fast.sparse_enet_coordinate_descent(
 /opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 694535773267.8656, tolerance: 1088086317.131103
   model = cd_fast.sparse_enet_coordinate_descent(
 /opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 759550977233.1119, tolerance: 1186053689.3613808
   model = cd_fast.sparse_enet_coordinate_descent(
 /opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 710962605469.8545, tolerance: 1186681525.1784039
   model = cd_fast.sparse_enet_coordinate_descent(
+/opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 706852070057.0233, tolerance: 1180819963.3220844
+  model = cd_fast.sparse_enet_coordinate_descent(
+/opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 487673546581.1099, tolerance: 1144668215.652352
+  model = cd_fast.sparse_enet_coordinate_descent(
 /var/folders/cj/lhwdq9n91y75r89vyst_8lhr0000gn/T/ipykernel_19887/1805537895.py:4: RuntimeWarning: invalid value encountered in log1p
 /opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 764253692022.9731, tolerance: 1144668215.652352
   model = cd_fast.sparse_enet_coordinate_descent(
 /opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 785800145030.6705, tolerance: 1088086317.131103
   model = cd_fast.sparse_enet_coordinate_descent(
-/opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 774722797594.4445, tolerance: 1180819963.3220844
+/opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 792989761235.3562, tolerance: 1088086317.131103
   model = cd_fast.sparse_enet_coordinate_descent(
 /opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 894189520619.9872, tolerance: 1186053689.3613808
   model = cd_fast.sparse_enet_coordinate_descent(
-/opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 792989761235.3562, tolerance: 1088086317.131103
-  model = cd_fast.sparse_enet_coordinate_descent(
 /opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 853146965512.5511, tolerance: 1144668215.652352
+  model = cd_fast.sparse_enet_coordinate_descent(
+/opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 783629259968.9231, tolerance: 1180819963.3220844
+  model = cd_fast.sparse_enet_coordinate_descent(
+/opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 904870693110.4532, tolerance: 1186053689.3613808
+  model = cd_fast.sparse_enet_coordinate_descent(
+/opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 774722797594.4445, tolerance: 1180819963.3220844
   model = cd_fast.sparse_enet_coordinate_descent(
 /opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 815861422341.3278, tolerance: 1186681525.1784039
   model = cd_fast.sparse_enet_coordinate_descent(
 /var/folders/cj/lhwdq9n91y75r89vyst_8lhr0000gn/T/ipykernel_19887/1805537895.py:4: RuntimeWarning: invalid value encountered in log1p
-/opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 904870693110.4532, tolerance: 1186053689.3613808
-  model = cd_fast.sparse_enet_coordinate_descent(
-/opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 783629259968.9231, tolerance: 1180819963.3220844
-  model = cd_fast.sparse_enet_coordinate_descent(
 /opt/anaconda3/lib/python3.13/site-packages/sklearn/linear_model/_coordinate_descent.py:656: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations. Duality gap: 823460439615.6526, tolerance: 1186681525.1784039
   model = cd_fast.sparse_enet_coordinate_descent(
 /var/folders/cj/lhwdq9n91y75r89vyst_8lhr0000gn/T/ipykernel_19887/1805537895.py:4: RuntimeWarning: invalid value encountered in log1p
@@ -2928,8 +2928,8 @@ weighted avg       0.74      0.73      0.73       169
 /var/folders/cj/lhwdq9n91y75r89vyst_8lhr0000gn/T/ipykernel_19887/1805537895.py:4: RuntimeWarning: invalid value encountered in log1p
 /var/folders/cj/lhwdq9n91y75r89vyst_8lhr0000gn/T/ipykernel_19887/1805537895.py:4: RuntimeWarning: invalid value encountered in log1p</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="35">
-<style>#sk-container-id-3 {
+<div class="cell-output cell-output-display" data-execution_count="54">
+<style>#sk-container-id-5 {
 
 --sklearn-color-text: #000;
 --sklearn-color-text-muted: #666;
@@ -2957,13 +2957,13 @@ weighted avg       0.74      0.73      0.73       169
 --sklearn-color-icon: #878787;
 }
 }
-#sk-container-id-3 {
+#sk-container-id-5 {
 color: var(--sklearn-color-text);
 }
-#sk-container-id-3 pre {
+#sk-container-id-5 pre {
 padding: 0;
 }
-#sk-container-id-3 input.sk-hidden--visually {
+#sk-container-id-5 input.sk-hidden--visually {
 border: 0;
 clip: rect(1px 1px 1px 1px);
 clip: rect(1px, 1px, 1px, 1px);
@@ -2974,19 +2974,19 @@ padding: 0;
 position: absolute;
 width: 1px;
 }
-#sk-container-id-3 div.sk-dashed-wrapped {
+#sk-container-id-5 div.sk-dashed-wrapped {
 border: 1px dashed var(--sklearn-color-line);
 margin: 0 0.4em 0.5em 0.4em;
 box-sizing: border-box;
 padding-bottom: 0.4em;
 background-color: var(--sklearn-color-background);
 }
-#sk-container-id-3 div.sk-container {
+#sk-container-id-5 div.sk-container {
 
 display: inline-block !important;
 position: relative;
 }
-#sk-container-id-3 div.sk-text-repr-fallback {
+#sk-container-id-5 div.sk-text-repr-fallback {
 display: none;
 }
 div.sk-parallel-item,
@@ -2999,36 +2999,36 @@ background-repeat: no-repeat;
 background-position: center center;
 }
 
-#sk-container-id-3 div.sk-parallel-item::after {
+#sk-container-id-5 div.sk-parallel-item::after {
 content: "";
 width: 100%;
 border-bottom: 2px solid var(--sklearn-color-text-on-default-background);
 flex-grow: 1;
 }
-#sk-container-id-3 div.sk-parallel {
+#sk-container-id-5 div.sk-parallel {
 display: flex;
 align-items: stretch;
 justify-content: center;
 background-color: var(--sklearn-color-background);
 position: relative;
 }
-#sk-container-id-3 div.sk-parallel-item {
+#sk-container-id-5 div.sk-parallel-item {
 display: flex;
 flex-direction: column;
 }
-#sk-container-id-3 div.sk-parallel-item:first-child::after {
+#sk-container-id-5 div.sk-parallel-item:first-child::after {
 align-self: flex-end;
 width: 50%;
 }
-#sk-container-id-3 div.sk-parallel-item:last-child::after {
+#sk-container-id-5 div.sk-parallel-item:last-child::after {
 align-self: flex-start;
 width: 50%;
 }
-#sk-container-id-3 div.sk-parallel-item:only-child::after {
+#sk-container-id-5 div.sk-parallel-item:only-child::after {
 width: 0;
 }
 
-#sk-container-id-3 div.sk-serial {
+#sk-container-id-5 div.sk-serial {
 display: flex;
 flex-direction: column;
 align-items: center;
@@ -3038,12 +3038,12 @@ padding-left: 1em;
 }
 
 
-#sk-container-id-3 div.sk-toggleable {
+#sk-container-id-5 div.sk-toggleable {
 
 background-color: var(--sklearn-color-background);
 }
 
-#sk-container-id-3 label.sk-toggleable__label {
+#sk-container-id-5 label.sk-toggleable__label {
 cursor: pointer;
 display: flex;
 width: 100%;
@@ -3055,23 +3055,23 @@ align-items: start;
 justify-content: space-between;
 gap: 0.5em;
 }
-#sk-container-id-3 label.sk-toggleable__label .caption {
+#sk-container-id-5 label.sk-toggleable__label .caption {
 font-size: 0.6rem;
 font-weight: lighter;
 color: var(--sklearn-color-text-muted);
 }
-#sk-container-id-3 label.sk-toggleable__label-arrow:before {
+#sk-container-id-5 label.sk-toggleable__label-arrow:before {
 
 content: "▸";
 float: left;
 margin-right: 0.25em;
 color: var(--sklearn-color-icon);
 }
-#sk-container-id-3 label.sk-toggleable__label-arrow:hover:before {
+#sk-container-id-5 label.sk-toggleable__label-arrow:hover:before {
 color: var(--sklearn-color-text);
 }
 
-#sk-container-id-3 div.sk-toggleable__content {
+#sk-container-id-5 div.sk-toggleable__content {
 max-height: 0;
 max-width: 0;
 overflow: hidden;
@@ -3079,75 +3079,75 @@ text-align: left;
 
 background-color: var(--sklearn-color-unfitted-level-0);
 }
-#sk-container-id-3 div.sk-toggleable__content.fitted {
+#sk-container-id-5 div.sk-toggleable__content.fitted {
 
 background-color: var(--sklearn-color-fitted-level-0);
 }
-#sk-container-id-3 div.sk-toggleable__content pre {
+#sk-container-id-5 div.sk-toggleable__content pre {
 margin: 0.2em;
 border-radius: 0.25em;
 color: var(--sklearn-color-text);
 
 background-color: var(--sklearn-color-unfitted-level-0);
 }
-#sk-container-id-3 div.sk-toggleable__content.fitted pre {
+#sk-container-id-5 div.sk-toggleable__content.fitted pre {
 
 background-color: var(--sklearn-color-fitted-level-0);
 }
-#sk-container-id-3 input.sk-toggleable__control:checked~div.sk-toggleable__content {
+#sk-container-id-5 input.sk-toggleable__control:checked~div.sk-toggleable__content {
 
 max-height: 200px;
 max-width: 100%;
 overflow: auto;
 }
-#sk-container-id-3 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {
+#sk-container-id-5 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {
 content: "▾";
 }
 
-#sk-container-id-3 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {
+#sk-container-id-5 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {
 color: var(--sklearn-color-text);
 background-color: var(--sklearn-color-unfitted-level-2);
 }
-#sk-container-id-3 div.sk-label.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+#sk-container-id-5 div.sk-label.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
 background-color: var(--sklearn-color-fitted-level-2);
 }
 
 
-#sk-container-id-3 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {
+#sk-container-id-5 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {
 
 background-color: var(--sklearn-color-unfitted-level-2);
 }
-#sk-container-id-3 div.sk-estimator.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+#sk-container-id-5 div.sk-estimator.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
 
 background-color: var(--sklearn-color-fitted-level-2);
 }
-#sk-container-id-3 div.sk-label label.sk-toggleable__label,
-#sk-container-id-3 div.sk-label label {
+#sk-container-id-5 div.sk-label label.sk-toggleable__label,
+#sk-container-id-5 div.sk-label label {
 
 color: var(--sklearn-color-text-on-default-background);
 }
 
-#sk-container-id-3 div.sk-label:hover label.sk-toggleable__label {
+#sk-container-id-5 div.sk-label:hover label.sk-toggleable__label {
 color: var(--sklearn-color-text);
 background-color: var(--sklearn-color-unfitted-level-2);
 }
 
-#sk-container-id-3 div.sk-label.fitted:hover label.sk-toggleable__label.fitted {
+#sk-container-id-5 div.sk-label.fitted:hover label.sk-toggleable__label.fitted {
 color: var(--sklearn-color-text);
 background-color: var(--sklearn-color-fitted-level-2);
 }
 
-#sk-container-id-3 div.sk-label label {
+#sk-container-id-5 div.sk-label label {
 font-family: monospace;
 font-weight: bold;
 display: inline-block;
 line-height: 1.2em;
 }
-#sk-container-id-3 div.sk-label-container {
+#sk-container-id-5 div.sk-label-container {
 text-align: center;
 }
 
-#sk-container-id-3 div.sk-estimator {
+#sk-container-id-5 div.sk-estimator {
 font-family: monospace;
 border: 1px dotted var(--sklearn-color-border-box);
 border-radius: 0.25em;
@@ -3156,16 +3156,16 @@ margin-bottom: 0.5em;
 
 background-color: var(--sklearn-color-unfitted-level-0);
 }
-#sk-container-id-3 div.sk-estimator.fitted {
+#sk-container-id-5 div.sk-estimator.fitted {
 
 background-color: var(--sklearn-color-fitted-level-0);
 }
 
-#sk-container-id-3 div.sk-estimator:hover {
+#sk-container-id-5 div.sk-estimator:hover {
 
 background-color: var(--sklearn-color-unfitted-level-2);
 }
-#sk-container-id-3 div.sk-estimator.fitted:hover {
+#sk-container-id-5 div.sk-estimator.fitted:hover {
 
 background-color: var(--sklearn-color-fitted-level-2);
 }
@@ -3243,7 +3243,7 @@ display: block;
 }
 /* "?"-specific style due to the `<a>` HTML tag */
 
-#sk-container-id-3 a.estimator_doc_link {
+#sk-container-id-5 a.estimator_doc_link {
   float: right;
   font-size: 1rem;
   line-height: 1em;
@@ -3258,25 +3258,25 @@ display: block;
   border: var(--sklearn-color-unfitted-level-1) 1pt solid;
 }
 
-#sk-container-id-3 a.estimator_doc_link.fitted {
+#sk-container-id-5 a.estimator_doc_link.fitted {
   /* fitted */
   border: var(--sklearn-color-fitted-level-1) 1pt solid;
   color: var(--sklearn-color-fitted-level-1);
 }
 
 /* On hover */
-#sk-container-id-3 a.estimator_doc_link:hover {
+#sk-container-id-5 a.estimator_doc_link:hover {
   /* unfitted */
   background-color: var(--sklearn-color-unfitted-level-3);
   color: var(--sklearn-color-background);
   text-decoration: none;
 }
 
-#sk-container-id-3 a.estimator_doc_link.fitted:hover {
+#sk-container-id-5 a.estimator_doc_link.fitted:hover {
   /* fitted */
   background-color: var(--sklearn-color-fitted-level-3);
 }
-</style><div id="sk-container-id-3" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GridSearchCV(cv=5,
+</style><div id="sk-container-id-5" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GridSearchCV(cv=5,
              estimator=Pipeline(steps=[(&#39;preprocess&#39;,
                                         ColumnTransformer(transformers=[(&#39;num&#39;,
                                                                          Pipeline(steps=[(&#39;impute&#39;,
@@ -3326,7 +3326,7 @@ display: block;
              n_jobs=-1,
              param_grid={&#39;model__n_neighbors&#39;: [3, 5, 7, 9, 11],
                          &#39;model__weights&#39;: [&#39;uniform&#39;, &#39;distance&#39;]},
-             scoring=make_scorer(rmse_log, greater_is_better=False, response_method=&#39;predict&#39;))</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br>On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item sk-dashed-wrapped"><div class="sk-label-container"><div class="sk-label fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-20" type="checkbox"><label for="sk-estimator-id-20" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GridSearchCV</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.6/modules/generated/sklearn.model_selection.GridSearchCV.html">?<span>Documentation for GridSearchCV</span></a><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted"><pre>GridSearchCV(cv=5,
+             scoring=make_scorer(rmse_log, greater_is_better=False, response_method=&#39;predict&#39;))</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br>On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item sk-dashed-wrapped"><div class="sk-label-container"><div class="sk-label fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-39" type="checkbox"><label for="sk-estimator-id-39" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GridSearchCV</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.6/modules/generated/sklearn.model_selection.GridSearchCV.html">?<span>Documentation for GridSearchCV</span></a><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted"><pre>GridSearchCV(cv=5,
              estimator=Pipeline(steps=[(&#39;preprocess&#39;,
                                         ColumnTransformer(transformers=[(&#39;num&#39;,
                                                                          Pipeline(steps=[(&#39;impute&#39;,
@@ -3376,7 +3376,7 @@ display: block;
              n_jobs=-1,
              param_grid={&#39;model__n_neighbors&#39;: [3, 5, 7, 9, 11],
                          &#39;model__weights&#39;: [&#39;uniform&#39;, &#39;distance&#39;]},
-             scoring=make_scorer(rmse_log, greater_is_better=False, response_method=&#39;predict&#39;))</pre></div> </div></div><div class="sk-parallel"><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-21" type="checkbox"><label for="sk-estimator-id-21" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>best_estimator_: Pipeline</div></div></label><div class="sk-toggleable__content fitted"><pre>Pipeline(steps=[(&#39;preprocess&#39;,
+             scoring=make_scorer(rmse_log, greater_is_better=False, response_method=&#39;predict&#39;))</pre></div> </div></div><div class="sk-parallel"><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-40" type="checkbox"><label for="sk-estimator-id-40" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>best_estimator_: Pipeline</div></div></label><div class="sk-toggleable__content fitted"><pre>Pipeline(steps=[(&#39;preprocess&#39;,
                  ColumnTransformer(transformers=[(&#39;num&#39;,
                                                   Pipeline(steps=[(&#39;impute&#39;,
                                                                    SimpleImputer(strategy=&#39;median&#39;)),
@@ -3402,7 +3402,7 @@ display: block;
                                                    &#39;Central Air&#39;, &#39;Electrical&#39;,
                                                    &#39;Functional&#39;,
                                                    &#39;Sale Type&#39;])])),
-                (&#39;model&#39;, KNeighborsRegressor(weights=&#39;distance&#39;))])</pre></div> </div></div><div class="sk-serial"><div class="sk-item"><div class="sk-serial"><div class="sk-item sk-dashed-wrapped"><div class="sk-label-container"><div class="sk-label fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-22" type="checkbox"><label for="sk-estimator-id-22" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>preprocess: ColumnTransformer</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.6/modules/generated/sklearn.compose.ColumnTransformer.html">?<span>Documentation for preprocess: ColumnTransformer</span></a></div></label><div class="sk-toggleable__content fitted"><pre>ColumnTransformer(transformers=[(&#39;num&#39;,
+                (&#39;model&#39;, KNeighborsRegressor(weights=&#39;distance&#39;))])</pre></div> </div></div><div class="sk-serial"><div class="sk-item"><div class="sk-serial"><div class="sk-item sk-dashed-wrapped"><div class="sk-label-container"><div class="sk-label fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-41" type="checkbox"><label for="sk-estimator-id-41" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>preprocess: ColumnTransformer</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.6/modules/generated/sklearn.compose.ColumnTransformer.html">?<span>Documentation for preprocess: ColumnTransformer</span></a></div></label><div class="sk-toggleable__content fitted"><pre>ColumnTransformer(transformers=[(&#39;num&#39;,
                                  Pipeline(steps=[(&#39;impute&#39;,
                                                   SimpleImputer(strategy=&#39;median&#39;)),
                                                  (&#39;scale&#39;, StandardScaler())]),
@@ -3419,10 +3419,10 @@ display: block;
                                  [&#39;Street&#39;, &#39;Neighborhood&#39;, &#39;Bldg Type&#39;,
                                   &#39;House Style&#39;, &#39;Roof Style&#39;, &#39;Heating&#39;,
                                   &#39;Central Air&#39;, &#39;Electrical&#39;, &#39;Functional&#39;,
-                                  &#39;Sale Type&#39;])])</pre></div> </div></div><div class="sk-parallel"><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-23" type="checkbox"><label for="sk-estimator-id-23" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>num</div></div></label><div class="sk-toggleable__content fitted"><pre>[&#39;Lot Frontage&#39;, &#39;Lot Area&#39;, &#39;Overall Qual&#39;, &#39;Overall Cond&#39;, &#39;Year Built&#39;, &#39;Full Bath&#39;, &#39;Half Bath&#39;, &#39;Bedroom AbvGr&#39;, &#39;TotRms AbvGrd&#39;, &#39;Gr Liv Area&#39;, &#39;Screen Porch&#39;, &#39;Pool Area&#39;, &#39;Yr Sold&#39;]</pre></div> </div></div><div class="sk-serial"><div class="sk-item"><div class="sk-serial"><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-24" type="checkbox"><label for="sk-estimator-id-24" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>SimpleImputer</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.6/modules/generated/sklearn.impute.SimpleImputer.html">?<span>Documentation for SimpleImputer</span></a></div></label><div class="sk-toggleable__content fitted"><pre>SimpleImputer(strategy=&#39;median&#39;)</pre></div> </div></div><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-25" type="checkbox"><label for="sk-estimator-id-25" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>StandardScaler</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.6/modules/generated/sklearn.preprocessing.StandardScaler.html">?<span>Documentation for StandardScaler</span></a></div></label><div class="sk-toggleable__content fitted"><pre>StandardScaler()</pre></div> </div></div></div></div></div></div></div><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-26" type="checkbox"><label for="sk-estimator-id-26" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>cat</div></div></label><div class="sk-toggleable__content fitted"><pre>[&#39;Street&#39;, &#39;Neighborhood&#39;, &#39;Bldg Type&#39;, &#39;House Style&#39;, &#39;Roof Style&#39;, &#39;Heating&#39;, &#39;Central Air&#39;, &#39;Electrical&#39;, &#39;Functional&#39;, &#39;Sale Type&#39;]</pre></div> </div></div><div class="sk-serial"><div class="sk-item"><div class="sk-serial"><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-27" type="checkbox"><label for="sk-estimator-id-27" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>SimpleImputer</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.6/modules/generated/sklearn.impute.SimpleImputer.html">?<span>Documentation for SimpleImputer</span></a></div></label><div class="sk-toggleable__content fitted"><pre>SimpleImputer(strategy=&#39;most_frequent&#39;)</pre></div> </div></div><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-28" type="checkbox"><label for="sk-estimator-id-28" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>OneHotEncoder</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.6/modules/generated/sklearn.preprocessing.OneHotEncoder.html">?<span>Documentation for OneHotEncoder</span></a></div></label><div class="sk-toggleable__content fitted"><pre>OneHotEncoder(handle_unknown=&#39;ignore&#39;)</pre></div> </div></div></div></div></div></div></div></div></div><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-29" type="checkbox"><label for="sk-estimator-id-29" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>KNeighborsRegressor</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.6/modules/generated/sklearn.neighbors.KNeighborsRegressor.html">?<span>Documentation for KNeighborsRegressor</span></a></div></label><div class="sk-toggleable__content fitted"><pre>KNeighborsRegressor(weights=&#39;distance&#39;)</pre></div> </div></div></div></div></div></div></div></div></div></div></div>
+                                  &#39;Sale Type&#39;])])</pre></div> </div></div><div class="sk-parallel"><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-42" type="checkbox"><label for="sk-estimator-id-42" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>num</div></div></label><div class="sk-toggleable__content fitted"><pre>[&#39;Lot Frontage&#39;, &#39;Lot Area&#39;, &#39;Overall Qual&#39;, &#39;Overall Cond&#39;, &#39;Year Built&#39;, &#39;Full Bath&#39;, &#39;Half Bath&#39;, &#39;Bedroom AbvGr&#39;, &#39;TotRms AbvGrd&#39;, &#39;Gr Liv Area&#39;, &#39;Screen Porch&#39;, &#39;Pool Area&#39;, &#39;Yr Sold&#39;]</pre></div> </div></div><div class="sk-serial"><div class="sk-item"><div class="sk-serial"><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-43" type="checkbox"><label for="sk-estimator-id-43" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>SimpleImputer</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.6/modules/generated/sklearn.impute.SimpleImputer.html">?<span>Documentation for SimpleImputer</span></a></div></label><div class="sk-toggleable__content fitted"><pre>SimpleImputer(strategy=&#39;median&#39;)</pre></div> </div></div><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-44" type="checkbox"><label for="sk-estimator-id-44" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>StandardScaler</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.6/modules/generated/sklearn.preprocessing.StandardScaler.html">?<span>Documentation for StandardScaler</span></a></div></label><div class="sk-toggleable__content fitted"><pre>StandardScaler()</pre></div> </div></div></div></div></div></div></div><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-45" type="checkbox"><label for="sk-estimator-id-45" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>cat</div></div></label><div class="sk-toggleable__content fitted"><pre>[&#39;Street&#39;, &#39;Neighborhood&#39;, &#39;Bldg Type&#39;, &#39;House Style&#39;, &#39;Roof Style&#39;, &#39;Heating&#39;, &#39;Central Air&#39;, &#39;Electrical&#39;, &#39;Functional&#39;, &#39;Sale Type&#39;]</pre></div> </div></div><div class="sk-serial"><div class="sk-item"><div class="sk-serial"><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-46" type="checkbox"><label for="sk-estimator-id-46" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>SimpleImputer</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.6/modules/generated/sklearn.impute.SimpleImputer.html">?<span>Documentation for SimpleImputer</span></a></div></label><div class="sk-toggleable__content fitted"><pre>SimpleImputer(strategy=&#39;most_frequent&#39;)</pre></div> </div></div><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-47" type="checkbox"><label for="sk-estimator-id-47" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>OneHotEncoder</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.6/modules/generated/sklearn.preprocessing.OneHotEncoder.html">?<span>Documentation for OneHotEncoder</span></a></div></label><div class="sk-toggleable__content fitted"><pre>OneHotEncoder(handle_unknown=&#39;ignore&#39;)</pre></div> </div></div></div></div></div></div></div></div></div><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-48" type="checkbox"><label for="sk-estimator-id-48" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>KNeighborsRegressor</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.6/modules/generated/sklearn.neighbors.KNeighborsRegressor.html">?<span>Documentation for KNeighborsRegressor</span></a></div></label><div class="sk-toggleable__content fitted"><pre>KNeighborsRegressor(weights=&#39;distance&#39;)</pre></div> </div></div></div></div></div></div></div></div></div></div></div>
 </div>
 </div>
-<div id="a3531511" class="cell" data-execution_count="17">
+<div id="30fa84d2" class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Compare models</span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> {</span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;LinearRegression&quot;</span>: <span class="op">-</span>rmse_log(y, lr_pipe.predict(X)),  </span>
@@ -3466,11 +3466,11 @@ KNN : -0.17291384083436517
 Best model: RandomForest</code></pre>
 </div>
 </div>
-<div id="0a1c218a" class="cell" data-execution_count="18">
+<div id="1dabe46a" class="cell" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Fit model on training data</span></span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>best_model.fit(X, y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="37">
-<style>#sk-container-id-4 {
+<div class="cell-output cell-output-display" data-execution_count="56">
+<style>#sk-container-id-6 {
 
 --sklearn-color-text: #000;
 --sklearn-color-text-muted: #666;
@@ -3498,13 +3498,13 @@ Best model: RandomForest</code></pre>
 --sklearn-color-icon: #878787;
 }
 }
-#sk-container-id-4 {
+#sk-container-id-6 {
 color: var(--sklearn-color-text);
 }
-#sk-container-id-4 pre {
+#sk-container-id-6 pre {
 padding: 0;
 }
-#sk-container-id-4 input.sk-hidden--visually {
+#sk-container-id-6 input.sk-hidden--visually {
 border: 0;
 clip: rect(1px 1px 1px 1px);
 clip: rect(1px, 1px, 1px, 1px);
@@ -3515,19 +3515,19 @@ padding: 0;
 position: absolute;
 width: 1px;
 }
-#sk-container-id-4 div.sk-dashed-wrapped {
+#sk-container-id-6 div.sk-dashed-wrapped {
 border: 1px dashed var(--sklearn-color-line);
 margin: 0 0.4em 0.5em 0.4em;
 box-sizing: border-box;
 padding-bottom: 0.4em;
 background-color: var(--sklearn-color-background);
 }
-#sk-container-id-4 div.sk-container {
+#sk-container-id-6 div.sk-container {
 
 display: inline-block !important;
 position: relative;
 }
-#sk-container-id-4 div.sk-text-repr-fallback {
+#sk-container-id-6 div.sk-text-repr-fallback {
 display: none;
 }
 div.sk-parallel-item,
@@ -3540,36 +3540,36 @@ background-repeat: no-repeat;
 background-position: center center;
 }
 
-#sk-container-id-4 div.sk-parallel-item::after {
+#sk-container-id-6 div.sk-parallel-item::after {
 content: "";
 width: 100%;
 border-bottom: 2px solid var(--sklearn-color-text-on-default-background);
 flex-grow: 1;
 }
-#sk-container-id-4 div.sk-parallel {
+#sk-container-id-6 div.sk-parallel {
 display: flex;
 align-items: stretch;
 justify-content: center;
 background-color: var(--sklearn-color-background);
 position: relative;
 }
-#sk-container-id-4 div.sk-parallel-item {
+#sk-container-id-6 div.sk-parallel-item {
 display: flex;
 flex-direction: column;
 }
-#sk-container-id-4 div.sk-parallel-item:first-child::after {
+#sk-container-id-6 div.sk-parallel-item:first-child::after {
 align-self: flex-end;
 width: 50%;
 }
-#sk-container-id-4 div.sk-parallel-item:last-child::after {
+#sk-container-id-6 div.sk-parallel-item:last-child::after {
 align-self: flex-start;
 width: 50%;
 }
-#sk-container-id-4 div.sk-parallel-item:only-child::after {
+#sk-container-id-6 div.sk-parallel-item:only-child::after {
 width: 0;
 }
 
-#sk-container-id-4 div.sk-serial {
+#sk-container-id-6 div.sk-serial {
 display: flex;
 flex-direction: column;
 align-items: center;
@@ -3579,12 +3579,12 @@ padding-left: 1em;
 }
 
 
-#sk-container-id-4 div.sk-toggleable {
+#sk-container-id-6 div.sk-toggleable {
 
 background-color: var(--sklearn-color-background);
 }
 
-#sk-container-id-4 label.sk-toggleable__label {
+#sk-container-id-6 label.sk-toggleable__label {
 cursor: pointer;
 display: flex;
 width: 100%;
@@ -3596,23 +3596,23 @@ align-items: start;
 justify-content: space-between;
 gap: 0.5em;
 }
-#sk-container-id-4 label.sk-toggleable__label .caption {
+#sk-container-id-6 label.sk-toggleable__label .caption {
 font-size: 0.6rem;
 font-weight: lighter;
 color: var(--sklearn-color-text-muted);
 }
-#sk-container-id-4 label.sk-toggleable__label-arrow:before {
+#sk-container-id-6 label.sk-toggleable__label-arrow:before {
 
 content: "▸";
 float: left;
 margin-right: 0.25em;
 color: var(--sklearn-color-icon);
 }
-#sk-container-id-4 label.sk-toggleable__label-arrow:hover:before {
+#sk-container-id-6 label.sk-toggleable__label-arrow:hover:before {
 color: var(--sklearn-color-text);
 }
 
-#sk-container-id-4 div.sk-toggleable__content {
+#sk-container-id-6 div.sk-toggleable__content {
 max-height: 0;
 max-width: 0;
 overflow: hidden;
@@ -3620,75 +3620,75 @@ text-align: left;
 
 background-color: var(--sklearn-color-unfitted-level-0);
 }
-#sk-container-id-4 div.sk-toggleable__content.fitted {
+#sk-container-id-6 div.sk-toggleable__content.fitted {
 
 background-color: var(--sklearn-color-fitted-level-0);
 }
-#sk-container-id-4 div.sk-toggleable__content pre {
+#sk-container-id-6 div.sk-toggleable__content pre {
 margin: 0.2em;
 border-radius: 0.25em;
 color: var(--sklearn-color-text);
 
 background-color: var(--sklearn-color-unfitted-level-0);
 }
-#sk-container-id-4 div.sk-toggleable__content.fitted pre {
+#sk-container-id-6 div.sk-toggleable__content.fitted pre {
 
 background-color: var(--sklearn-color-fitted-level-0);
 }
-#sk-container-id-4 input.sk-toggleable__control:checked~div.sk-toggleable__content {
+#sk-container-id-6 input.sk-toggleable__control:checked~div.sk-toggleable__content {
 
 max-height: 200px;
 max-width: 100%;
 overflow: auto;
 }
-#sk-container-id-4 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {
+#sk-container-id-6 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {
 content: "▾";
 }
 
-#sk-container-id-4 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {
+#sk-container-id-6 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {
 color: var(--sklearn-color-text);
 background-color: var(--sklearn-color-unfitted-level-2);
 }
-#sk-container-id-4 div.sk-label.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+#sk-container-id-6 div.sk-label.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
 background-color: var(--sklearn-color-fitted-level-2);
 }
 
 
-#sk-container-id-4 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {
+#sk-container-id-6 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {
 
 background-color: var(--sklearn-color-unfitted-level-2);
 }
-#sk-container-id-4 div.sk-estimator.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+#sk-container-id-6 div.sk-estimator.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
 
 background-color: var(--sklearn-color-fitted-level-2);
 }
-#sk-container-id-4 div.sk-label label.sk-toggleable__label,
-#sk-container-id-4 div.sk-label label {
+#sk-container-id-6 div.sk-label label.sk-toggleable__label,
+#sk-container-id-6 div.sk-label label {
 
 color: var(--sklearn-color-text-on-default-background);
 }
 
-#sk-container-id-4 div.sk-label:hover label.sk-toggleable__label {
+#sk-container-id-6 div.sk-label:hover label.sk-toggleable__label {
 color: var(--sklearn-color-text);
 background-color: var(--sklearn-color-unfitted-level-2);
 }
 
-#sk-container-id-4 div.sk-label.fitted:hover label.sk-toggleable__label.fitted {
+#sk-container-id-6 div.sk-label.fitted:hover label.sk-toggleable__label.fitted {
 color: var(--sklearn-color-text);
 background-color: var(--sklearn-color-fitted-level-2);
 }
 
-#sk-container-id-4 div.sk-label label {
+#sk-container-id-6 div.sk-label label {
 font-family: monospace;
 font-weight: bold;
 display: inline-block;
 line-height: 1.2em;
 }
-#sk-container-id-4 div.sk-label-container {
+#sk-container-id-6 div.sk-label-container {
 text-align: center;
 }
 
-#sk-container-id-4 div.sk-estimator {
+#sk-container-id-6 div.sk-estimator {
 font-family: monospace;
 border: 1px dotted var(--sklearn-color-border-box);
 border-radius: 0.25em;
@@ -3697,16 +3697,16 @@ margin-bottom: 0.5em;
 
 background-color: var(--sklearn-color-unfitted-level-0);
 }
-#sk-container-id-4 div.sk-estimator.fitted {
+#sk-container-id-6 div.sk-estimator.fitted {
 
 background-color: var(--sklearn-color-fitted-level-0);
 }
 
-#sk-container-id-4 div.sk-estimator:hover {
+#sk-container-id-6 div.sk-estimator:hover {
 
 background-color: var(--sklearn-color-unfitted-level-2);
 }
-#sk-container-id-4 div.sk-estimator.fitted:hover {
+#sk-container-id-6 div.sk-estimator.fitted:hover {
 
 background-color: var(--sklearn-color-fitted-level-2);
 }
@@ -3784,7 +3784,7 @@ display: block;
 }
 /* "?"-specific style due to the `<a>` HTML tag */
 
-#sk-container-id-4 a.estimator_doc_link {
+#sk-container-id-6 a.estimator_doc_link {
   float: right;
   font-size: 1rem;
   line-height: 1em;
@@ -3799,25 +3799,25 @@ display: block;
   border: var(--sklearn-color-unfitted-level-1) 1pt solid;
 }
 
-#sk-container-id-4 a.estimator_doc_link.fitted {
+#sk-container-id-6 a.estimator_doc_link.fitted {
   /* fitted */
   border: var(--sklearn-color-fitted-level-1) 1pt solid;
   color: var(--sklearn-color-fitted-level-1);
 }
 
 /* On hover */
-#sk-container-id-4 a.estimator_doc_link:hover {
+#sk-container-id-6 a.estimator_doc_link:hover {
   /* unfitted */
   background-color: var(--sklearn-color-unfitted-level-3);
   color: var(--sklearn-color-background);
   text-decoration: none;
 }
 
-#sk-container-id-4 a.estimator_doc_link.fitted:hover {
+#sk-container-id-6 a.estimator_doc_link.fitted:hover {
   /* fitted */
   background-color: var(--sklearn-color-fitted-level-3);
 }
-</style><div id="sk-container-id-4" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>Pipeline(steps=[(&#39;preprocess&#39;,
+</style><div id="sk-container-id-6" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>Pipeline(steps=[(&#39;preprocess&#39;,
                  ColumnTransformer(transformers=[(&#39;num&#39;,
                                                   Pipeline(steps=[(&#39;impute&#39;,
                                                                    SimpleImputer(strategy=&#39;median&#39;)),
@@ -3844,7 +3844,7 @@ display: block;
                                                    &#39;Functional&#39;,
                                                    &#39;Sale Type&#39;])])),
                 (&#39;model&#39;,
-                 RandomForestRegressor(n_estimators=400, random_state=42))])</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br>On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item sk-dashed-wrapped"><div class="sk-label-container"><div class="sk-label fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-30" type="checkbox"><label for="sk-estimator-id-30" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>Pipeline</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.6/modules/generated/sklearn.pipeline.Pipeline.html">?<span>Documentation for Pipeline</span></a><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted"><pre>Pipeline(steps=[(&#39;preprocess&#39;,
+                 RandomForestRegressor(n_estimators=400, random_state=42))])</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br>On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item sk-dashed-wrapped"><div class="sk-label-container"><div class="sk-label fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-49" type="checkbox"><label for="sk-estimator-id-49" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>Pipeline</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.6/modules/generated/sklearn.pipeline.Pipeline.html">?<span>Documentation for Pipeline</span></a><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted"><pre>Pipeline(steps=[(&#39;preprocess&#39;,
                  ColumnTransformer(transformers=[(&#39;num&#39;,
                                                   Pipeline(steps=[(&#39;impute&#39;,
                                                                    SimpleImputer(strategy=&#39;median&#39;)),
@@ -3871,7 +3871,7 @@ display: block;
                                                    &#39;Functional&#39;,
                                                    &#39;Sale Type&#39;])])),
                 (&#39;model&#39;,
-                 RandomForestRegressor(n_estimators=400, random_state=42))])</pre></div> </div></div><div class="sk-serial"><div class="sk-item sk-dashed-wrapped"><div class="sk-label-container"><div class="sk-label fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-31" type="checkbox"><label for="sk-estimator-id-31" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>preprocess: ColumnTransformer</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.6/modules/generated/sklearn.compose.ColumnTransformer.html">?<span>Documentation for preprocess: ColumnTransformer</span></a></div></label><div class="sk-toggleable__content fitted"><pre>ColumnTransformer(transformers=[(&#39;num&#39;,
+                 RandomForestRegressor(n_estimators=400, random_state=42))])</pre></div> </div></div><div class="sk-serial"><div class="sk-item sk-dashed-wrapped"><div class="sk-label-container"><div class="sk-label fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-50" type="checkbox"><label for="sk-estimator-id-50" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>preprocess: ColumnTransformer</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.6/modules/generated/sklearn.compose.ColumnTransformer.html">?<span>Documentation for preprocess: ColumnTransformer</span></a></div></label><div class="sk-toggleable__content fitted"><pre>ColumnTransformer(transformers=[(&#39;num&#39;,
                                  Pipeline(steps=[(&#39;impute&#39;,
                                                   SimpleImputer(strategy=&#39;median&#39;)),
                                                  (&#39;scale&#39;, StandardScaler())]),
@@ -3888,10 +3888,10 @@ display: block;
                                  [&#39;Street&#39;, &#39;Neighborhood&#39;, &#39;Bldg Type&#39;,
                                   &#39;House Style&#39;, &#39;Roof Style&#39;, &#39;Heating&#39;,
                                   &#39;Central Air&#39;, &#39;Electrical&#39;, &#39;Functional&#39;,
-                                  &#39;Sale Type&#39;])])</pre></div> </div></div><div class="sk-parallel"><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-32" type="checkbox"><label for="sk-estimator-id-32" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>num</div></div></label><div class="sk-toggleable__content fitted"><pre>[&#39;Lot Frontage&#39;, &#39;Lot Area&#39;, &#39;Overall Qual&#39;, &#39;Overall Cond&#39;, &#39;Year Built&#39;, &#39;Full Bath&#39;, &#39;Half Bath&#39;, &#39;Bedroom AbvGr&#39;, &#39;TotRms AbvGrd&#39;, &#39;Gr Liv Area&#39;, &#39;Screen Porch&#39;, &#39;Pool Area&#39;, &#39;Yr Sold&#39;]</pre></div> </div></div><div class="sk-serial"><div class="sk-item"><div class="sk-serial"><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-33" type="checkbox"><label for="sk-estimator-id-33" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>SimpleImputer</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.6/modules/generated/sklearn.impute.SimpleImputer.html">?<span>Documentation for SimpleImputer</span></a></div></label><div class="sk-toggleable__content fitted"><pre>SimpleImputer(strategy=&#39;median&#39;)</pre></div> </div></div><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-34" type="checkbox"><label for="sk-estimator-id-34" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>StandardScaler</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.6/modules/generated/sklearn.preprocessing.StandardScaler.html">?<span>Documentation for StandardScaler</span></a></div></label><div class="sk-toggleable__content fitted"><pre>StandardScaler()</pre></div> </div></div></div></div></div></div></div><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-35" type="checkbox"><label for="sk-estimator-id-35" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>cat</div></div></label><div class="sk-toggleable__content fitted"><pre>[&#39;Street&#39;, &#39;Neighborhood&#39;, &#39;Bldg Type&#39;, &#39;House Style&#39;, &#39;Roof Style&#39;, &#39;Heating&#39;, &#39;Central Air&#39;, &#39;Electrical&#39;, &#39;Functional&#39;, &#39;Sale Type&#39;]</pre></div> </div></div><div class="sk-serial"><div class="sk-item"><div class="sk-serial"><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-36" type="checkbox"><label for="sk-estimator-id-36" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>SimpleImputer</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.6/modules/generated/sklearn.impute.SimpleImputer.html">?<span>Documentation for SimpleImputer</span></a></div></label><div class="sk-toggleable__content fitted"><pre>SimpleImputer(strategy=&#39;most_frequent&#39;)</pre></div> </div></div><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-37" type="checkbox"><label for="sk-estimator-id-37" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>OneHotEncoder</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.6/modules/generated/sklearn.preprocessing.OneHotEncoder.html">?<span>Documentation for OneHotEncoder</span></a></div></label><div class="sk-toggleable__content fitted"><pre>OneHotEncoder(handle_unknown=&#39;ignore&#39;)</pre></div> </div></div></div></div></div></div></div></div></div><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-38" type="checkbox"><label for="sk-estimator-id-38" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>RandomForestRegressor</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.6/modules/generated/sklearn.ensemble.RandomForestRegressor.html">?<span>Documentation for RandomForestRegressor</span></a></div></label><div class="sk-toggleable__content fitted"><pre>RandomForestRegressor(n_estimators=400, random_state=42)</pre></div> </div></div></div></div></div></div>
+                                  &#39;Sale Type&#39;])])</pre></div> </div></div><div class="sk-parallel"><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-51" type="checkbox"><label for="sk-estimator-id-51" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>num</div></div></label><div class="sk-toggleable__content fitted"><pre>[&#39;Lot Frontage&#39;, &#39;Lot Area&#39;, &#39;Overall Qual&#39;, &#39;Overall Cond&#39;, &#39;Year Built&#39;, &#39;Full Bath&#39;, &#39;Half Bath&#39;, &#39;Bedroom AbvGr&#39;, &#39;TotRms AbvGrd&#39;, &#39;Gr Liv Area&#39;, &#39;Screen Porch&#39;, &#39;Pool Area&#39;, &#39;Yr Sold&#39;]</pre></div> </div></div><div class="sk-serial"><div class="sk-item"><div class="sk-serial"><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-52" type="checkbox"><label for="sk-estimator-id-52" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>SimpleImputer</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.6/modules/generated/sklearn.impute.SimpleImputer.html">?<span>Documentation for SimpleImputer</span></a></div></label><div class="sk-toggleable__content fitted"><pre>SimpleImputer(strategy=&#39;median&#39;)</pre></div> </div></div><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-53" type="checkbox"><label for="sk-estimator-id-53" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>StandardScaler</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.6/modules/generated/sklearn.preprocessing.StandardScaler.html">?<span>Documentation for StandardScaler</span></a></div></label><div class="sk-toggleable__content fitted"><pre>StandardScaler()</pre></div> </div></div></div></div></div></div></div><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-54" type="checkbox"><label for="sk-estimator-id-54" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>cat</div></div></label><div class="sk-toggleable__content fitted"><pre>[&#39;Street&#39;, &#39;Neighborhood&#39;, &#39;Bldg Type&#39;, &#39;House Style&#39;, &#39;Roof Style&#39;, &#39;Heating&#39;, &#39;Central Air&#39;, &#39;Electrical&#39;, &#39;Functional&#39;, &#39;Sale Type&#39;]</pre></div> </div></div><div class="sk-serial"><div class="sk-item"><div class="sk-serial"><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-55" type="checkbox"><label for="sk-estimator-id-55" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>SimpleImputer</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.6/modules/generated/sklearn.impute.SimpleImputer.html">?<span>Documentation for SimpleImputer</span></a></div></label><div class="sk-toggleable__content fitted"><pre>SimpleImputer(strategy=&#39;most_frequent&#39;)</pre></div> </div></div><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-56" type="checkbox"><label for="sk-estimator-id-56" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>OneHotEncoder</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.6/modules/generated/sklearn.preprocessing.OneHotEncoder.html">?<span>Documentation for OneHotEncoder</span></a></div></label><div class="sk-toggleable__content fitted"><pre>OneHotEncoder(handle_unknown=&#39;ignore&#39;)</pre></div> </div></div></div></div></div></div></div></div></div><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-57" type="checkbox"><label for="sk-estimator-id-57" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>RandomForestRegressor</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.6/modules/generated/sklearn.ensemble.RandomForestRegressor.html">?<span>Documentation for RandomForestRegressor</span></a></div></label><div class="sk-toggleable__content fitted"><pre>RandomForestRegressor(n_estimators=400, random_state=42)</pre></div> </div></div></div></div></div></div>
 </div>
 </div>
-<div id="ad9c9c98" class="cell" data-execution_count="19">
+<div id="b82e178f" class="cell" data-execution_count="19">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Save to csv</span></span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>X_test <span class="op">=</span> test.drop(columns<span class="op">=</span>[id_col])</span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>test_pred <span class="op">=</span> best_model.predict(X_test)</span>
@@ -3912,6 +3912,7 @@ display: block;
 4  923275090  126451.9885</code></pre>
 </div>
 </div>
+<p>This submission gave me an RMSE of <strong>0.15686</strong> on the test csv file.</p>
 </section>
 
 </main>
