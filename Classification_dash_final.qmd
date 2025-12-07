@@ -1,0 +1,94 @@
+---
+title: "Classification Dashboard"
+format:
+  dashboard:
+    theme: yeti
+embed-resources: true
+---
+```{python}
+import pandas as pd
+pred = pd.read_csv("submission.csv")   # must contain political_affiliation_predicted
+```
+
+```{python}
+accuracy = 0.59036
+counts = pred["political_affiliation_predicted"].value_counts().reset_index()
+counts.columns = ["affiliation", "count"]
+
+total_responses = len(pred)
+n_classes = len(counts)
+```
+
+## Row
+```{python}
+from IPython.display import Markdown
+Markdown(f"**Political Affiliation Predictions** — ({total_responses} people classified)")
+```
+
+## Row
+```{python}
+#| content: valuebox
+#| title: "Model"
+dict(
+icon = "cpu",
+color = "secondary",
+value = "Logistic Regression"
+)
+```
+
+```{python}
+#| content: valuebox
+#| title: "Test Accuracy"
+dict(
+icon = "check-circle",
+color = "success",
+value = f"{accuracy:.3f}"
+)
+```
+
+```{python}
+#| content: valuebox
+#| title: "Number of Classes Predicted"
+dict(
+icon = "list",
+color = "light",
+value = n_classes
+)
+```
+
+## Row
+### Column {width=75%}
+
+```{python}
+#| title: Class Distribution
+#| padding: 0
+import plotly.express as px
+
+fig = px.bar(
+counts,
+x="affiliation",
+y="count",
+title="Predicted Political Affiliations",
+labels={"affiliation": "Affiliation", "count": "Count"}
+)
+fig
+```
+
+### Column {width=25%}
+
+```{python}
+table = counts
+table
+```
+
+::: {.card}
+
+#### Summary
+
+| Metric            | Value                     |
+|------------------ |---------------------------:|
+| Accuracy          | `{python} accuracy`        |
+| Total Predictions | `{python} total_responses` |
+| Number of Classes | `{python} n_classes`       |
+
+:::

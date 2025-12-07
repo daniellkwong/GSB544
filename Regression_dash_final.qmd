@@ -1,0 +1,102 @@
+---
+title: "Regression Dashboard"
+format:
+  dashboard:
+    theme: yeti
+embed-resources: true
+---
+
+```{python}
+import pandas as pd
+import plotly.express as px
+
+# load your submission file
+
+pred = pd.read_csv("submission_regression2.csv")  # contains PID + SalePrice
+
+rmse = 0.15686
+n_houses = len(pred)
+
+summary = pred["SalePrice"].describe()
+min_p = summary["min"]
+median_p = summary["50%"]
+mean_p = summary["mean"]
+max_p = summary["max"]
+```
+
+## Row
+```{python}
+from IPython.display import Markdown
+Markdown(f"**Ames Housing Predictions** — ({n_houses} homes predicted)")
+```
+
+## Row
+```{python}
+#| content: valuebox
+#| title: "Model"
+dict(
+icon = "tree",
+color = "secondary",
+value = "Random Forest"
+)
+```
+
+```{python}
+#| content: valuebox
+#| title: "Test RMSE"
+dict(
+icon = "bar-chart",
+color = "primary",
+value = f"{rmse:.5f}"
+)
+```
+
+```{python}
+#| content: valuebox
+#| title: "Houses Predicted"
+dict(
+icon = "house",
+color = "light",
+value = n_houses
+)
+```
+
+## Row
+### Column {width=75%}
+
+```{python}
+#| title: Predicted Price Distribution
+#| padding: 0
+fig = px.histogram(
+pred,
+x="SalePrice",
+nbins=40,
+title="Distribution of Predicted Sale Prices"
+)
+fig
+```
+
+### Column {width=25%}
+
+```{python}
+# summary stats
+
+sum_table = pd.DataFrame({
+"Statistic": ["Min", "Median", "Mean", "Max"],
+"Value": [min_p, median_p, mean_p, max_p]
+})
+sum_table
+```
+
+::: {.card}
+
+### Price Summary
+
+| Statistic | Value |
+|----------|-------|
+| Min      | {{ min_p }} |
+| Median   | {{ median_p }} |
+| Mean     | {{ mean_p }} |
+| Max      | {{ max_p }} |
+
+:::
