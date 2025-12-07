@@ -4,6 +4,11 @@ format:
   dashboard:
     theme: yeti
 embed-resources: true
+execute:
+  echo: false
+  warning: false
+  error: false
+  inline: true
 ---
 
 ```{python}
@@ -86,6 +91,13 @@ sum_table = pd.DataFrame({
 "Value": [min_p, median_p, mean_p, max_p]
 })
 sum_table
+```
+
+```{python}
+min_p = float(pred['SalePrice'].min())
+median_p = float(pred['SalePrice'].median())
+mean_p = float(pred['SalePrice'].mean())
+max_p = float(pred['SalePrice'].max())
 ```
 
 ::: {.card}
