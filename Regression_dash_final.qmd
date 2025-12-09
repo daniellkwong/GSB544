@@ -100,15 +100,64 @@ mean_p = float(pred['SalePrice'].mean())
 max_p = float(pred['SalePrice'].max())
 ```
 
+## Row
+
+### Column {width=50%}
+```{python}
+import plotly.express as px
+import pandas as pd
+
+# Top 5 real feature importances
+fi = pd.DataFrame({
+    "Feature": [
+        "Overall Qual",
+        "Gr Liv Area",
+        "Lot Area",
+        "Year Built",
+        "Lot Frontage"
+    ],
+    "Importance": [
+        0.659639,
+        0.158379,
+        0.042672,
+        0.037579,
+        0.016954
+    ]
+})
+
+fig_fi = px.bar(
+    fi,
+    x="Importance",
+    y="Feature",
+    orientation="h",
+    title="Most Important Predictors of Sale Price (Random Forest)",
+    labels={"Importance": "Feature Importance", "Feature": "Feature"}
+)
+
+fig_fi
+```
+
+### Column {width=25%}
 ::: {.card}
 
-### Price Summary
+### Price Quartiles
 
 | Statistic | Value |
-|----------|-------|
-| Min      | {{ min_p }} |
-| Median   | {{ median_p }} |
-| Mean     | {{ mean_p }} |
-| Max      | {{ max_p }} |
+|----------|--------|
+| Q1 (25th %) | 130000.00 |
+| Median     | 154575.55|
+| Q3 (75th %) | 215000.00 |
+
+:::
+
+### Column {width=25%}
+::: {.card}
+
+### Model Details
+
+- n_estimators: 400  
+- max_depth: None  
+- min_samples_leaf: 1  
+- min_samples_split: 2  
 
 :::
