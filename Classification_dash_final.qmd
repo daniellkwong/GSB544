@@ -77,10 +77,79 @@ fig
 ### Column {width=25%}
 
 ```{python}
-table = counts
+table = (
+    counts.assign(
+        percent = (counts["count"] / total_responses * 100).round(1)
+    )
+)
 table
 ```
 
+## Row
+### Column {width=50%}
+
+```{python}
+# --- Load classification training data (needed only for confusion matrix) ---
+train_class = pd.read_csv("gsb-544-fall-2025-classification/CAH-201803-train.csv")
+
+target_col = "political_affiliation"
+id_col     = "id_num"
+
+X_train = train_class.drop(columns=[id_col, target_col])
+y_train = train_class[target_col]
+
+# --- Recreate preprocessing exactly as before ---
+numeric_features = ["Q2", "Q15", "Q16", "Q17"]
+categorical_features = [c for c in X_train.columns if c not in numeric_features]
+
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.linear_model import LogisticRegression
+
+preprocess = ColumnTransformer(
+    transformers=[
+        ("num", StandardScaler(), numeric_features),
+        ("cat", OneHotEncoder(handle_unknown="ignore"), categorical_features),
+    ]
+)
+
+# --- Recreate your final chosen model (Logistic Regression) ---
+clf = Pipeline(steps=[
+    ("preprocess", preprocess),
+    ("model", LogisticRegression(
+        multi_class="multinomial",
+        solver="lbfgs",
+        max_iter=5000
+    ))
+])
+
+# --- Fit classifier on training data ---
+clf.fit(X_train, y_train)
+
+# --- Predict on training data ---
+y_pred_train = clf.predict(X_train)
+
+# --- Confusion matrix ---
+from sklearn.metrics import confusion_matrix
+import numpy as np
+import pandas as pd
+
+labels = clf.classes_
+cm = confusion_matrix(y_train, y_pred_train)
+
+# Create labeled DataFrame with Actual vs Predicted headings
+cm_df = pd.DataFrame(cm, index=pd.Index(labels, name="Actual"), columns=pd.Index(labels, name="Predicted"))
+
+# Add totals
+cm_df["Row Total"] = cm_df.sum(axis=1)           # total actual counts
+col_totals = cm_df.sum(axis=0)
+cm_df.loc["Column Total"] = col_totals           # total predicted counts
+
+cm_df
+```
+
+### Column {width=50%}
 ::: {.card}
 
 #### Summary
@@ -92,3 +161,5 @@ table
 | Number of Classes | `{python} n_classes`       |
 
 :::
+
+
